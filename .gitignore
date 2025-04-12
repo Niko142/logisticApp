@@ -2,9 +2,12 @@
 .env
 .log
 .DS_Store
-# Frontend
-/node_modules/
 
 # Backend
 .venv/
+cache/
+backend/data/
+!backend/data/.gitkeep
 __pycache__/
+
+.vscode
