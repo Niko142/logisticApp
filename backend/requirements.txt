@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+networkx
+osmnx
+shapely
+scikit-learn
+numpy
+joblib
