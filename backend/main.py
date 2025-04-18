@@ -17,10 +17,6 @@ app.add_middleware(
 
 app.include_router(route.router, prefix='/api')
 
-@app.get("/graph")
-def get_graph():
-    return FileResponse(GEOJSON_PATH, media_type="application/json")
-
 @app.get("/")
 def root():
     return {"message": "Backend-сервер работает!"}

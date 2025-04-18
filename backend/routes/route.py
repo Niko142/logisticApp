@@ -81,3 +81,37 @@ def get_route(data: RouteRequest):
 
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
+
+# Окрас графа относительно загруженности на дорогах
+@router.get("/graph")
+def get_full_graph():
+    features = []
+
+    for u, v, k in G.edges(keys=True):
+        edge_data = G.get_edge_data(u, v, k)
+        geometry = edge_data.get("geometry")
+
+        coords = list(geometry.coords) if geometry else [
+            (G.nodes[u]["x"], G.nodes[u]["y"]),
+            (G.nodes[v]["x"], G.nodes[v]["y"])
+        ]
+
+        # Имитация загруженности
+        traffic_level = random.choice([0, 1, 2])
+
+        line = LineString(coords)
+        feature = {
+            "type": "Feature",
+            "geometry": json.loads(json.dumps(line.__geo_interface__)),
+            "properties": {
+                "traffic_level": traffic_level
+            }
+        }
+        features.append(feature)
+
+    geojson = {
+        "type": "FeatureCollection",
+        "features": features
+    }
+
+    return JSONResponse(content=geojson)
