@@ -10,12 +10,12 @@ class TrafficModel:
         self.model = RandomForestRegressor(n_estimators=100, random_state=42)
 
     def train(self, df):
-        X = df[["length", "time_of_day", "traffic_level"]]
+        X = df[["length", "time_of_day", "traffic_level", "is_peak_hour"]]
         y = df["travel_time"]
 
         # Функция для подсчета успешных предсказаний
         def success_scorer(y_true, y_pred):
-            errors = abs(y_true - y_pred) <= 0.5
+            errors = abs(y_true - y_pred) <= 1
             return errors.mean()
 
         # Параметры для подбора
@@ -39,10 +39,13 @@ class TrafficModel:
         self.model.fit(X, y)
 
     def predict(self, length, time_of_day, traffic_level):
+        peak = 1 if time_of_day in [7, 8, 9, 17, 18, 19] else 0
+       
         X = pd.DataFrame([{
             "length": length,
             "time_of_day": time_of_day,
-            "traffic_level": traffic_level
+            "traffic_level": traffic_level,
+            "is_peak_hour": peak
         }])
         return self.model.predict(X)[0]
 

@@ -110,6 +110,7 @@ const MapView = () => {
           <span className="legend__indicator indicator-red" />
           Пробка
         </article>
+        {/* Результаты прогноза на время поездки */}
         {routeData?.summary?.total_predicted_time_min && (
           <div className="legend__total-route">
             Время маршрута:{" "}

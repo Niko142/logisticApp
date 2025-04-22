@@ -40,4 +40,4 @@ percentage_success = (successful_predictions / len(test_cases)) * 100
 
 print(f"\nСредняя абсолютная ошибка (MAE): {mae:.2f} мин")
 print(f"Среднеквадратичная ошибка (RMSE): {rmse:.2f} мин")
-print(f"Процент успешных предсказаний (ошибка <= 0.5 мин): {percentage_success:.2f}%")
+print(f"Процент успешных предсказаний (ошибка <= 1 мин): {percentage_success:.2f}%")
