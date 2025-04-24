@@ -10,11 +10,14 @@ import { useEffect, useState } from "react";
 import instance from "../api/axios";
 import { fetchRoute } from "../api/route";
 import { getColorByTraffic } from "../data/data";
+import SearchInput from "./SearchInput";
+import { handlePointSelect } from "../utils/BuildingRoute";
 
 const MapView = () => {
   const [geoData, setGeoData] = useState(null);
   const [routeData, setRouteData] = useState(null);
   const [points, setPoints] = useState([]);
+  const [showTraffic, setShowTraffic] = useState(true);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -34,30 +37,27 @@ const MapView = () => {
     return () => abortController.abort();
   }, []);
 
+  // Построение маршрутов по клику левой кнопки мыши
   const LocationMarker = () => {
     useMapEvents({
       click(e) {
         const newPoint = [e.latlng.lat, e.latlng.lng];
-        if (points.length === 2) {
-          setPoints([newPoint]);
-          setRouteData(null);
-        } else {
-          const updatedPoints = [...points, newPoint];
-          setPoints(updatedPoints);
-
-          if (updatedPoints.length === 2) {
-            fetchRoute(updatedPoints[0], updatedPoints[1])
-              .then((data) => setRouteData(data))
-              .catch((err) => console.error("Ошибка маршрута:", err));
-          }
-        }
+        handlePointSelect(
+          newPoint,
+          points,
+          setPoints,
+          setRouteData,
+          fetchRoute
+        );
       },
-      // Сбросить проставленные точки или маршрут
+
+      // Сброс проставленных точек при нажатии правой кнопки мыши
       contextmenu() {
         setPoints([]);
         setRouteData(null);
       },
     });
+
     return null;
   };
 
@@ -77,27 +77,53 @@ const MapView = () => {
 
         {geoData && (
           <GeoJSON
+            key={showTraffic ? "traffic-on" : "traffic-off"}
             data={geoData}
             onEachFeature={(feature, layer) => {
               const traffic = feature.properties.traffic_level;
               layer.setStyle({
-                color: getColorByTraffic(traffic),
+                color: showTraffic ? getColorByTraffic(traffic) : null,
                 weight: 2,
               });
             }}
           />
         )}
+
         {routeData && (
           <GeoJSON data={routeData} style={{ color: "blue", weight: 4 }} />
         )}
         {points.map((point, i) => (
           <Marker key={i} position={point} />
         ))}
+
+        {/* Поле для поиска адреса, а также построения маршрутов */}
+        <SearchInput
+          onSelect={(newPoint) =>
+            handlePointSelect(
+              newPoint,
+              points,
+              setPoints,
+              setRouteData,
+              fetchRoute
+            )
+          }
+        />
       </MapContainer>
 
       {/* Легенда для карты */}
       <div className="legend">
         <h4 className="legend__title">Загруженность:</h4>
+        <article>
+          <label style={{ display: "block" }} htmlFor="traffic">
+            <input
+              type="checkbox"
+              id="traffic"
+              checked={!showTraffic}
+              onChange={() => setShowTraffic((prev) => !prev)}
+            />
+            Выкл. загруженность
+          </label>
+        </article>
         <article>
           <span className="legend__indicator indicator-green" />
           Свободно
@@ -110,6 +136,7 @@ const MapView = () => {
           <span className="legend__indicator indicator-red" />
           Пробка
         </article>
+
         {/* Результаты прогноза на время поездки */}
         {routeData?.summary?.total_predicted_time_min && (
           <div className="legend__total-route">

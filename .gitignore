@@ -9,6 +9,5 @@ cache/
 backend/data/
 !backend/data/.gitkeep
 __pycache__/
-*.pkl
 
 .vscode
