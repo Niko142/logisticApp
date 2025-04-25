@@ -6,7 +6,7 @@ from config import GRAPHML_PATH, GEOJSON_PATH
 
 def download_samara_graph(save_path=GRAPHML_PATH):
     # Выбранная область, город
-    place_name = "Самара, Россия"
+    place_name = "Samara, Russia"
 
     # Загрузка дорожной сети
     print("Загружаем данные из OSM...")
