@@ -10,8 +10,9 @@ import { useEffect, useState } from "react";
 import instance from "../api/axios";
 import { fetchRoute } from "../api/route";
 import { getColorByTraffic } from "../data/data";
-import SearchInput from "./SearchInput";
+import SearchInput from "../components/SearchInput";
 import { handlePointSelect } from "../utils/BuildingRoute";
+import Header from "../components/Header";
 
 const MapView = () => {
   const [geoData, setGeoData] = useState(null);
@@ -63,6 +64,7 @@ const MapView = () => {
 
   return (
     <section className="map">
+      <Header />
       <MapContainer
         center={[53.1959, 50.1008]}
         zoom={12}
@@ -108,43 +110,42 @@ const MapView = () => {
             )
           }
         />
+        {/* Легенда для карты */}
+        <div className="legend">
+          <h4 className="legend__title">Загруженность:</h4>
+          <article>
+            <label style={{ display: "block" }} htmlFor="traffic">
+              <input
+                type="checkbox"
+                id="traffic"
+                checked={!showTraffic}
+                onChange={() => setShowTraffic((prev) => !prev)}
+              />
+              Выкл. загруженность
+            </label>
+          </article>
+          <article>
+            <span className="legend__indicator indicator-green" />
+            Свободно
+          </article>
+          <article>
+            <span className="legend__indicator indicator-orange" />
+            Средне
+          </article>
+          <article>
+            <span className="legend__indicator indicator-red" />
+            Пробка
+          </article>
+
+          {/* Результаты прогноза на время поездки */}
+          {routeData?.summary?.total_predicted_time_min && (
+            <div className="legend__total-route">
+              Время маршрута:{" "}
+              <p>{routeData.summary.total_predicted_time_min} мин</p>
+            </div>
+          )}
+        </div>
       </MapContainer>
-
-      {/* Легенда для карты */}
-      <div className="legend">
-        <h4 className="legend__title">Загруженность:</h4>
-        <article>
-          <label style={{ display: "block" }} htmlFor="traffic">
-            <input
-              type="checkbox"
-              id="traffic"
-              checked={!showTraffic}
-              onChange={() => setShowTraffic((prev) => !prev)}
-            />
-            Выкл. загруженность
-          </label>
-        </article>
-        <article>
-          <span className="legend__indicator indicator-green" />
-          Свободно
-        </article>
-        <article>
-          <span className="legend__indicator indicator-orange" />
-          Средне
-        </article>
-        <article>
-          <span className="legend__indicator indicator-red" />
-          Пробка
-        </article>
-
-        {/* Результаты прогноза на время поездки */}
-        {routeData?.summary?.total_predicted_time_min && (
-          <div className="legend__total-route">
-            Время маршрута:{" "}
-            <p>{routeData.summary.total_predicted_time_min} мин</p>
-          </div>
-        )}
-      </div>
     </section>
   );
 };
