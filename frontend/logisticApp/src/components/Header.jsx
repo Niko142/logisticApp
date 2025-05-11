@@ -1,6 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import HeaderLogo from "../assets/Header_logo.svg";
 import { IoMdExit } from "react-icons/io";
+import { headerChapters } from "../data/data";
 
 const Header = () => {
   return (
@@ -11,38 +12,16 @@ const Header = () => {
         </div>
         <nav className="header__navbar">
           <ul>
-            <NavLink
-              to={"/main"}
-              className={({ isActive }) =>
-                isActive ? "header__item active" : "header__item"
-              }
-            >
-              Главная
-            </NavLink>
-            <NavLink
-              to={"/predict"}
-              className={({ isActive }) =>
-                isActive ? "header__item active" : "header__item"
-              }
-            >
-              Прогнозирование
-            </NavLink>
-            <NavLink
-              to={"/analytics"}
-              className={({ isActive }) =>
-                isActive ? "header__item active" : "header__item"
-              }
-            >
-              Аналитика
-            </NavLink>
-            <NavLink
-              to={"/settings"}
-              className={({ isActive }) =>
-                isActive ? "header__item active" : "header__item"
-              }
-            >
-              Настройки
-            </NavLink>
+            {headerChapters.map((chapter) => (
+              <NavLink
+                to={`/${chapter.href}`}
+                className={({ isActive }) =>
+                  isActive ? "header__item active" : "header__item"
+                }
+              >
+                {chapter.title}
+              </NavLink>
+            ))}
             {/* Не лучший вариант, но для начала сойдет */}
             <Link to={"/"} className="header__item" reloadDocument>
               <IoMdExit size={32} />

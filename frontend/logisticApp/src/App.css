@@ -6,6 +6,7 @@
   --green: #44944a;
   --orange: #ffa500;
   --red: #e32636;
+  --grey: #ddd;
 
   /* Фон и тени */
   --background: linear-gradient(134deg, #1e2a38 0%, #2b2b2b 100%);
@@ -16,6 +17,10 @@
   --btn-hover: #2f7ec8;
   --btn-border: rgb(13, 78, 255);
   --btn-shadow: 0px 0px 20px 2px rgba(24, 144, 255, 0.2);
+
+  /* Стили для блока с фильтрами */
+  --filter-background: #ececec;
+  --title: #555;
 }
 
 body,
@@ -189,6 +194,17 @@ input[type="checkbox"] {
   margin-bottom: 20px;
 }
 
+.auth__registration {
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--blue);
+  margin-top: 20px;
+}
+
+.auth__registration:hover {
+  color: var(--btn-hover);
+}
+
 /* Стили для кнопки */
 .btn {
   border: 0;
@@ -213,4 +229,100 @@ input[type="checkbox"] {
 .btn:hover,
 .btn:focus-visible {
   box-shadow: var(--btn-shadow);
+}
+
+/* Блок аналитики */
+.analytics {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 3fr 1fr;
+  row-gap: 40px;
+  min-height: 70vh;
+  padding-inline: 50px;
+}
+
+.analytics__chart,
+.analytics__filter {
+  background-color: var(--white);
+  border-radius: 25px;
+  padding: 25px;
+}
+
+.analytics__chart h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.analytics__filter {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr 1fr;
+  align-content: center;
+  column-gap: 5vw;
+}
+
+.analytics__filter-group {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  padding: 25px;
+  border-radius: 20px;
+  background-color: var(--filter-background);
+}
+
+.analytics__filter-group h3 {
+  text-align: center;
+}
+
+.radio {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: 30px;
+  row-gap: 15px;
+}
+
+.radio__label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: var(--title);
+  padding-left: 30px;
+}
+
+.radio__input {
+  position: absolute;
+  opacity: 0;
+}
+
+.radio__custom-item {
+  box-sizing: border-box;
+  position: absolute;
+  left: 0;
+  height: 22px;
+  width: 22px;
+  background-color: var(--white);
+  border: 1px solid var(--title);
+  border-radius: 50%;
+}
+
+.radio__input:checked ~ .radio__custom-item {
+  background-color: var(--grey);
+  border-color: var(--title);
+}
+
+.radio__input:checked ~ .radio__custom-item::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--blue);
+}
+
+.radio-label:hover .radio__custom-item {
+  border-color: var(--blue);
 }

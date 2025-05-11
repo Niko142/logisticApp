@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../UI/Button";
 import Logo from "../assets/Logo.svg";
 
@@ -24,6 +24,7 @@ const FormAuth = () => {
           className="auth__input input-password"
         />
         <Button onClick={() => navigate("/main")}>Авторизация</Button>
+        <Link to={'#'} className="auth__registration">Регистрация</Link>
       </form>
     </section>
   );
