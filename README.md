@@ -13,18 +13,26 @@ git clone https://github.com/Niko142/logisticApp.git
 Для этого необходимо перейти в нужную папку:
 
 ```bash
-cd frontend
-cd logisticApp
+cd frontend/logisticApp
 npm install
 ```
 
 Запускаем frontend:
 
 ```bash
-npm run dev
+npm run build
+npm run preview
 ```
 
 ### Шаг 3: Настройка backend
+
+Запуск backend через Docker:
+
+```bash
+docker-compose up --build
+```
+
+### Или
 
 Переходим в папку backend:
 
