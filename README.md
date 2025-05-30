@@ -1,38 +1,43 @@
 # Оптимизация логистических маршрутов
 
-## Инструкция и установка
+## Установка и запуск проекта
 
-### Шаг 1: Клонируем репозиторий
+В первую очередь загрузить проект к себе на локальную машину:
 
 ```bash
 git clone https://github.com/Niko142/logisticApp.git
+cd logisticApp
 ```
 
-### Шаг 2: Настройка frontend
+### Вариант 1 - запуск через Docker
 
-Для этого необходимо перейти в нужную папку:
+Позволяет запустить frontend и backend в одном терминале
+
+#### Шаг 1: Запуск проекта
+
+```bash
+docker-compose up --build
+```
+
+### Вариант 2 - ручная сборка
+
+#### Шаг 1: Установка и запуск frontend
+
+Для начала переходим в нужную папку:
 
 ```bash
 cd frontend/logisticApp
 npm install
 ```
 
-Запускаем frontend:
+Сборка и запуск production-версии:
 
 ```bash
 npm run build
 npm run preview
 ```
 
-### Шаг 3: Настройка backend
-
-Запуск backend через Docker:
-
-```bash
-docker-compose up --build
-```
-
-### Или
+#### Шаг 2: Установка и запуск backend
 
 Переходим в папку backend:
 
@@ -53,7 +58,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### Шаг 4: Подгрузка модулей
+#### Шаг 3: Подгрузка модулей
 
 Для корректной работы системы подгружаем граф:
 
@@ -73,7 +78,7 @@ python -m ml.train_model
 python -m ml.test_model
 ```
 
-### Шаг 5: Запускаем backend
+#### Шаг 4: Запуск backend (если не применяется Docker)
 
 Поскольку используется FastAPI:
 

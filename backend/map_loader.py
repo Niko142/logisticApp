@@ -32,5 +32,8 @@ def export_to_geojson(graph, filename=GEOJSON_PATH):
 
 # Проверка
 if __name__ == "__main__":
-    graph = download_samara_graph()
-    export_to_geojson(graph)
+    if os.path.exists(GRAPHML_PATH):  # или как называется твой граф
+        print("Граф уже существует. Пропускаем загрузку.")
+    else:
+        graph = download_samara_graph()
+        export_to_geojson(graph)
