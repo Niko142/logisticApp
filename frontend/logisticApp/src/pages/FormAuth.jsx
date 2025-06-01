@@ -12,11 +12,11 @@ const FormAuth = () => {
 
         <h1 className="auth__title">Вход в систему</h1>
         <label htmlFor="username" className="auth__label">
-          Username:
+          Логин:
         </label>
         <input type="text" id="username" className="auth__input input-user" />
         <label htmlFor="password" className="auth__label">
-          Password:
+          Пароль:
         </label>
         <input
           type="password"
