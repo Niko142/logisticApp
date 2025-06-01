@@ -13,19 +13,28 @@ const Header = () => {
         <nav className="header__navbar">
           <ul>
             {headerChapters.map((chapter) => (
-              <NavLink
-                to={`/${chapter.href}`}
-                className={({ isActive }) =>
-                  isActive ? "header__item active" : "header__item"
-                }
-              >
-                {chapter.title}
-              </NavLink>
+              <li key={chapter.title}>
+                <NavLink
+                  to={`/${chapter.href}`}
+                  className={({ isActive }) =>
+                    isActive ? "header__item active" : "header__item"
+                  }
+                >
+                  {chapter.title}
+                </NavLink>
+              </li>
             ))}
             {/* Не лучший вариант, но для начала сойдет */}
-            <Link to={"/"} className="header__item" reloadDocument>
-              <IoMdExit size={32} />
-            </Link>
+            <li>
+              <Link
+                to={"/"}
+                className="header__item"
+                aria-label="Выход"
+                reloadDocument
+              >
+                <IoMdExit size={32} />
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>

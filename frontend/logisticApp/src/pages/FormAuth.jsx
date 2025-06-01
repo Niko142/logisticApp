@@ -5,7 +5,7 @@ import Logo from "../assets/Logo.svg";
 const FormAuth = () => {
   const navigate = useNavigate();
   return (
-    <section className="auth">
+    <section className="auth" aria-label="Форма авторизации">
       <form className="auth__form">
         {/* Логотип */}
         <img src={Logo} alt="Logo" />

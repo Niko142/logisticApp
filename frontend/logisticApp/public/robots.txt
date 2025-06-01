@@ -1,0 +1,11 @@
+User-agent: *
+
+Allow: /
+Allow: /main/
+Allow: /main?
+Allow: /analytics/
+
+Disallow: /predict/
+Disallow: /settings/
+
+Sitemap: https://logistic-app.vercel.app/sitemap.xml
