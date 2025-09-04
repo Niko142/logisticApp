@@ -1,7 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
 import HeaderLogo from "../assets/Header_logo.svg";
-import { IoMdExit } from "react-icons/io";
 import { headerChapters } from "../data/data";
+import { LogOut } from "lucide-react";
 
 const Header = () => {
   return (
@@ -15,7 +15,7 @@ const Header = () => {
             {headerChapters.map((chapter) => (
               <li key={chapter.title}>
                 <NavLink
-                  to={`/${chapter.href}`}
+                  to={`/${chapter.link}`}
                   className={({ isActive }) =>
                     isActive ? "header__item active" : "header__item"
                   }
@@ -28,11 +28,11 @@ const Header = () => {
             <li>
               <Link
                 to={"/"}
-                className="header__item"
+                className="header__item item--exit"
                 aria-label="Выход"
                 reloadDocument
               >
-                <IoMdExit size={32} />
+                <LogOut size={28} />
               </Link>
             </li>
           </ul>

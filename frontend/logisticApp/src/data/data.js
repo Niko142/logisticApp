@@ -12,13 +12,13 @@ export const getColorByTraffic = (level) => {
   }
 };
 
-// Разделы header-а
+// Основные разделы в шапке проекта
 export const headerChapters = [
-  {title: 'Главная', href: 'main',},
-  {title: 'Прогнозирование', href: 'predict',},
-  {title: 'Аналитика', href: 'analytics',},
-  {title: 'Настройки', href: 'settings',},
-]
+  { title: "Главная", link: "main" },
+  { title: "Прогнозирование", link: "predict" },
+  { title: "Аналитика", link: "analytics" },
+  { title: "Настройки", link: "settings" },
+];
 
 // данные для тестового графика
 export const chartData = [

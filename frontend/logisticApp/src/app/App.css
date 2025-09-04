@@ -1,0 +1,275 @@
+/* Шапка основного меню */
+header {
+  width: 100%;
+  padding-block: 25px;
+  margin-bottom: 20px;
+
+  & .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 45px;
+  }
+}
+
+.header__logo {
+  & img {
+    width: 60px;
+  }
+}
+
+.header__navbar {
+  & ul {
+    display: flex;
+    column-gap: 76px;
+  }
+  & li {
+    font-size: 20px;
+    line-height: 1.25;
+  }
+}
+
+.header__item {
+  display: block;
+  color: var(--white);
+  transition: color 0.25s ease-in-out;
+
+  &.active {
+    color: var(--blue);
+  }
+  &:hover {
+    color: var(--blue);
+  }
+}
+
+/* Карта и легенда */
+.map {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+.map__container {
+  position: relative;
+  height: 80vh;
+  width: 90%;
+  outline: 0;
+  z-index: 90;
+}
+
+.legend {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  display: grid;
+  gap: 6px;
+  font-size: 1.1rem;
+  background-color: var(--white);
+  padding: 20px;
+  border-radius: 8px;
+  z-index: 100;
+  box-shadow: var(--block-shadow);
+}
+
+.legend__checkbox {
+  margin-right: 8px;
+}
+
+.legend__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend__indicator {
+  width: 12px;
+  height: 12px;
+  &.indicator--green {
+    background-color: var(--green);
+  }
+  &.indicator--orange {
+    background-color: var(--orange);
+  }
+  &.indicator--red {
+    background-color: var(--red);
+  }
+}
+
+.legend__total {
+  & .legend__time {
+    font-weight: 700;
+  }
+}
+
+/* Форма авторизации */
+.auth {
+  height: 100vh;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  color: var(--white);
+}
+
+.auth__form {
+  width: max-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  & img {
+    width: 70px;
+  }
+}
+
+.auth__form--title {
+  margin-bottom: 50px;
+}
+
+.auth__form--label {
+  align-self: baseline;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  margin-bottom: 5px;
+}
+
+.auth__form--input {
+  min-width: 660px;
+  display: block;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  padding: 10px 15px;
+  border-radius: 14px;
+  border: 0;
+  outline: 0;
+  &:focus,
+  &:focus-visible {
+    box-shadow: var(--input-glow);
+  }
+  &.input--user,
+  &.input--password {
+    margin-bottom: 25px;
+  }
+}
+
+.auth__link {
+  font-size: 1.25rem;
+  line-height: 1.2;
+  color: var(--white);
+  margin-top: 20px;
+  outline: 0;
+  transition: color 0.3s ease;
+  &:hover {
+    color: var(--blue);
+  }
+  &:focus-visible {
+    color: var(--blue);
+  }
+}
+
+/* Блок аналитики */
+.analytics {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 3fr 1fr;
+  row-gap: 40px;
+  min-height: 70vh;
+  padding-inline: 45px;
+}
+
+.analytics__chart,
+.analytics__filter {
+  background-color: var(--white);
+  border-radius: 25px;
+  padding: 25px;
+}
+
+.analytics__chart {
+  & h2 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
+
+.analytics__filter {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr 1fr;
+  align-content: center;
+  column-gap: 10%;
+}
+
+.analytics__filter--group {
+  display: flex;
+  flex-direction: column;
+  row-gap: 15px;
+  padding: 25px;
+  border-radius: 16px;
+  background-color: var(--filter-background);
+
+  & h3 {
+    text-align: center;
+  }
+}
+
+/* Стили для radio-button */
+.radio {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 15px 30px;
+}
+
+.radio__label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--title);
+  padding-left: 32px;
+  min-height: 22px;
+}
+
+.radio__input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.radio__custom--item {
+  position: absolute;
+  inset: 0;
+  height: 22px;
+  width: 22px;
+  background-color: var(--white);
+  border: 1px solid var(--title);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color 0.2s ease-in-out;
+}
+
+.radio__input:checked ~ .radio__custom--item {
+  border-color: var(--blue);
+  background-color: var(--white);
+}
+
+.radio__input:checked ~ .radio__custom--item::after {
+  content: "";
+  position: absolute;
+  inset: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background-color: var(--blue);
+  transform: translate(-50%, -50%);
+}
+
+.radio__label:hover .radio__custom--item {
+  border-color: var(--blue);
+}
+
+.radio__input:disabled ~ .radio__custom--item {
+  background-color: var(--grey);
+  border-color: var(--grey);
+  cursor: not-allowed;
+}

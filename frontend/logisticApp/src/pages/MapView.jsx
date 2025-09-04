@@ -1,3 +1,11 @@
+import { useEffect, useState } from "react";
+import instance from "../api/axios";
+import { fetchRoute } from "../api/route";
+import { getColorByTraffic } from "../data/data";
+import SearchInput from "../components/SearchInput";
+import Header from "../components/Header";
+import { handlePointSelect } from "../utils/BuildingRoute";
+
 import {
   MapContainer,
   TileLayer,
@@ -5,15 +13,8 @@ import {
   useMapEvents,
   Marker,
 } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import { useEffect, useState } from "react";
-import instance from "../api/axios";
-import { fetchRoute } from "../api/route";
-import { getColorByTraffic } from "../data/data";
-import SearchInput from "../components/SearchInput";
-import { handlePointSelect } from "../utils/BuildingRoute";
-import Header from "../components/Header";
 import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
@@ -41,7 +42,9 @@ const MapView = () => {
         });
         setGeoData(res.data);
       } catch (err) {
-        console.error("Возникла ошибка при загрузке данных:", err);
+        if (err.name !== "CanceledError") {
+          console.error("Возникла ошибка при загрузке данных:", err);
+        }
       }
     };
 
@@ -125,10 +128,11 @@ const MapView = () => {
       </MapContainer>
       {/* Легенда для карты */}
       <div className="legend">
-        <h4 className="legend__title">Загруженность:</h4>
-        <article>
+        <h4>Загруженность:</h4>
+        <div className="legend__item">
           <label style={{ display: "block" }} htmlFor="traffic">
             <input
+              className="legend__checkbox"
               type="checkbox"
               id="traffic"
               checked={!showTraffic}
@@ -136,25 +140,28 @@ const MapView = () => {
             />
             Выкл. загруженность
           </label>
-        </article>
-        <article>
-          <span className="legend__indicator indicator-green" />
+        </div>
+
+        <div className="legend__item">
+          <span className="legend__indicator indicator--green" />
           Свободно
-        </article>
-        <article>
-          <span className="legend__indicator indicator-orange" />
+        </div>
+        <div className="legend__item">
+          <span className="legend__indicator indicator--orange" />
           Средне
-        </article>
-        <article>
-          <span className="legend__indicator indicator-red" />
+        </div>
+        <div className="legend__item">
+          <span className="legend__indicator indicator--red" />
           Пробка
-        </article>
+        </div>
 
         {/* Результаты прогноза на время поездки */}
         {routeData?.summary?.total_predicted_time_min && (
-          <div className="legend__total-route">
+          <div className="legend__total">
             Время маршрута:{" "}
-            <p>{routeData.summary.total_predicted_time_min} мин</p>
+            <span className="legend__time">
+              {routeData.summary.total_predicted_time_min} мин
+            </span>
           </div>
         )}
       </div>

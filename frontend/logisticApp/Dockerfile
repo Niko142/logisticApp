@@ -13,7 +13,7 @@ RUN npm install
 # Копируем файлы в рабочий каталог
 COPY . .
 
-# Осуществляем сборку для prodiction-версии
+# Осуществляем сборку для production-версии
 RUN npm run build
 
 # build собран, теперь берем образ Nginx
