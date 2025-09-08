@@ -1,4 +1,4 @@
-/* Шапка основного меню */
+/* Стили для header */
 header {
   width: 100%;
   padding-block: 25px;
@@ -39,66 +39,6 @@ header {
   }
   &:hover {
     color: var(--blue);
-  }
-}
-
-/* Карта и легенда */
-.map {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100vh;
-}
-
-.map__container {
-  position: relative;
-  height: 80vh;
-  width: 90%;
-  outline: 0;
-  z-index: 90;
-}
-
-.legend {
-  position: absolute;
-  bottom: 20px;
-  left: 20px;
-  display: grid;
-  gap: 6px;
-  font-size: 1.1rem;
-  background-color: var(--white);
-  padding: 20px;
-  border-radius: 8px;
-  z-index: 100;
-  box-shadow: var(--block-shadow);
-}
-
-.legend__checkbox {
-  margin-right: 8px;
-}
-
-.legend__item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.legend__indicator {
-  width: 12px;
-  height: 12px;
-  &.indicator--green {
-    background-color: var(--green);
-  }
-  &.indicator--orange {
-    background-color: var(--orange);
-  }
-  &.indicator--red {
-    background-color: var(--red);
-  }
-}
-
-.legend__total {
-  & .legend__time {
-    font-weight: 700;
   }
 }
 
