@@ -1,27 +1,13 @@
 import { useRouteError, isRouteErrorResponse } from "react-router-dom";
-import "./ErrorHandler.css";
+import "./Error.css";
+import ErrorPage from "./ErrorPage";
 
 export const ErrorHandler = () => {
   const error = useRouteError();
 
-  if (isRouteErrorResponse(error)) {
-    return (
-      <div className="error-page">
-        <h1 className="error-page__title">Возникла ошибка</h1>
-        <p className="error-page__description"></p>
-        <p>
-          <i>
-            {error.status} {error.statusText}
-          </i>
-        </p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="error-page">
-      <h1 className="error-page__title">Возникла ошибка</h1>
-      <p className="error-page__description">Неизвестная ошибка</p>
-    </div>
+  return isRouteErrorResponse(error) ? (
+    <ErrorPage status={error.status} description={error.status} />
+  ) : (
+    <ErrorPage status="Ошибка" description="network" />
   );
 };

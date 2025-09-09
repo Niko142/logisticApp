@@ -1,0 +1,80 @@
+/* Стили для кнопки */
+.btn {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+  font-size: 1rem;
+  line-height: 1.2;
+  font-weight: 600;
+  padding: 10px;
+  color: var(--white);
+  background-color: var(--black);
+  border-radius: 10px;
+  border: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out,
+    border 0.3s ease-in-out;
+  outline: 0;
+
+  &:hover {
+    background-color: var(--dark-grey);
+  }
+
+  &.btn--auth {
+    font-size: 1.375rem;
+    padding: 15px 60px;
+    background-color: var(--btn-auth);
+    &:hover {
+      transform: scale(1.1);
+      background-color: var(--btn-auth-hover);
+    }
+    &:active {
+      transform: scale(1.05);
+    }
+    &:focus-visible {
+      outline: 4px solid var(--btn-border);
+    }
+  }
+
+  &.btn--back {
+    font-size: 1.2rem;
+    background-color: var(--dark-grey);
+    border: 2px solid var(--grey);
+    padding: 15px 30px;
+
+    &:hover {
+      border: 2px solid var(--dark-grey);
+      background-color: var(--dark-grey-hover);
+    }
+
+    &:focus-visible {
+      color: var(--black);
+    }
+  }
+
+  &.btn--reload {
+    font-size: 1.2rem;
+    padding: 15px 30px;
+    background-color: var(--red);
+    align-items: center;
+    &:hover {
+      transform: scale(1);
+      background-color: var(--red-hover);
+    }
+    &:active {
+      transform: scale(0.95);
+    }
+    &:focus-visible {
+      outline: 3px solid var(--red-hover);
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .btn {
+    &.btn--back,
+    &.btn--reload {
+      padding: 12px 24px;
+    }
+  }
+}

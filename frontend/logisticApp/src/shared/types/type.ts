@@ -1,6 +1,9 @@
+type ButtonVariants = "default" | "reload" | "authorization" | "back";
+
 export interface ButtonProps {
-  children: string;
-  onClick: () => void;
+  variant?: ButtonVariants;
+  children: React.ReactNode;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 export interface headerProps {

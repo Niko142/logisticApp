@@ -1,8 +1,19 @@
+import { variantsPurpose } from "@/shared/constants/button";
 import type { ButtonProps } from "@/shared/types/type";
+import "./Button.css";
 
-export const Button = ({ children, onClick, ...props }: ButtonProps) => {
+export const Button = ({
+  variant = "default",
+  children,
+  onClick,
+  ...props
+}: ButtonProps) => {
   return (
-    <button className="btn" onClick={onClick} {...props}>
+    <button
+      {...props}
+      className={`${variantsPurpose[variant]}`}
+      onClick={onClick}
+    >
       {children}
     </button>
   );
