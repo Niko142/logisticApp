@@ -1,13 +1,12 @@
+import { useEffect } from "react";
+import { useMap } from "react-leaflet";
 import {
   GeoSearchControl,
   OpenStreetMapProvider,
   type GeoSearchEvent,
 } from "leaflet-geosearch";
-import { useEffect } from "react";
-import { useMap } from "react-leaflet";
 import type { SearchInputProps } from "../types/geo-type";
 
-// FIXME: Подумать насчет handler
 const SearchInput = ({ onSelect }: SearchInputProps) => {
   const map = useMap();
 
@@ -27,24 +26,22 @@ const SearchInput = ({ onSelect }: SearchInputProps) => {
 
     map.addControl(searchControl);
 
-    const handler = (result: GeoSearchEvent) => {
-      const { x: lng, y: lat } = result.location;
-      onSelect([lat, lng]);
-    };
-    map.on(
-      "geosearch/showlocation",
-      handler as unknown as L.LeafletEventHandlerFn
-    );
+    // Обработчик выбора местоположения в поиске
+    const handleLocationSelect = (event: L.LeafletEvent) => {
+      // Безопасное приведение типа
+      const geoEvent = event as unknown as GeoSearchEvent;
 
-    // map.on("geosearch/showlocation", handler);
+      if (geoEvent.location) {
+        const { x: lng, y: lat } = geoEvent.location;
+        onSelect([lat, lng]);
+      }
+    };
+
+    map.on("geosearch/showlocation", handleLocationSelect);
 
     return () => {
-      map.off(
-        "geosearch/showlocation",
-        handler as unknown as L.LeafletEventHandlerFn
-      );
+      map.off("geosearch/showlocation", handleLocationSelect);
 
-      // map.off("geosearch/showlocation", handler);
       map.removeControl(searchControl);
     };
   }, [map, onSelect]);
