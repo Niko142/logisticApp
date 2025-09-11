@@ -8,18 +8,6 @@
   color: var(--white);
 }
 
-/* Плавное появление элементов */
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 .error-page__title {
   font-size: 6rem;
   line-height: 1;
@@ -53,7 +41,6 @@
     flex-direction: column;
     & button {
       width: 100%;
-      justify-content: center;
     }
   }
 }

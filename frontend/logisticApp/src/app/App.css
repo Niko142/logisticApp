@@ -42,70 +42,6 @@ header {
   }
 }
 
-/* Форма авторизации */
-.auth {
-  height: 100vh;
-  display: grid;
-  justify-items: center;
-  align-content: center;
-  color: var(--white);
-}
-
-.auth__form {
-  width: max-content;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  & img {
-    width: 70px;
-  }
-}
-
-.auth__form--title {
-  margin-bottom: 50px;
-}
-
-.auth__form--label {
-  align-self: baseline;
-  font-size: 1.25rem;
-  line-height: 1.2;
-  margin-bottom: 5px;
-}
-
-.auth__form--input {
-  min-width: 660px;
-  display: block;
-  font-size: 1.25rem;
-  line-height: 1.25;
-  padding: 10px 15px;
-  border-radius: 14px;
-  border: 0;
-  outline: 0;
-  &:focus,
-  &:focus-visible {
-    box-shadow: var(--input-glow);
-  }
-  &.input--user,
-  &.input--password {
-    margin-bottom: 25px;
-  }
-}
-
-.auth__link {
-  font-size: 1.25rem;
-  line-height: 1.2;
-  color: var(--white);
-  margin-top: 20px;
-  outline: 0;
-  transition: color 0.3s ease;
-  &:hover {
-    color: var(--blue);
-  }
-  &:focus-visible {
-    color: var(--blue);
-  }
-}
-
 /* Блок аналитики */
 .analytics {
   display: grid;
@@ -212,4 +148,16 @@ header {
   background-color: var(--grey);
   border-color: var(--grey);
   cursor: not-allowed;
+}
+
+/* Плавное появление элементов */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
