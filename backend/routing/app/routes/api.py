@@ -4,8 +4,8 @@ import osmnx as ox
 import networkx as nx
 from shapely.geometry import LineString
 from fastapi.responses import JSONResponse
-from config import GRAPHML_PATH
-from ml.model import TrafficModel
+from app.config import GRAPHML_PATH
+from app.ml.model import TrafficModel
 from datetime import datetime
 import random
 import json

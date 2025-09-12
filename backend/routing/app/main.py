@@ -2,8 +2,8 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-from config import GEOJSON_PATH
-from routes import route
+from app.config import GEOJSON_PATH
+from app.routes import api
 
 app = FastAPI()
 
@@ -17,7 +17,7 @@ if IS_PRODUCTION:
     allowed_methods = ["GET", "POST", "PUT", "DELETE"]
 else:
     # Для dev-режима разработки
-    allowed_origins = ["http://localhost:5173"]
+    allowed_origins = ["http://localhost:5173", "http://localhost:4173"]
     allowed_methods = ["*"]
 
 # Получаем origins из env
@@ -33,7 +33,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(route.router, prefix='/api')
+app.include_router(api.router, prefix='/api')
 
 @app.get("/")
 def root():

@@ -1,23 +1,18 @@
 services:
-  backend:
+  routing-service:
     build:
-      context: ./backend
+      context: ./backend/routing
+      dockerfile: Dockerfile
     ports:
       - "127.0.0.1:8000:8000"
-    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
     environment:
       - PYTHONUNBUFFERED=1
 
   frontend:
     build:
       context: ./frontend/logisticApp
+      dockerfile: Dockerfile
     ports:
-      - "80:80"
-
-# В случае чего можно подгружать таким способом граф
-  # map-loader:
-  #   build:
-  #     context: ./backend
-  #   volumes:
-  #     - ./backend:/app
-  #   command: ["python", "map_loader.py"]
+      - "5173:80"
+    depends_on:
+      - routing-service

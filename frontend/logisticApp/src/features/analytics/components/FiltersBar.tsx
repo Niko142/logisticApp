@@ -1,7 +1,7 @@
 const timePeriod = ["Час", "День", "Неделя", "Месяц"] as const;
 const dayTime = ["Утро", "День", "Вечер", "Ночь"] as const;
 
-const FiltersBar = () => {
+export const FiltersBar = () => {
   return (
     <div className="analytics__filter">
       <article className="analytics__filter--group">
@@ -42,5 +42,3 @@ const FiltersBar = () => {
     </div>
   );
 };
-
-export default FiltersBar;

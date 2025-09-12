@@ -2,12 +2,11 @@
 .env
 .log
 .DS_Store
+.vscode
 
 # Backend
 .venv/
 cache/
-backend/data/
-!backend/data/.gitkeep
+backend/routing/app/data/
+!backend/routing/app/data/.gitkeep
 __pycache__/
-
-.vscode

@@ -2,9 +2,9 @@ import random
 import pandas as pd
 import numpy as np
 import osmnx as ox
-from config import GRAPHML_PATH
+from app.config import GRAPHML_PATH
 
-# Генерация тестового датасета для прогнозирования загруженности
+# Генерация dataset для прогнозирования загруженности
 def generate_fake_traffic_dataset(num_samples=10000):
     G = ox.load_graphml(GRAPHML_PATH)
     rows = []

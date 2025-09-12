@@ -1,6 +1,5 @@
 import { Header } from "@/shared";
-import Chart from "../components/Chart";
-import FiltersBar from "../components/FiltersBar";
+import { Chart, FiltersBar } from "@/features/analytics";
 
 const Analytics = () => {
   return (

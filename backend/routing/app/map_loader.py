@@ -32,7 +32,7 @@ def export_to_geojson(graph, filename=GEOJSON_PATH):
 
 # Проверка
 if __name__ == "__main__":
-    if os.path.exists(GRAPHML_PATH):  # или как называется твой граф
+    if os.path.exists(GRAPHML_PATH):
         print("Граф уже существует. Пропускаем загрузку.")
     else:
         graph = download_samara_graph()

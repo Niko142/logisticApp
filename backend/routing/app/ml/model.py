@@ -3,7 +3,7 @@ import joblib
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import make_scorer
-from ml.config import MODEL_PATH
+from app.ml.config import MODEL_PATH
 
 class TrafficModel:
     def __init__(self):
@@ -25,7 +25,7 @@ class TrafficModel:
             'min_samples_split': [2, 5, 10],        # Минимальное количество образцов для разделения
             'min_samples_leaf': [1, 2, 4],          # Минимальное количество образцов в листьях
             'max_features': ['auto', 'sqrt', 'log2'],  # Количество признаков для разделения
-            'bootstrap': [True, False]              # Использование бутстрэпа
+            'bootstrap': [True, False]              # Использование bootstrap
         }
 
         # Подбор гиперпараметров с использованием custom-счетчика

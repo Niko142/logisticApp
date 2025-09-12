@@ -1,5 +1,5 @@
 # Скачиваем необходимый образ Node
-FROM node:18-alpine AS build
+FROM node:18-slim AS build
 
 # Рабочий каталог
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Устанавливаем зависимости
-RUN npm install
+RUN npm ci
 
 # Копируем файлы в рабочий каталог
 COPY . .

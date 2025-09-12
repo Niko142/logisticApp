@@ -1,5 +1,5 @@
-from ml.dataset import generate_fake_traffic_dataset
-from ml.model import TrafficModel
+from app.ml.dataset import generate_fake_traffic_dataset
+from app.ml.model import TrafficModel
 
 def train():
     df = generate_fake_traffic_dataset()
