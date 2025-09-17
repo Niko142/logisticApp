@@ -17,6 +17,8 @@
     "strict": true,
     "jsx": "react-jsx",
     "verbatimModuleSyntax": true,
+    "emitDecoratorMetadata": true, // Для typeorm
+    "experimentalDecorators": true, // Для typeorm
     "isolatedModules": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

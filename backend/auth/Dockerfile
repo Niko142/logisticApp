@@ -1,1 +1,1 @@
-FROM baseImage
+FROM node:18-slim
