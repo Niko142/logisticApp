@@ -1,14 +1,17 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
+from fastapi import APIRouter, Depends
 import osmnx as ox
 import networkx as nx
+from app.ml.model import TrafficModel
+from pydantic import BaseModel
 from shapely.geometry import LineString
 from fastapi.responses import JSONResponse
 from app.config import GRAPHML_PATH
-from app.ml.model import TrafficModel
-from datetime import datetime
 import random
 import json
+from datetime import datetime
+from app.middlewares.auth import verify_token, optional_verify_token
+
+# TODO: Добавить историю маршрутов для авторизированных пользователей
 
 router = APIRouter()
 
@@ -25,7 +28,10 @@ class RouteRequest(BaseModel):
     departure_time: str = None
 
 @router.post("/route")
-def get_route(data: RouteRequest):
+def get_route(data: RouteRequest, current_user = Depends(verify_token)):
+    """
+    Построение маршрута (только для авторизованных пользователей)
+    """
     try:
         orig_node = ox.nearest_nodes(G, data.start[1], data.start[0])
         dest_node = ox.nearest_nodes(G, data.end[1], data.end[0])
@@ -82,7 +88,8 @@ def get_route(data: RouteRequest):
                 "total_length_km": round(total_length / 1000, 1),
                 "total_predicted_time_min": round(total_time, 1),
                 "average_speed_kmh": round(total_length / (total_time / 60), 1) if total_time > 0 else 0,
-                "departure_time": current_time.isoformat()
+                "departure_time": current_time.isoformat(),
+                "user": current_user["username"]
             }
         }
 
@@ -93,8 +100,11 @@ def get_route(data: RouteRequest):
 
 
 @router.get("/graph")
-def get_full_graph():
+def get_full_graph(current_user = Depends(optional_verify_token)):
     features = []
+
+    # Для авторизованных пользователей показываем больше деталей
+    show_detailed_info = current_user is not None
 
     for u, v, k in G.edges(keys=True):
         edge_data = G.get_edge_data(u, v, k)
@@ -107,20 +117,36 @@ def get_full_graph():
 
         # Имитация загруженности
         traffic_level = random.choice([0, 1, 2])
-
         line = LineString(coords)
+
+        # feature = {
+        #     "type": "Feature",
+        #     "geometry": json.loads(json.dumps(line.__geo_interface__)),
+        #     "properties": {
+        #         "traffic_level": traffic_level
+        #     }
+        # }
+        properties = {"traffic_level": traffic_level}
+        
+        # Дополнительная информация для авторизованных пользователей
+        if show_detailed_info:
+            properties.update({
+                "length": edge_data.get("length", 100),
+                "highway": edge_data.get("highway", "unknown"),
+                "max-speed": edge_data.get("max-speed", "unknown")
+            })
+
         feature = {
             "type": "Feature",
             "geometry": json.loads(json.dumps(line.__geo_interface__)),
-            "properties": {
-                "traffic_level": traffic_level
-            }
+            "properties": properties
         }
         features.append(feature)
 
     geojson = {
         "type": "FeatureCollection",
-        "features": features
+        "features": features,
+        "user_authenticated": current_user is not None
     }
 
     return JSONResponse(content=geojson)
