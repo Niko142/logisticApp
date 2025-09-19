@@ -7,7 +7,7 @@ interface RouteSummary {
   [key: string]: unknown;
 }
 
-// Тип для тела запроса
+// Тип для тела запроса по построению маршрута
 export interface RouteResponse {
   type: "FeatureCollection";
   features: Array<{
@@ -20,3 +20,17 @@ export interface RouteResponse {
   }>;
   summary?: RouteSummary;
 }
+
+// Формат данных в блоке регистрации
+export type RegisterInputs = {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
+// Формат данных в блоке авторизации
+export type LoginInputs = {
+  username: string;
+  password: string;
+};

@@ -1,8 +1,9 @@
 import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
-import type { RegistrationInputs } from "../types/auth.type";
+import type { RegisterInputs } from "@/types/type";
+import { registration } from "@/api";
 import AuthLayout from "../Shared/AuthLayout";
 import FormField from "../Shared/FormField";
-import { Button } from "@/shared/components/Button/Button";
+import { Button } from "@/shared";
 import "../styles/Auth.css";
 
 export const RegisterForm = () => {
@@ -11,20 +12,16 @@ export const RegisterForm = () => {
     handleSubmit,
     control,
     setError,
-    resetField,
+    reset,
     formState: { errors },
-  } = useForm<RegistrationInputs>({ mode: "onBlur" });
+  } = useForm<RegisterInputs>({ mode: "onBlur" });
 
-  // Следим за password, чтобы не выводить ошибку для confirm,
-  // если password не прошел проверку
+  // Наблюдаем за password для валидации подтверждения пароля
   const password = useWatch({ control, name: "password" });
 
   // Обработчик отправки данных
-  const onSubmit: SubmitHandler<RegistrationInputs> = (formData) => {
+  const onSubmit: SubmitHandler<RegisterInputs> = async (formData) => {
     if (formData.password !== formData.confirmPassword) {
-      resetField("password");
-      resetField("confirmPassword");
-
       setError("confirmPassword", {
         type: "custom",
         message: "Пароли не совпали, повторите попытку",
@@ -32,7 +29,16 @@ export const RegisterForm = () => {
       return;
     }
 
-    console.log(formData);
+    try {
+      await registration(formData);
+      reset();
+    } catch (err) {
+      setError("root", {
+        type: "server",
+        message:
+          err instanceof Error ? err.message : "Возникла неизвестная ошибка",
+      });
+    }
   };
 
   return (
@@ -52,6 +58,10 @@ export const RegisterForm = () => {
         options={{
           required: "Логин обязателен для заполнения",
           minLength: { value: 3, message: "Минимум 3 символа" },
+          maxLength: {
+            value: 25,
+            message: "Логин превышает максимальный размер - 25 символов",
+          },
         }}
       />
 
@@ -70,6 +80,10 @@ export const RegisterForm = () => {
             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
             message: "Введите корректный email",
           },
+          maxLength: {
+            value: 255,
+            message: "Превышена максимальная длина email",
+          },
         }}
       />
 
@@ -84,6 +98,10 @@ export const RegisterForm = () => {
         options={{
           required: "Пароль обязателен",
           minLength: { value: 6, message: "Минимум 6 символов" },
+          maxLength: {
+            value: 64,
+            message: "Превышена максимальная длина пароля",
+          },
         }}
       />
       <FormField
@@ -102,6 +120,12 @@ export const RegisterForm = () => {
           err && <span className="register__form--error">{err.message}</span>
         }
       />
+
+      {errors.root && (
+        <span className="register__form--error main--error">
+          {errors.root.message}
+        </span>
+      )}
 
       <Button variant="authorization">Регистрация</Button>
     </AuthLayout>

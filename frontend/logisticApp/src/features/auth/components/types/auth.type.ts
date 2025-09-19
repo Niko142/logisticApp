@@ -17,18 +17,6 @@ type InputTypes =
 
 type LayoutRoles = "auth" | "register";
 
-export type RegistrationInputs = {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
-
-export type LoginInputs = {
-  username: string;
-  password: string;
-};
-
 export interface AuthLayoutProps {
   children: React.ReactNode;
   title: string;
@@ -42,7 +30,7 @@ export interface FormFieldProps<TFieldValues extends FieldValues> {
   type?: InputTypes;
   register: UseFormRegister<TFieldValues>;
   name: Path<TFieldValues>;
-  options: RegisterOptions<TFieldValues, Path<TFieldValues>>;
+  options?: RegisterOptions<TFieldValues, Path<TFieldValues>>;
   error?: FieldError;
   label?: string;
   autoComplete?: "on" | "off";

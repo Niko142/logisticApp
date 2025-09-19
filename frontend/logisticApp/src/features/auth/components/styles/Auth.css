@@ -70,6 +70,13 @@
   align-self: baseline;
   color: var(--error);
   margin-block-start: 6px;
+
+  &.main--error {
+    font-weight: 700;
+    font-size: 1.2rem;
+    align-self: center;
+    margin-block-start: 15px;
+  }
 }
 
 .auth__link,

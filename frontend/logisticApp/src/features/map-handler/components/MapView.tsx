@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import instance from "@/api/axios";
-import { fetchRoute } from "@/api/route";
+import mainInstance from "@/api/instances/mainInstance";
+import { fetchRoute } from "@/api";
 import type { GeoData } from "../types/geo-type";
 import type { Coordinates } from "@/types/type";
 import { useRoutePoints } from "../hooks/useRoutePoints";
@@ -46,7 +46,7 @@ export const MapView = () => {
 
     const fetchData = async () => {
       try {
-        const res = await instance.get("/api/graph", {
+        const res = await mainInstance.get("/api/graph", {
           signal: abortController.signal,
         });
         setGeoData(res.data);

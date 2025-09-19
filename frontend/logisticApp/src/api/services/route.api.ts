@@ -1,5 +1,6 @@
 import type { Coordinates, RouteResponse } from "@/types/type";
-import instance from "./axios";
+import mainInstance from "../instances/mainInstance";
+// import instance from "../instance";
 
 /**
  * Получение маршрута между двумя точками
@@ -12,15 +13,10 @@ export const fetchRoute = async (
   end: Coordinates
 ): Promise<RouteResponse | null> => {
   try {
-    const requestBody = {
+    const response = await mainInstance.post<RouteResponse>("/api/route", {
       start,
       end,
-    };
-
-    const response = await instance.post<RouteResponse>(
-      "/api/route",
-      requestBody
-    );
+    });
 
     return response.data;
   } catch (err: unknown) {

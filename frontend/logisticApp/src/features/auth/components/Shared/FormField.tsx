@@ -32,7 +32,6 @@ const FormField = <TFieldValues extends FieldValues>({
         : error && (
             <span className={`${role}__form--error`}>{error.message}</span>
           )}
-      {/* {error && <span className={`${role}__form--error`}>{error.message}</span>} */}
     </>
   );
 };
