@@ -1,5 +1,5 @@
 import type { FieldValues } from "react-hook-form";
-import type { FormFieldProps } from "../types/auth.type";
+import type { FormFieldProps } from "../../types/auth.type";
 
 const FormField = <TFieldValues extends FieldValues>({
   id,

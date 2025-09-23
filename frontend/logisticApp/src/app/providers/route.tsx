@@ -6,6 +6,7 @@ import PredictBlock from "@/pages/PredictBlock";
 import Analytics from "@/pages/Analytics";
 import Settings from "@/pages/Settings";
 import RegisterPage from "@/pages/RegisterPage";
+import Success from "@/pages/Success";
 
 // Основные пути маршрутов
 const routes = createBrowserRouter([
@@ -17,6 +18,10 @@ const routes = createBrowserRouter([
   {
     path: "/register",
     element: <RegisterPage />,
+  },
+  {
+    path: "/register/success",
+    element: <Success />,
   },
   {
     path: "/main",

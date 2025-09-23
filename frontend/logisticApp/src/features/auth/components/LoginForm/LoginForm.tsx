@@ -2,8 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import type { LoginInputs } from "@/types/type";
 import { login } from "@/api";
-import AuthLayout from "../Shared/AuthLayout";
-import FormField from "../Shared/FormField";
+import AuthLayout from "../ui/AuthLayout";
+import FormField from "../ui/FormField";
 import { Button } from "@/shared";
 import "../styles/Auth.css";
 
@@ -15,7 +15,7 @@ export const LoginForm = () => {
     setError,
     resetField,
     formState: { errors },
-  } = useForm<LoginInputs>({ mode: "onBlur" });
+  } = useForm<LoginInputs>({ mode: "onSubmit" });
 
   const onSubmit: SubmitHandler<LoginInputs> = async (formData) => {
     try {

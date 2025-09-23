@@ -1,12 +1,14 @@
 import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import type { RegisterInputs } from "@/types/type";
 import { registration } from "@/api";
-import AuthLayout from "../Shared/AuthLayout";
-import FormField from "../Shared/FormField";
+import AuthLayout from "../ui/AuthLayout";
+import FormField from "../ui/FormField";
 import { Button } from "@/shared";
 import "../styles/Auth.css";
 
 export const RegisterForm = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -14,7 +16,7 @@ export const RegisterForm = () => {
     setError,
     reset,
     formState: { errors },
-  } = useForm<RegisterInputs>({ mode: "onBlur" });
+  } = useForm<RegisterInputs>({ mode: "onSubmit" });
 
   // Наблюдаем за password для валидации подтверждения пароля
   const password = useWatch({ control, name: "password" });
@@ -32,6 +34,7 @@ export const RegisterForm = () => {
     try {
       await registration(formData);
       reset();
+      navigate("/register/success");
     } catch (err) {
       setError("root", {
         type: "server",
