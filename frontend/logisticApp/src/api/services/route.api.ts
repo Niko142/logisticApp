@@ -1,6 +1,6 @@
-import type { Coordinates, RouteResponse } from "@/types/type";
 import mainInstance from "../instances/mainInstance";
-// import instance from "../instance";
+
+import type { Coordinates, RouteResponse } from "@/types/common.type";
 
 /**
  * Получение маршрута между двумя точками

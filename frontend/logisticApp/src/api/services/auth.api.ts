@@ -1,11 +1,13 @@
-import type { LoginInputs, RegisterInputs } from "@/types/type";
 import { AxiosError } from "axios";
+
+import authInstance from "../instances/authInstance";
 import type {
   ErrorResponse,
   LoginResponse,
   RegisterResponse,
 } from "../types/api.type";
-import authInstance from "../instances/authInstance";
+
+import type { LoginInputs, RegisterInputs } from "@/types/common.type";
 
 export const login = async (data: LoginInputs): Promise<LoginResponse> => {
   try {
@@ -16,7 +18,9 @@ export const login = async (data: LoginInputs): Promise<LoginResponse> => {
     return response.data;
   } catch (err) {
     const error = err as AxiosError<ErrorResponse>;
-    throw new Error(error.response?.data?.message || "Ошибка авторизации");
+    throw new Error(
+      error.response?.data?.message || "Соединение с сервером не установлено"
+    );
   }
 };
 
@@ -31,6 +35,8 @@ export const registration = async (
     return response.data;
   } catch (err) {
     const error = err as AxiosError<ErrorResponse>;
-    throw new Error(error.response?.data?.message || "Ошибка регистрации");
+    throw new Error(
+      error.response?.data?.message || "Соединение с сервером не установлено"
+    );
   }
 };

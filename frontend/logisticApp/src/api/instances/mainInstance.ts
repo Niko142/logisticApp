@@ -1,4 +1,5 @@
 import axios from "axios";
+import toast from "react-hot-toast";
 
 // Основной instance
 const mainInstance = axios.create({
@@ -16,15 +17,13 @@ mainInstance.interceptors.request.use((config) => {
   return config;
 });
 
-// TODO: подумать насчет валидации ошибки отсутствия токена
-
 // Обработка ошибок, если пользователь не авторизирован
 mainInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
       localStorage.removeItem("auth_token");
-      window.location.href = "/";
+      toast.error("Требуется обязательная авторизация", { id: "auth_error" });
     }
     return Promise.reject(error);
   }

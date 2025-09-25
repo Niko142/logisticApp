@@ -1,1 +1,1 @@
-export { ErrorHandler } from "./components/ErrorHandler";
+export { RouteErrorHandler } from "./components/RouteErrorHandler";

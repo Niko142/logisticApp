@@ -1,11 +1,14 @@
-import { useNavigate } from "react-router-dom";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import type { LoginInputs } from "@/types/type";
-import { login } from "@/api";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+
 import AuthLayout from "../ui/AuthLayout";
 import FormField from "../ui/FormField";
-import { Button } from "@/shared";
-import "../styles/Auth.css";
+
+import { login } from "@/api";
+import { Button } from "@/shared/components/Button";
+import type { LoginInputs } from "@/types/common.type";
+import "./Auth.css";
 
 export const LoginForm = () => {
   const navigate = useNavigate();
@@ -19,8 +22,18 @@ export const LoginForm = () => {
 
   const onSubmit: SubmitHandler<LoginInputs> = async (formData) => {
     try {
-      const data = await login(formData);
-
+      const data = await toast.promise(
+        login(formData),
+        {
+          loading: "Осуществляем попытку входа...",
+          success: "Вход выполнен успешно",
+        },
+        {
+          success: {
+            duration: 3000,
+          },
+        }
+      );
       localStorage.setItem("auth_token", data?.token);
       navigate("/main");
     } catch (err) {

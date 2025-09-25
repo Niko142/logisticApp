@@ -1,11 +1,14 @@
 import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import type { RegisterInputs } from "@/types/type";
-import { registration } from "@/api";
+
 import AuthLayout from "../ui/AuthLayout";
 import FormField from "../ui/FormField";
-import { Button } from "@/shared";
-import "../styles/Auth.css";
+
+import { registration } from "@/api";
+import { Button } from "@/shared/components/Button";
+import type { RegisterInputs } from "@/types/common.type";
+import "./Auth.css";
 
 export const RegisterForm = () => {
   const navigate = useNavigate();
@@ -32,7 +35,9 @@ export const RegisterForm = () => {
     }
 
     try {
-      await registration(formData);
+      await toast.promise(registration(formData), {
+        loading: "Проверяем указанные данные",
+      });
       reset();
       navigate("/register/success");
     } catch (err) {

@@ -1,6 +1,6 @@
 import { errorStatusMap } from "../constants/errorOptions";
 
-// Функция для получения status-desc на основе типа ошибки
+// Функция для получения статуса и описания на основе типа ошибки
 export const getStatusDescription = (errorCode: number | string): string => {
   if (!errorCode) return errorStatusMap.unknown;
 

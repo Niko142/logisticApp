@@ -1,27 +1,27 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AuthPage from "@/pages/AuthPage";
-import ErrorPage from "@/pages/ErrorPage";
+
+import AnalyticsPage from "@/pages/AnalyticsPage";
+import LoginPage from "@/pages/LoginPage";
 import MainPage from "@/pages/MainPage";
-import PredictBlock from "@/pages/PredictBlock";
-import Analytics from "@/pages/Analytics";
-import Settings from "@/pages/Settings";
-import RegisterPage from "@/pages/RegisterPage";
+import PredictPage from "@/pages/PredictPage";
+import RegistrationPage from "@/pages/RegistrationPage";
+import RouteErrorPage from "@/pages/RouteErrorPage";
+import SettingsPage from "@/pages/SettingsPage";
 import Success from "@/pages/Success";
 
 // Основные пути маршрутов
 const routes = createBrowserRouter([
   {
     path: "/",
-    element: <AuthPage />,
-    errorElement: <ErrorPage />,
+    element: <LoginPage />,
+    errorElement: <RouteErrorPage />,
   },
   {
     path: "/register",
-    element: <RegisterPage />,
-  },
-  {
-    path: "/register/success",
-    element: <Success />,
+    children: [
+      { index: true, element: <RegistrationPage /> },
+      { path: "success", element: <Success /> },
+    ],
   },
   {
     path: "/main",
@@ -29,15 +29,15 @@ const routes = createBrowserRouter([
   },
   {
     path: "/predict",
-    element: <PredictBlock />,
+    element: <PredictPage />,
   },
   {
     path: "/analytics",
-    element: <Analytics />,
+    element: <AnalyticsPage />,
   },
   {
     path: "/settings",
-    element: <Settings />,
+    element: <SettingsPage />,
   },
 ]);
 
