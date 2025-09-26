@@ -70,6 +70,23 @@
     }
   }
 }
+
+/* Кнопка закрытия для toast и модальных окон */
+.btn--close {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+  align-self: baseline;
+  & svg {
+    color: var(--white);
+    display: block;
+    transition: color 0.2s ease-in-out;
+    &:hover {
+      color: var(--error);
+    }
+  }
+}
+
 @media screen and (max-width: 768px) {
   .btn {
     &.btn--back,

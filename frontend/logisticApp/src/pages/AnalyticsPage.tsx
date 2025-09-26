@@ -1,7 +1,7 @@
-import { Header } from "@/shared";
 import { Chart, FiltersBar } from "@/features/analytics";
+import { Header } from "@/shared/components/Header";
 
-const Analytics = () => {
+const AnalyticsPage = () => {
   return (
     <>
       <Header />
@@ -13,4 +13,4 @@ const Analytics = () => {
   );
 };
 
-export default Analytics;
+export default AnalyticsPage;

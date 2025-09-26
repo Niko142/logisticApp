@@ -1,11 +1,12 @@
-import { useEffect } from "react";
-import { useMap } from "react-leaflet";
 import {
-  GeoSearchControl,
   OpenStreetMapProvider,
   type GeoSearchEvent,
+  GeoSearchControl,
 } from "leaflet-geosearch";
-import type { SearchInputProps } from "../types/geo-type";
+import { useEffect } from "react";
+import { useMap } from "react-leaflet";
+
+import type { SearchInputProps } from "../types/map.types";
 
 const SearchInput = ({ onSelect }: SearchInputProps) => {
   const map = useMap();

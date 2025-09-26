@@ -1,8 +1,10 @@
-import { variantsPurpose } from "@/shared/constants/button";
-import type { ButtonProps } from "@/shared/types/type";
+import type { ButtonProps } from "./button.types";
+import { variantsPurpose } from "./config/buttonOptions";
+
+
 import "./Button.css";
 
-export const Button = ({
+const Button = ({
   variant = "default",
   children,
   onClick,
@@ -18,3 +20,5 @@ export const Button = ({
     </button>
   );
 };
+
+export default Button;

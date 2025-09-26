@@ -1,7 +1,4 @@
-export interface ChartProps {
-  name: string;
-  mark: number;
-}
+import type { ChartProps } from "../types/chart.types";
 
 // Пока что тест + убрал слишком большую избыточность
 export const hourlyScoreData: ChartProps[] = [

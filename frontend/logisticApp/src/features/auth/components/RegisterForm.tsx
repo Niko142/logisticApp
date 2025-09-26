@@ -2,12 +2,14 @@ import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
+import { registerUser } from "@/api";
+import { Button } from "@/shared/components/Button";
+
+import type { RegisterFormData } from "../types/auth.types";
 import AuthLayout from "../ui/AuthLayout";
 import FormField from "../ui/FormField";
 
-import { registration } from "@/api";
-import { Button } from "@/shared/components/Button";
-import type { RegisterInputs } from "@/types/common.type";
+
 import "./Auth.css";
 
 export const RegisterForm = () => {
@@ -19,13 +21,13 @@ export const RegisterForm = () => {
     setError,
     reset,
     formState: { errors },
-  } = useForm<RegisterInputs>({ mode: "onSubmit" });
+  } = useForm<RegisterFormData>({ mode: "onSubmit" });
 
   // Наблюдаем за password для валидации подтверждения пароля
   const password = useWatch({ control, name: "password" });
 
   // Обработчик отправки данных
-  const onSubmit: SubmitHandler<RegisterInputs> = async (formData) => {
+  const onSubmit: SubmitHandler<RegisterFormData> = async (formData) => {
     if (formData.password !== formData.confirmPassword) {
       setError("confirmPassword", {
         type: "custom",
@@ -35,7 +37,7 @@ export const RegisterForm = () => {
     }
 
     try {
-      await toast.promise(registration(formData), {
+      await toast.promise(registerUser(formData), {
         loading: "Проверяем указанные данные",
       });
       reset();

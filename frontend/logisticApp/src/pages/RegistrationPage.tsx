@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
+
 import { RegisterForm } from "@/features/auth";
 
-const RegisterPage = () => {
+const RegistrationPage = () => {
   return (
     <section className="register" aria-label="Форма авторизации">
       <RegisterForm />
@@ -12,4 +13,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default RegistrationPage;

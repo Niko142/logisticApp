@@ -2,12 +2,14 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
+import { loginUser } from "@/api";
+import { Button } from "@/shared/components/Button";
+
+import type { LoginFormData } from "../types/auth.types";
 import AuthLayout from "../ui/AuthLayout";
 import FormField from "../ui/FormField";
 
-import { login } from "@/api";
-import { Button } from "@/shared/components/Button";
-import type { LoginInputs } from "@/types/common.type";
+
 import "./Auth.css";
 
 export const LoginForm = () => {
@@ -18,12 +20,12 @@ export const LoginForm = () => {
     setError,
     resetField,
     formState: { errors },
-  } = useForm<LoginInputs>({ mode: "onSubmit" });
+  } = useForm<LoginFormData>({ mode: "onSubmit" });
 
-  const onSubmit: SubmitHandler<LoginInputs> = async (formData) => {
+  const onSubmit: SubmitHandler<LoginFormData> = async (formData) => {
     try {
       const data = await toast.promise(
-        login(formData),
+        loginUser(formData),
         {
           loading: "Осуществляем попытку входа...",
           success: "Вход выполнен успешно",

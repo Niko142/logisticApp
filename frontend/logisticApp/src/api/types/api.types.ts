@@ -1,5 +1,15 @@
-// Тип для координат
-export type Coordinates = [number, number];
+// Тип для тела запроса о регистрации
+export interface RegisterResponse {
+  id: string;
+  username: string;
+  email: string;
+  createdAt: string;
+}
+
+// Тип для тела запроса об авторизации
+export interface LoginResponse {
+  token: string;
+}
 
 // Типы для ответа API маршрута
 interface RouteSummary {
@@ -20,17 +30,3 @@ export interface RouteResponse {
   }>;
   summary?: RouteSummary;
 }
-
-// Формат данных в блоке регистрации
-export type RegisterInputs = {
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
-
-// Формат данных в блоке авторизации
-export type LoginInputs = {
-  username: string;
-  password: string;
-};

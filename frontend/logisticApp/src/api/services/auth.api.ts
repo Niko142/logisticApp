@@ -1,15 +1,14 @@
 import { AxiosError } from "axios";
 
+import type { LoginFormData, RegisterFormData } from "@/features/auth/types";
+import type { ErrorResponse } from "@/types/error";
+
 import authInstance from "../instances/authInstance";
-import type {
-  ErrorResponse,
-  LoginResponse,
-  RegisterResponse,
-} from "../types/api.type";
+import type { LoginResponse, RegisterResponse } from "../types/api.types";
 
-import type { LoginInputs, RegisterInputs } from "@/types/common.type";
-
-export const login = async (data: LoginInputs): Promise<LoginResponse> => {
+export const loginUser = async (
+  data: LoginFormData
+): Promise<LoginResponse> => {
   try {
     const response = await authInstance.post<LoginResponse>(
       "/auth/login",
@@ -24,8 +23,8 @@ export const login = async (data: LoginInputs): Promise<LoginResponse> => {
   }
 };
 
-export const registration = async (
-  data: RegisterInputs
+export const registerUser = async (
+  data: RegisterFormData
 ): Promise<RegisterResponse> => {
   try {
     const response = await authInstance.post<RegisterResponse>(

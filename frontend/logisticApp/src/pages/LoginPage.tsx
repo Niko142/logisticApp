@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
+
 import { LoginForm } from "@/features/auth";
 
-const AuthPage = () => {
+const LoginPage = () => {
   return (
     <section className="auth" aria-label="Форма авторизации">
       <LoginForm />
@@ -12,4 +13,4 @@ const AuthPage = () => {
   );
 };
 
-export default AuthPage;
+export default LoginPage;

@@ -1,6 +1,7 @@
-import mainInstance from "../instances/mainInstance";
+import type { Coordinates } from "@/types/common";
 
-import type { Coordinates, RouteResponse } from "@/types/common.type";
+import mainInstance from "../instances/mainInstance";
+import type { RouteResponse } from "../types";
 
 /**
  * Получение маршрута между двумя точками
@@ -8,7 +9,7 @@ import type { Coordinates, RouteResponse } from "@/types/common.type";
  * @param end - Конечная точка
  * @returns Данные маршрута
  */
-export const fetchRoute = async (
+export const setRoute = async (
   start: Coordinates,
   end: Coordinates
 ): Promise<RouteResponse | null> => {

@@ -1,2 +1,2 @@
-export { login, registration } from "./services/auth.api";
-export { fetchRoute } from "./services/route.api";
+export { loginUser, registerUser } from "./services/auth.api";
+export { setRoute } from "./services/route.api";

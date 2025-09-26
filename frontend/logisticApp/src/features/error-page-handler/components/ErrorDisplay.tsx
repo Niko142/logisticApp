@@ -1,10 +1,10 @@
 import { AlertCircle, HomeIcon, RefreshCcw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import { getStatusDescription } from "../utils/errorUtils";
-
 import { Button } from "@/shared/components/Button";
-import type { ErrorPageProps } from "@/types/common.type";
+import type { ErrorPageProps } from "@/types/error";
+
+import { getStatusDescription } from "../utils/errorUtils";
 
 const ErrorDisplay = ({ status, description }: ErrorPageProps) => {
   const navigate = useNavigate();

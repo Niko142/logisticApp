@@ -21,6 +21,7 @@ mainInstance.interceptors.request.use((config) => {
 mainInstance.interceptors.response.use(
   (response) => response,
   (error) => {
+    console.log(error);
     if (error.response?.status === 401) {
       localStorage.removeItem("auth_token");
       toast.error("Требуется обязательная авторизация", { id: "auth_error" });

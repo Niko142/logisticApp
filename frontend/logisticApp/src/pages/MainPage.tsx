@@ -1,11 +1,11 @@
-import { MapView } from "@/features/map-handler";
-import { Header } from "@/shared";
+import { TrafficMap } from "@/features/map-handler";
+import { Header } from "@/shared/components/Header";
 
 const MainPage = () => {
   return (
     <section className="map">
       <Header />
-      <MapView />;
+      <TrafficMap />;
     </section>
   );
 };

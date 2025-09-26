@@ -1,8 +1,3 @@
-import type { Coordinates, RouteResponse } from "@/types/type";
-
-export interface SearchInputProps {
-  onSelect: (coordinates: Coordinates) => void;
-}
 // Тип для GeoJSON данных
 export interface GeoData {
   type: "FeatureCollection";
@@ -17,10 +12,4 @@ export interface GeoData {
       coordinates: number[][];
     };
   }>;
-}
-
-export interface LegendMapProps {
-  isShow: boolean;
-  onChange: () => void;
-  data: RouteResponse | null;
 }

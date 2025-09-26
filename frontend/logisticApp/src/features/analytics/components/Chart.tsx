@@ -8,6 +8,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+
 import { hourlyScoreData } from "../constants/analytics.data";
 
 export const Chart = () => {

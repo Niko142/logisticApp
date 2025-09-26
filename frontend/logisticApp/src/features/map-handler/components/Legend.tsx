@@ -1,6 +1,6 @@
-import type { LegendMapProps } from "../types/geo-type";
+import type { LegendMapProps } from "../types/map.types";
 
-const LegendMap = ({ isShow, onChange, data }: LegendMapProps) => {
+export const Legend = ({ isShow, onChange, data }: LegendMapProps) => {
   return (
     <div className="legend">
       <h4>Загруженность:</h4>
@@ -45,5 +45,3 @@ const LegendMap = ({ isShow, onChange, data }: LegendMapProps) => {
     </div>
   );
 };
-
-export default LegendMap;

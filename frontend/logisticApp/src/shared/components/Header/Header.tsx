@@ -1,15 +1,22 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { headerChapters } from "./options";
-import HeaderLogo from "@/assets/icons/Header_logo.svg";
 import { LogOut } from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
+
+import HeaderLogo from "@/assets/icons/Header_logo.svg";
+
+import { headerChapters } from "./constants/headerOptions";
+
+import "./Header.css";
 
 export const Header = () => {
   const navigate = useNavigate();
+
+  // Обработчик для выхода из текущей сессии
   const handleLogout = () => {
     localStorage.removeItem("auth_token");
     navigate("/");
     window.location.reload();
   };
+
   return (
     <header className="header">
       <div className="container">
@@ -30,7 +37,6 @@ export const Header = () => {
                 </NavLink>
               </li>
             ))}
-            {/* Не лучший вариант, но для начала сойдет */}
             <li>
               <button
                 onClick={handleLogout}

@@ -1,6 +1,6 @@
-import type { AuthLayoutProps } from "../../types/auth.type";
-
 import Logo from "@/assets/icons/Logo.svg";
+
+import type { AuthLayoutProps } from "../types/auth.types";
 
 const AuthLayout = ({ onSubmit, title, role, children }: AuthLayoutProps) => {
   return (

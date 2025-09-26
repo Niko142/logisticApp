@@ -1,26 +1,28 @@
+import L from "leaflet";
 import { useEffect, useState } from "react";
-import mainInstance from "@/api/instances/mainInstance";
-import { fetchRoute } from "@/api";
-import type { GeoData } from "../types/geo-type";
-import type { Coordinates } from "@/types/type";
-import { useRoutePoints } from "../hooks/useRoutePoints";
-import { getColorByTraffic } from "../utils/trafficUtils";
-
 import {
+  GeoJSON,
+  Marker,
   MapContainer,
   TileLayer,
-  GeoJSON,
   useMapEvents,
-  Marker,
 } from "react-leaflet";
-import L from "leaflet";
+
+import { setRoute } from "@/api";
+import mainInstance from "@/api/instances/mainInstance";
+import type { Coordinates } from "@/types/common";
+
+import { Legend } from "./Legend";
+import SearchInput from "./SearchInput";
+import { useRoutePoints } from "../hooks/useRoutePoints";
+import type { GeoData } from "../types/geo.types";
+import { getColorByTraffic } from "../utils/trafficUtils";
+
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
-import "./Map.css";
 
-import SearchInput from "./SearchInput";
-import LegendMap from "./LegendMap";
+import "./TrafficMap.css";
 
 // Удаляем стили маркера по умолчанию
 delete (
@@ -34,12 +36,11 @@ L.Icon.Default.mergeOptions({
   shadowUrl: markerShadow,
 });
 
-export const MapView = () => {
+export const TrafficMap = () => {
   const [geoData, setGeoData] = useState<GeoData | null>(null); // GeoJSON-данные
   const [showTraffic, setShowTraffic] = useState<boolean>(true); // Показываем загруженность дорог или нет
 
-  const { points, routeData, addPoint, clearRoute } =
-    useRoutePoints(fetchRoute);
+  const { points, routeData, addPoint, clearRoute } = useRoutePoints(setRoute);
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -120,7 +121,7 @@ export const MapView = () => {
         <SearchInput onSelect={addPoint} />
       </MapContainer>
 
-      <LegendMap
+      <Legend
         isShow={!showTraffic}
         onChange={() => setShowTraffic((prev) => !prev)}
         data={routeData}

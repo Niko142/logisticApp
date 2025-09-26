@@ -6,16 +6,21 @@ import type {
   UseFormRegister,
 } from "react-hook-form";
 
-type InputTypes =
-  | "text"
-  | "email"
-  | "password"
-  | "tel"
-  | "date"
-  | "datetime-local"
-  | "number";
+import type { InputTypes, LayoutRoles } from "@/types/common";
 
-type LayoutRoles = "auth" | "register";
+
+
+export interface RegisterFormData {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export interface LoginFormData {
+  username: string;
+  password: string;
+}
 
 export interface AuthLayoutProps {
   children: React.ReactNode;

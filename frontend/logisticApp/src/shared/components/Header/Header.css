@@ -1,0 +1,51 @@
+/* Стили для header */
+header {
+  width: 100%;
+  padding-block: 25px;
+  margin-bottom: 20px;
+
+  & .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 45px;
+  }
+}
+
+.header__logo {
+  & img {
+    width: 60px;
+  }
+}
+
+.header__navbar {
+  & ul {
+    display: flex;
+    column-gap: 76px;
+  }
+  & li {
+    font-size: 1.25rem;
+    line-height: 1.25;
+  }
+}
+
+.header__item {
+  display: block;
+  color: var(--white);
+  transition: color 0.25s ease-in-out;
+
+  &.item--exit {
+    background-color: transparent;
+    border: none;
+    & svg {
+      display: block;
+    }
+  }
+
+  &.active {
+    color: var(--blue);
+  }
+  &:hover {
+    color: var(--blue);
+  }
+}

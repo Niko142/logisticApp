@@ -1,1 +1,1 @@
-export { MapView } from "./components/MapView";
+export { TrafficMap } from "./components/TrafficMap";
