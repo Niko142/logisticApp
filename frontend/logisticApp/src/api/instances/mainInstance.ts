@@ -1,11 +1,13 @@
 import axios from "axios";
 import toast from "react-hot-toast";
 
+// FIXME: Решить проблему со скоростью загрузки графа на production
+
 // Основной instance
 const mainInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   headers: { "Content-Type": "application/json" },
-  timeout: 10000,
+  timeout: 30000,
 });
 
 // Формируем и добавляем токен
