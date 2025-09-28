@@ -3,16 +3,65 @@ services:
     build:
       context: ./backend/routing
       dockerfile: Dockerfile
+    env_file:
+      - ./backend/routing/.env
     ports:
       - "127.0.0.1:8000:8000"
+    networks:
+      - app_net
+
+  auth-service:
+    build:
+      context: ./backend/auth
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/auth/.env
     environment:
-      - PYTHONUNBUFFERED=1
+      DATABASE_HOST: db
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - app_net
 
   frontend:
     build:
       context: ./frontend/logisticApp
       dockerfile: Dockerfile
+    env_file:
+      - ./frontend/logisticApp/.env
     ports:
       - "5173:80"
     depends_on:
       - routing-service
+      - auth-service
+    networks:
+      - app_net
+
+  db:
+    restart: always
+    image: postgres:16-alpine
+    env_file:
+      - ./.env
+    environment:
+      - name=value
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      timeout: 5s
+      interval: 5s
+      retries: 5
+    networks:
+      - app_net
+
+volumes:
+  db_data:
+
+networks:
+  app_net:

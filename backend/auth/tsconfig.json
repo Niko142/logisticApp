@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "esnext",
+    "module": "commonjs",
     "target": "es2022",
     "moduleResolution": "node",
     "types": ["node"],
@@ -16,7 +16,7 @@
     "exactOptionalPropertyTypes": true,
     "strict": true,
     "jsx": "react-jsx",
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false,
     "emitDecoratorMetadata": true, // Для typeorm
     "experimentalDecorators": true, // Для typeorm
     "isolatedModules": true,
