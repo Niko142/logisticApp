@@ -1,5 +1,5 @@
 import { TrafficMap } from "@/features/map-handler";
-import { Header } from "@/shared/components/Header";
+import { Header } from "@/shared/header";
 
 const MainPage = () => {
   return (

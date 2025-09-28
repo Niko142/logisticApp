@@ -3,12 +3,11 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import { loginUser } from "@/api";
-import { Button } from "@/shared/components/Button";
+import { Button } from "@/shared/button";
 
 import type { LoginFormData } from "../types/auth.types";
 import AuthLayout from "../ui/AuthLayout";
 import FormField from "../ui/FormField";
-
 
 import "./Auth.css";
 

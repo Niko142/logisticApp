@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
-import { SuccessIcon } from "@/shared/components/Icons";
+import { SuccessIcon } from "@/shared/icon-components";
+
 import "./SuccessMessage.css";
 
 export const SuccessMessage = () => {

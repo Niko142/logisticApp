@@ -1,4 +1,4 @@
-import type { HeaderProps } from "../header.types";
+import type { HeaderProps } from "../types/header.types";
 
 // Основные разделы в шапке проекта
 export const headerChapters: HeaderProps[] = [

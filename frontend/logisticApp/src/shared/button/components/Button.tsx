@@ -1,6 +1,5 @@
-import type { ButtonProps } from "./button.types";
-import { variantsPurpose } from "./config/buttonOptions";
-
+import { variantsPurpose } from "../config/buttonOptions";
+import type { ButtonProps } from "../types/button.types";
 
 import "./Button.css";
 

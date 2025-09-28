@@ -1,5 +1,5 @@
 import { Chart, FiltersBar } from "@/features/analytics";
-import { Header } from "@/shared/components/Header";
+import { Header } from "@/shared/header";
 
 const AnalyticsPage = () => {
   return (

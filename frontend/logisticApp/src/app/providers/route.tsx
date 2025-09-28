@@ -7,7 +7,7 @@ import PredictPage from "@/pages/PredictPage";
 import RegistrationPage from "@/pages/RegistrationPage";
 import RouteErrorPage from "@/pages/RouteErrorPage";
 import SettingsPage from "@/pages/SettingsPage";
-import Success from "@/pages/Success";
+import SuccessPage from "@/pages/SuccessPage";
 
 // Основные пути маршрутов
 const routes = createBrowserRouter([
@@ -20,7 +20,7 @@ const routes = createBrowserRouter([
     path: "/register",
     children: [
       { index: true, element: <RegistrationPage /> },
-      { path: "success", element: <Success /> },
+      { path: "success", element: <SuccessPage /> },
     ],
   },
   {

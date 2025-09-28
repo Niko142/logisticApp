@@ -1,4 +1,4 @@
-import Logo from "@/assets/icons/Logo.svg";
+import Logo from "@/assets/images/Logo.svg";
 
 import type { AuthLayoutProps } from "../types/auth.types";
 

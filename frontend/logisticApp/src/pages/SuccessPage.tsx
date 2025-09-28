@@ -1,7 +1,7 @@
 import { SuccessMessage } from "@/features/auth";
 
-const Success = () => {
+const SuccessPage = () => {
   return <SuccessMessage />;
 };
 
-export default Success;
+export default SuccessPage;

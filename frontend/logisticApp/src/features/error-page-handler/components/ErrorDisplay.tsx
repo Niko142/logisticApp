@@ -1,7 +1,7 @@
 import { AlertCircle, HomeIcon, RefreshCcw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import { Button } from "@/shared/components/Button";
+import { Button } from "@/shared/button";
 import type { ErrorPageProps } from "@/types/error";
 
 import { getStatusDescription } from "../utils/errorUtils";

@@ -1,9 +1,9 @@
 import { LogOut } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 
-import HeaderLogo from "@/assets/icons/Header_logo.svg";
+import HeaderLogo from "@/assets/images/Header_logo.svg";
 
-import { headerChapters } from "./constants/headerOptions";
+import { headerChapters } from "../constants/headerOptions";
 
 import "./Header.css";
 
