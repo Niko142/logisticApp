@@ -3,7 +3,6 @@ import { BadgeCheck } from "lucide-react";
 import type { IconSize } from "@/types/common";
 
 import type { SuccessIconProps } from "./icons.types";
-
 import "./Icon.css";
 
 // Конфигурация размеров на основе выбранного размера из типа
@@ -21,5 +20,3 @@ export const SuccessIcon = ({ size = "md" }: SuccessIconProps) => {
     </div>
   );
 };
-
-export default SuccessIcon;
