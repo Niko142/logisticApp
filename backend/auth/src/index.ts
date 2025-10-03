@@ -1,15 +1,16 @@
+import cookieParser from "cookie-parser";
+import cors from "cors";
 import "dotenv/config";
 import express, { type Application } from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
 import helmet from "helmet";
-import { AppDataSource } from "./config";
 import passport from "passport";
-import authRoutes from "./routes/auth.routes";
-import { errorHandler } from "./middlewares";
-import "./config/passport";
 
-const PORT = process.env.PORT || 3000;
+import { AppDataSource } from "./config";
+import "./config/passport";
+import { errorHandler } from "./middlewares";
+import authRoutes from "./routes/auth.routes";
+
+const PORT = process.env.PORT || 3000; // Определяем порт для подключения
 
 const app: Application = express();
 

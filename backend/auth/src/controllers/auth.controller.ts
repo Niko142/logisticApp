@@ -1,7 +1,8 @@
 import type { NextFunction, Request, Response } from "express";
-import { AuthService } from "../services";
+
 import type { User } from "../entities";
-import { generateToken } from "../utils";
+import { AuthService } from "../services";
+import { generateToken } from "../utils/jwt";
 
 const authService = new AuthService();
 
@@ -10,13 +11,11 @@ export class AuthController {
     try {
       const { username, email, password } = req.body;
       const user = await authService.register({ username, email, password });
-      res
-        .status(201)
-        .json({
-          success: true,
-          message: "Пользователь успешно зарегистрирован",
-          userInfo: user,
-        });
+      res.status(201).json({
+        success: true,
+        message: "Пользователь успешно зарегистрирован",
+        userInfo: user,
+      });
     } catch (err) {
       next(err);
     }
@@ -47,6 +46,18 @@ export class AuthController {
     }
   }
 
-  //   //TODO опционально реализовать позже
-  //   async openMyProfile();
+  async openMyProfile(req: Request, res: Response, next: NextFunction) {
+    try {
+      const user = req.user as User;
+      const profile = await authService.getMyProfile(user.id);
+
+      res.status(200).json({
+        success: true,
+        message: "Профиль успешно найден",
+        profile,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 }

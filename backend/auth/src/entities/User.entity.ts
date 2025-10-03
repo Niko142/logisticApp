@@ -5,6 +5,8 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 
+// TODO: Добавить разделение ролей (для просмотра профилей)
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()

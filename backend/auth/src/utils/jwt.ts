@@ -1,4 +1,5 @@
 import jwt, { type Secret, type SignOptions } from "jsonwebtoken";
+
 import { JWT_EXPIRES_IN, JWT_SECRET } from "../config";
 import type { JwtPayload } from "../types/jwt.types";
 

@@ -1,8 +1,9 @@
 import bcrypt from "bcryptjs";
+
 import { AppDataSource } from "../config";
 import { User } from "../entities";
 import type { LoginData, RegisterData } from "../types/auth.types";
-import { HttpError } from "../middlewares/http-error";
+import { HttpError } from "../utils/error";
 
 const userRepository = () => AppDataSource.getRepository(User);
 
@@ -63,5 +64,23 @@ export class AuthService {
     }
 
     return user;
+  }
+
+  async getMyProfile(userId: number) {
+    const user = await userRepository().findOne({
+      where: { id: userId },
+      select: ["id", "username", "email", "createdAt"],
+    });
+
+    if (!user) {
+      throw new HttpError(404, "Пользователь не найден");
+    }
+
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      createdAt: user.createdAt,
+    };
   }
 }

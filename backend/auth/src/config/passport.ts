@@ -1,8 +1,9 @@
 import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
 import { ExtractJwt, Strategy as JWTStrategy } from "passport-jwt";
-import { JWT_SECRET } from "./db";
+import { Strategy as LocalStrategy } from "passport-local";
+
 import { AppDataSource } from "./data-source";
+import { JWT_SECRET } from "./db";
 import { User } from "../entities";
 import { AuthService } from "../services";
 

@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
+
 import {
   DATABASE_HOST,
   DATABASE_NAME,
@@ -16,7 +17,7 @@ export const AppDataSource = new DataSource({
   database: DATABASE_NAME,
   username: DATABASE_USERNAME,
   password: DATABASE_PASSWORD,
-  synchronize: true, // Подумать касательно использования
+  // synchronize: true, // Подумать касательно использования
   logging: true,
   entities: [User],
   subscribers: [],
