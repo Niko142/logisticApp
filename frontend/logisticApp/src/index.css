@@ -7,14 +7,16 @@
   --black: #121113;
   --white: #f7f9f7;
   --blue: #1890ff;
+  --dark-blue: #2b3a55;
   --green: #44944a;
   --gradient-green: #3c896d;
   --orange: #ffa500;
   --red: #d80012;
   --red-hover: #b6000f;
-  --dark-grey: #707070;
-  --dark-grey-hover: #535353;
-  --grey: #bbc7ce;
+  --light-grey: #bbc7ce;
+  --grey: #707070;
+  --grey-hover: #535353;
+  --dark-grey: #353535;
 
   --error: #fb4d3d;
 

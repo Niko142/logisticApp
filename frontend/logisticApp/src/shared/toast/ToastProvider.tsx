@@ -7,7 +7,7 @@ export const ToasterProvider = () => {
       toastOptions={{
         duration: 5000,
         style: {
-          backgroundColor: "var(--dark-grey-hover)",
+          backgroundColor: "var(--grey-hover)",
           color: "var(--white)",
           fontWeight: "500",
           gap: "20px",

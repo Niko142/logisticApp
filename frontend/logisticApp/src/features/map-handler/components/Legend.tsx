@@ -3,7 +3,7 @@ import type { LegendMapProps } from "../types/map.types";
 export const Legend = ({ isShow, onChange, data }: LegendMapProps) => {
   return (
     <div className="legend">
-      <h4>Загруженность:</h4>
+      <h4>Степень загруженности:</h4>
 
       {/* Переключатель загруженности */}
       <div className="legend__item">

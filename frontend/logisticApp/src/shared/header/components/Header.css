@@ -13,12 +13,22 @@ header {
 }
 
 .header__logo {
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  user-select: none;
+  &:hover {
+    opacity: 0.85;
+  }
+
   & img {
     width: 60px;
   }
 }
 
 .header__navbar {
+  display: flex;
+  align-items: center;
+  gap: 50px;
   & ul {
     display: flex;
     column-gap: 76px;
@@ -34,18 +44,128 @@ header {
   color: var(--white);
   transition: color 0.25s ease-in-out;
 
-  &.item--exit {
-    background-color: transparent;
-    border: none;
-    & svg {
-      display: block;
-    }
-  }
-
   &.active {
     color: var(--blue);
   }
   &:hover {
     color: var(--blue);
+  }
+}
+
+.header__profile {
+  position: relative;
+}
+
+.header__user-profile {
+  appearance: menulist-button;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--blue);
+  border-radius: 50%;
+  border: 1px solid var(--btn-border);
+  cursor: pointer;
+  outline: 0;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+
+  & span {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--white);
+  }
+
+  &:hover,
+  &:focus-visible {
+    transform: scale(1.05);
+    background-color: var(--btn-auth);
+  }
+}
+
+/* Стили для dropdown меню профиля */
+
+.dropdown-menu {
+  position: absolute;
+  top: 70px;
+  right: 0;
+  width: 250px;
+  border-radius: 16px;
+  background-color: var(--white);
+  z-index: 100;
+
+  &.active {
+    animation: dropdownSlide 0.3s ease-in-out;
+  }
+}
+
+.dropdown-menu__header,
+.dropdown-menu__logout {
+  color: var(--white);
+}
+
+.dropdown-menu__header {
+  background-color: var(--dark-blue);
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  padding: 16px;
+
+  & .dropdown-menu__header--username,
+  & .dropdown-menu__header--email {
+    display: block;
+  }
+
+  & .dropdown-menu__header--username {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  & .dropdown-menu__header--email {
+    color: var(--light-grey);
+    font-style: italic;
+  }
+}
+
+.dropdown-menu__content {
+  background-color: var(--dark-grey);
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 16px;
+  color: var(--white);
+  background-color: transparent;
+  transition: background-color 0.4s ease;
+  &:hover {
+    background-color: rgba(43, 58, 85, 0.5);
+  }
+}
+
+.dropdown-menu__logout {
+  display: flex;
+  align-items: center;
+  background-color: var(--dark-grey);
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+/* Разделитель между блоками */
+.dropdown-menu__separator {
+  height: 1px;
+  border: none;
+  background-color: var(--grey);
+}
+
+@keyframes dropdownSlide {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

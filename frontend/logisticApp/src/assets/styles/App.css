@@ -101,8 +101,8 @@
 }
 
 .radio__input:disabled ~ .radio__custom--item {
-  background-color: var(--grey);
-  border-color: var(--grey);
+  background-color: var(--light-grey);
+  border-color: var(--light-grey);
   cursor: not-allowed;
 }
 
