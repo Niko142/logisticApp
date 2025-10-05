@@ -88,7 +88,8 @@
 }
 
 /* Кнопка для осуществления выхода из аккаунта */
-.dropdown-menu__button {
+.dropdown-menu__button,
+.header-menu__button {
   display: flex;
   align-items: center;
   flex: 1;
@@ -110,6 +111,16 @@
     & svg {
       transition: color 0.25s ease;
       color: var(--error);
+    }
+  }
+}
+
+.header-menu__button {
+  border-radius: 12px;
+  &:hover {
+    background-color: rgba(68, 148, 74, 0.2);
+    & svg {
+      color: var(--green);
     }
   }
 }

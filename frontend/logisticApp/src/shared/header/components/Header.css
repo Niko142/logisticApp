@@ -35,7 +35,6 @@ header {
   }
   & li {
     font-size: 1.25rem;
-    line-height: 1.25;
   }
 }
 
@@ -52,10 +51,7 @@ header {
   }
 }
 
-.header__profile {
-  position: relative;
-}
-
+/* Стили для dropdown меню профиля */
 .header__user-profile {
   appearance: menulist-button;
   width: 50px;
@@ -83,8 +79,6 @@ header {
   }
 }
 
-/* Стили для dropdown меню профиля */
-
 .dropdown-menu {
   position: absolute;
   top: 70px;
@@ -95,7 +89,11 @@ header {
   z-index: 100;
 
   &.active {
-    animation: dropdownSlide 0.3s ease-in-out;
+    animation: dropdownOpen 0.3s ease-in-out;
+  }
+
+  &.closing {
+    animation: dropdownClose 0.3s ease-in-out;
   }
 }
 
@@ -144,12 +142,17 @@ header {
   }
 }
 
-.dropdown-menu__logout {
+.dropdown-menu__logout,
+.header-menu__login {
   display: flex;
   align-items: center;
   background-color: var(--dark-grey);
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
+}
+
+.header-menu__login {
+  border-radius: 12px;
 }
 
 /* Разделитель между блоками */
@@ -159,13 +162,24 @@ header {
   background-color: var(--grey);
 }
 
-@keyframes dropdownSlide {
-  0% {
+@keyframes dropdownOpen {
+  from {
     opacity: 0;
     transform: translateY(-10px);
   }
-  100% {
+  to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes dropdownClose {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
   }
 }

@@ -1,5 +1,9 @@
 import { useEffect, type RefObject } from "react";
-
+/**
+ * Хук, предназначенный для отслеживания событий клика вне отслеживаемого элемента
+ * @param ref - Ссылка на элемент из useRef
+ * @param fn - callback, выполняющаяся по клику вне поля компонента
+ */
 export const useClickOutside = (
   ref: RefObject<HTMLDivElement | null>,
   fn: () => void

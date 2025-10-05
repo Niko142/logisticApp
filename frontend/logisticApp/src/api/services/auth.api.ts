@@ -1,4 +1,4 @@
-import { AxiosError } from "axios";
+import { AxiosError, CanceledError } from "axios";
 
 import type { LoginFormData, RegisterFormData } from "@/features/auth/types";
 import type { ErrorResponse } from "@/types/error";
@@ -69,6 +69,10 @@ export const getUserProfile = async ({
     });
     return response.data;
   } catch (err) {
+    if (err instanceof CanceledError) {
+      throw new Error("CanceledError");
+    }
+
     const error = err as AxiosError<ErrorResponse>;
     throw new Error(
       error.response?.data?.message || "Не удалось загрузить профиль"
