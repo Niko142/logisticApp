@@ -22,9 +22,6 @@
   border-radius: 50%;
   padding: 15px;
   animation: fade-up 0.7s 0.4s both, gradient-move-icon 4s 1.1s ease infinite;
-  & svg {
-    display: block;
-  }
 }
 
 @media (max-width: 768px) {

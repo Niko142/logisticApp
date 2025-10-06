@@ -5,7 +5,7 @@ import { useEffect, type RefObject } from "react";
  * @param fn - callback, выполняющаяся по клику вне поля компонента
  */
 export const useClickOutside = (
-  ref: RefObject<HTMLDivElement | null>,
+  ref: RefObject<HTMLDivElement | HTMLUListElement | null>,
   fn: () => void
 ) => {
   useEffect(() => {

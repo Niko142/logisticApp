@@ -5,6 +5,7 @@ header {
   margin-bottom: 20px;
 
   & .container {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -26,13 +27,10 @@ header {
 }
 
 .header__navbar {
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   gap: 50px;
-  & ul {
-    display: flex;
-    column-gap: 76px;
-  }
   & li {
     font-size: 1.25rem;
   }
@@ -42,6 +40,8 @@ header {
   display: block;
   color: var(--white);
   transition: color 0.25s ease-in-out;
+  border-bottom: 2px solid transparent;
+  outline: 0;
 
   &.active {
     color: var(--blue);
@@ -49,6 +49,24 @@ header {
   &:hover {
     color: var(--blue);
   }
+  &:focus-visible {
+    border-color: var(--blue);
+  }
+}
+
+/* Стили для burger-menu */
+.navigation__burger {
+  display: none;
+  background-color: transparent;
+  border: none;
+  transition: opacity 0.5s ease-in-out;
+  cursor: pointer;
+}
+
+.navigation__list {
+  display: flex;
+  column-gap: 76px;
+  z-index: 120;
 }
 
 /* Стили для dropdown меню профиля */
@@ -86,7 +104,8 @@ header {
   width: 250px;
   border-radius: 16px;
   background-color: var(--white);
-  z-index: 100;
+  box-shadow: var(--block-shadow);
+  z-index: 110;
 
   &.active {
     animation: dropdownOpen 0.3s ease-in-out;
@@ -162,24 +181,52 @@ header {
   background-color: var(--grey);
 }
 
-@keyframes dropdownOpen {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
+@media screen and (max-width: 768px) {
+  header {
+    & .container {
+      padding-inline: 20px;
+    }
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-@keyframes dropdownClose {
-  from {
-    opacity: 1;
-    transform: translateY(0);
+  .header__navbar {
+    flex-direction: row-reverse;
   }
-  to {
+
+  .header__logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    & img {
+      width: 50px;
+    }
+  }
+
+  .header__item {
+    padding: 12px 10px;
+  }
+
+  .navigation__burger {
+    display: block;
+    z-index: 110;
+  }
+
+  .navigation__list {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 70px;
+    flex-direction: column;
+    padding: 20px;
+    background-color: var(--dark-grey);
+    border-radius: 12px;
     opacity: 0;
-    transform: translateY(-10px);
+    box-shadow: var(--block-shadow);
+
+    &.active {
+      display: block;
+      animation: dropdownOpen 0.3s ease-in-out;
+      opacity: 1;
+    }
   }
 }

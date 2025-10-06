@@ -81,6 +81,10 @@ a {
   text-decoration: inherit;
 }
 
+svg {
+  display: block;
+}
+
 img {
   display: block;
   width: 100%;
