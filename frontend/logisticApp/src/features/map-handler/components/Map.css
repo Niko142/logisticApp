@@ -1,46 +1,77 @@
 /* Карта и легенда */
 .map {
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100vh;
 }
 
 .map__container {
   position: relative;
   height: 80vh;
   width: 90%;
-  outline: 0;
   z-index: 90;
+  outline: 0;
 }
 
 .legend {
   position: absolute;
-  bottom: 20px;
-  left: 45px;
-  display: grid;
-  gap: 6px;
+  bottom: 2%;
+  right: 2%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   font-size: 1.1rem;
-  background-color: var(--white);
-  padding: 20px;
+  background-color: var(--dark-grey);
+  color: var(--light-grey);
+  padding: 15px 20px;
   border-radius: 8px;
-  z-index: 100;
   box-shadow: var(--block-shadow);
+  z-index: 100;
 }
 
-.legend__checkbox {
-  margin-right: 8px;
+.legend__button {
+  display: flex;
+  align-self: flex-end;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: 0;
+  & svg {
+    color: var(--white);
+    transition: color 0.3s ease;
+  }
+  &:hover,
+  &:focus-visible {
+    & svg.icon--open {
+      color: var(--blue);
+    }
+    & svg.icon--close {
+      color: var(--red);
+    }
+  }
+}
+
+.legend__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .legend__item {
   display: flex;
   align-items: center;
   gap: 8px;
+
+  & label {
+    display: flex;
+    gap: 8px;
+  }
 }
 
 .legend__indicator {
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
   &.indicator--green {
     background-color: var(--green);
   }
@@ -51,9 +82,6 @@
     background-color: var(--red);
   }
 }
-
-.legend__total {
-  & .legend__time {
-    font-weight: 700;
-  }
+.legend__time {
+  font-weight: 700;
 }

@@ -8,8 +8,7 @@ import {
   useMapEvents,
 } from "react-leaflet";
 
-import { setRoute } from "@/api";
-import mainInstance from "@/api/instances/mainInstance";
+import { getRoadGraph, setRoute } from "@/api";
 import type { Coordinates } from "@/types/common";
 
 import { Legend } from "./Legend";
@@ -43,24 +42,19 @@ export const TrafficMap = () => {
   const { points, routeData, addPoint, clearRoute } = useRoutePoints(setRoute);
 
   useEffect(() => {
-    const abortController = new AbortController();
+    const controller = new AbortController();
 
-    const fetchData = async () => {
+    const fetchRoadGraph = async () => {
       try {
-        const res = await mainInstance.get("/api/graph", {
-          signal: abortController.signal,
-        });
-        setGeoData(res.data);
+        const response = await getRoadGraph({ signal: controller.signal });
+        setGeoData(response);
       } catch (err) {
-        if (err instanceof Error && err.name !== "CanceledError") {
-          console.error("Возникла ошибка при загрузке данных:", err);
-        }
+        console.error("Возникла ошибка при загрузке данных:", err);
       }
     };
+    fetchRoadGraph();
 
-    fetchData();
-
-    return () => abortController.abort();
+    return () => controller.abort();
   }, []);
 
   // Обработка событий клика по карте
@@ -122,7 +116,7 @@ export const TrafficMap = () => {
       </MapContainer>
 
       <Legend
-        isShow={!showTraffic}
+        isShowing={!showTraffic}
         onChange={() => setShowTraffic((prev) => !prev)}
         data={routeData}
       />

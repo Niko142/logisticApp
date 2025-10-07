@@ -5,7 +5,7 @@ const MainPage = () => {
   return (
     <section className="map">
       <Header />
-      <TrafficMap />;
+      <TrafficMap />
     </section>
   );
 };

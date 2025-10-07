@@ -2,7 +2,7 @@ import type { RouteResponse } from "@/api/types";
 import type { Coordinates } from "@/types/common";
 
 export interface LegendMapProps {
-  isShow: boolean;
+  isShowing: boolean;
   onChange: () => void;
   data: RouteResponse | null;
 }
