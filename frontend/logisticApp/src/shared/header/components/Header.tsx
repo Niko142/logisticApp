@@ -71,7 +71,7 @@ export const Header = () => {
     <header className="header">
       <div className="container">
         <nav className="header__navbar">
-          <div className="header__logo" onClick={() => navigate("/main")}>
+          <div className="header__logo" onClick={() => navigate("/app")}>
             <img src={HeaderLogo} alt="logo" />
           </div>
           <NavigationItems />

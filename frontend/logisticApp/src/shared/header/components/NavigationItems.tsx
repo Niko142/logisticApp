@@ -43,6 +43,7 @@ export const NavigationItems = () => {
               className={({ isActive }) =>
                 `header__item ${isActive ? "active" : ""}`
               }
+              end={chapter.link === "/app"}
             >
               {chapter.title}
             </NavLink>

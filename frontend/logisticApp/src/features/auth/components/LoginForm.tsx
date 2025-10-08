@@ -36,7 +36,7 @@ export const LoginForm = () => {
         }
       );
       localStorage.setItem("auth_token", data?.token);
-      navigate("/main");
+      navigate("/app");
     } catch (err) {
       setError("root", {
         type: "server",

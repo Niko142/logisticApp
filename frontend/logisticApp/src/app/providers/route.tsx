@@ -1,5 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
+import { ProtectedRoute } from "@/layouts/ProtectedRoute";
+import { PublicRoute } from "@/layouts/PublicRoute";
+import AccountPage from "@/pages/AccountPage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
 import LoginPage from "@/pages/LoginPage";
 import MainPage from "@/pages/MainPage";
@@ -13,31 +16,57 @@ import SuccessPage from "@/pages/SuccessPage";
 const routes = createBrowserRouter([
   {
     path: "/",
-    element: <LoginPage />,
     errorElement: <RouteErrorPage />,
-  },
-  {
-    path: "/register",
     children: [
-      { index: true, element: <RegistrationPage /> },
-      { path: "success", element: <SuccessPage /> },
+      // Роуты, не требующие авторизации
+      {
+        element: <PublicRoute />,
+        children: [
+          {
+            index: true,
+            element: <LoginPage />, // Чтобы '/' не был просто пустым
+          },
+          {
+            path: "login",
+            element: <LoginPage />,
+          },
+          {
+            path: "register",
+            children: [
+              { index: true, element: <RegistrationPage /> },
+              { path: "success", element: <SuccessPage /> },
+            ],
+          },
+        ],
+      },
+      // Защищенные роуты (для авторизированных пользователей)
+      {
+        path: "app",
+        element: <ProtectedRoute />,
+        children: [
+          {
+            index: true,
+            element: <MainPage />,
+          },
+          {
+            path: "predict",
+            element: <PredictPage />,
+          },
+          {
+            path: "analytics",
+            element: <AnalyticsPage />,
+          },
+          {
+            path: "settings",
+            element: <SettingsPage />,
+          },
+          {
+            path: "account",
+            element: <AccountPage />,
+          },
+        ],
+      },
     ],
-  },
-  {
-    path: "/main",
-    element: <MainPage />,
-  },
-  {
-    path: "/predict",
-    element: <PredictPage />,
-  },
-  {
-    path: "/analytics",
-    element: <AnalyticsPage />,
-  },
-  {
-    path: "/settings",
-    element: <SettingsPage />,
   },
 ]);
 

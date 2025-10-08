@@ -6,7 +6,7 @@ const RegistrationPage = () => {
   return (
     <section className="register" aria-label="Форма авторизации">
       <RegisterForm />
-      <Link to={"/"} className="register__link">
+      <Link to={"/login"} className="register__link">
         Уже есть аккаунт? Войти
       </Link>
     </section>
