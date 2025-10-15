@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { getUserProfile } from "@/api";
-import type { ProfileResponse } from "@/api/types";
 import HeaderLogo from "@/assets/images/Header_logo.svg";
+import { useAuth } from "@/context/auth";
 
 import { DropdownItems } from "./DropdownItems";
 import { LoginMenuItem } from "./LoginMenuItem";
@@ -15,42 +14,17 @@ import "./Header.css";
 
 export const Header = () => {
   const navigate = useNavigate();
+  const { token, profile, isLoading } = useAuth();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
-  const [profileData, setProfileData] = useState<ProfileResponse | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const token = localStorage.getItem("auth_token"); // Проверяем, есть ли токен авторизации
-
   // Деструктуризация получаемых данных
-  const { profile } = profileData || {};
   const { username, email } = profile || {};
 
   // Инициализируем хук клика вне dropdown/menu в целях закрытия
   useClickOutside(dropdownRef, () => handleCloseDropdown());
-
-  useEffect(() => {
-    if (!token) return;
-
-    const controller = new AbortController();
-
-    // Формируем получение данных о профиле пользователя
-    const fetchProfile = async () => {
-      try {
-        const userData = await getUserProfile({ signal: controller.signal });
-        setProfileData(userData);
-      } catch (err) {
-        if (err instanceof Error && err.message !== "CanceledError") {
-          console.error(err.message);
-        }
-        return null;
-      }
-    };
-    fetchProfile();
-
-    return () => controller.abort();
-  }, [token]);
 
   // Обработчик закрытия dropdown с некоторой задержкой (плавность эффекта)
   const handleCloseDropdown = () => {
@@ -85,7 +59,11 @@ export const Header = () => {
               className="header__user-profile"
               aria-label="Профиль пользователя"
             >
-              <span>{username?.[0].toUpperCase()}</span>
+              {isLoading ? (
+                <span>...</span>
+              ) : (
+                <span>{username?.[0].toUpperCase()}</span>
+              )}
             </button>
 
             {isDropdownOpen && (

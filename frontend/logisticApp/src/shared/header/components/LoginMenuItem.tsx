@@ -6,7 +6,7 @@ export const LoginMenuItem = () => {
 
   // Обработчик для выхода из текущей сессии
   const handleLogin = () => {
-    navigate("/", { replace: true });
+    navigate("/login", { replace: true });
   };
 
   return (

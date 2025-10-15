@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 import { loginUser } from "@/api";
+import { useAuth } from "@/context/auth";
 import { Button } from "@/shared/button";
 
 import type { LoginFormData } from "../types/auth.types";
@@ -13,6 +14,7 @@ import "./Auth.css";
 
 export const LoginForm = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const {
     register,
     handleSubmit,
@@ -35,7 +37,7 @@ export const LoginForm = () => {
           },
         }
       );
-      localStorage.setItem("auth_token", data?.token);
+      login(data?.token);
       navigate("/app");
     } catch (err) {
       setError("root", {

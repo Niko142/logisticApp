@@ -15,7 +15,7 @@ export const SuccessMessage = () => {
         <p className="success-page__description">
           Аккаунт успешно создан. Перейдите к авторизации для входа в систему.
         </p>
-        <Link className="success-page__link" to={"/"}>
+        <Link className="success-page__link" to={"/login"}>
           Войти в систему
         </Link>
       </div>

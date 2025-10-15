@@ -10,7 +10,6 @@ export const NavigationItems = () => {
   const navigationRef = useRef<HTMLUListElement | null>(null);
 
   const handleToggleMenu = () => setIsOpenMenu((prev) => !prev);
-
   const handleCloseMenu = () => setIsOpenMenu(false);
 
   // Инициализируем хук для отслеживания кликов
