@@ -25,9 +25,9 @@
 .analytics__filter {
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   align-content: center;
-  column-gap: 10%;
+  column-gap: 10vh;
 }
 
 .analytics__filter--group {
@@ -41,6 +41,14 @@
   & h3 {
     text-align: center;
   }
+}
+
+.account-page__title,
+.settings-page__title {
+  font-size: 2.2rem;
+  text-align: center;
+  color: var(--white);
+  margin-bottom: 40px;
 }
 
 /* Стили для radio-button */

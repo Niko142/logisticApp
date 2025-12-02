@@ -1,11 +1,11 @@
 import { LogIn } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-export const LoginMenuItem = () => {
+export const LoginMenuItem = (): React.ReactElement => {
   const navigate = useNavigate();
 
   // Обработчик для выхода из текущей сессии
-  const handleLogin = () => {
+  const handleLogin = (): void => {
     navigate("/login", { replace: true });
   };
 
@@ -14,7 +14,7 @@ export const LoginMenuItem = () => {
       <button
         onClick={handleLogin}
         className="header-menu__button"
-        aria-label="Выход"
+        aria-label="Вход"
       >
         <LogIn size={28} />
         <span className="header-menu__button-text">Авторизация</span>

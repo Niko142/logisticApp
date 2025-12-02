@@ -1,11 +1,8 @@
 // Тип для координат
 export type Coordinates = [number, number];
 
-// Тип назначений кнопок
-export type ButtonVariants = "default" | "reload" | "authorization" | "back";
-
 // Тип размера иконок
-export type IconSize = "sm" | "md" | "lg" | "xl";
+export type Size = "sm" | "md" | "lg" | "xl";
 
 export type InputTypes =
   | "text"
@@ -17,3 +14,7 @@ export type InputTypes =
   | "number";
 
 export type LayoutRoles = "auth" | "register";
+
+export interface LayoutProps {
+  children: React.ReactNode;
+}

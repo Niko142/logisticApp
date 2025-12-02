@@ -7,7 +7,7 @@ import { useEffect, type RefObject } from "react";
 export const useClickOutside = (
   ref: RefObject<HTMLDivElement | HTMLUListElement | null>,
   fn: () => void
-) => {
+): void => {
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (!ref.current?.contains(e.target as Node)) {

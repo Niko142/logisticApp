@@ -31,7 +31,8 @@ export default tseslint.config([
             "builtin",
             "external",
             "internal",
-            ["parent", "sibling", "index"],
+            ["parent", "sibling"],
+            "index",
             "object",
           ],
           pathGroups: [

@@ -1,8 +1,7 @@
 import { BadgeCheck } from "lucide-react";
 
-import type { IconSize } from "@/types/common";
+import type { IconSize, SuccessIconProps } from "../types/icons.types";
 
-import type { SuccessIconProps } from "../types/icons.types";
 import "./Icon.css";
 
 // Конфигурация размеров на основе выбранного размера из типа

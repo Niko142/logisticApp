@@ -1,5 +1,7 @@
-import { variantsPurpose } from "../config/buttonOptions";
-import type { ButtonProps } from "../types/button.types";
+import clsx from "clsx";
+
+import type { ButtonProps } from "./button.types";
+import { btnVariants } from "./button.variants";
 
 import "./Button.css";
 
@@ -11,9 +13,9 @@ const Button = ({
 }: ButtonProps) => {
   return (
     <button
-      {...props}
-      className={`${variantsPurpose[variant]}`}
+      className={clsx("btn", btnVariants[variant])}
       onClick={onClick}
+      {...props}
     >
       {children}
     </button>

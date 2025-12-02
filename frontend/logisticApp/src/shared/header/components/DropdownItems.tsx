@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import { headerUserItems } from "../constants/headerOptions";
 import type { DropdownMenuProps } from "../types/header.types";
 
-export const DropdownItems = ({ onClick }: DropdownMenuProps) => {
+export const DropdownItems = ({
+  onClick,
+}: DropdownMenuProps): React.ReactElement => {
   return (
     <ul className="dropdown-menu__content">
       {headerUserItems.map((item) => (

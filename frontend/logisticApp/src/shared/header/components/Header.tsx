@@ -1,24 +1,25 @@
-import { useRef, useState } from "react";
+import { Activity, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import HeaderLogo from "@/assets/images/Header_logo.svg";
-import { useAuth } from "@/context/auth";
+import { DROPDOWN_DELAY } from "@/constants/delay";
+import { useAuth } from "@/providers/auth";
 
 import { DropdownItems } from "./DropdownItems";
 import { LoginMenuItem } from "./LoginMenuItem";
 import { LogoutMenuItem } from "./LogoutMenuItem";
 import { NavigationItems } from "./NavigationItems";
-import { useClickOutside } from "../hooks/useClickOutside";
+import { useClickOutside } from "../../../hooks/useClickOutside";
 
+import HeaderLogo from "@images/header-logo.svg";
 import "./Header.css";
 
 export const Header = () => {
   const navigate = useNavigate();
   const { token, profile, isLoading } = useAuth();
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isClosing, setIsClosing] = useState<boolean>(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   // Деструктуризация получаемых данных
   const { username, email } = profile || {};
@@ -26,18 +27,18 @@ export const Header = () => {
   // Инициализируем хук клика вне dropdown/menu в целях закрытия
   useClickOutside(dropdownRef, () => handleCloseDropdown());
 
-  // Обработчик закрытия dropdown с некоторой задержкой (плавность эффекта)
+  // Обработчик закрытия dropdown с некоторой задержкой
   const handleCloseDropdown = () => {
     setIsClosing(true);
 
     setTimeout(() => {
       setIsDropdownOpen(false);
       setIsClosing(false);
-    }, 250);
+    }, DROPDOWN_DELAY);
   };
 
   // Обработчик клика по иконке профиля
-  const handleToggleDropdown = () => {
+  const handleToggleDropdown = (): void => {
     return isDropdownOpen ? handleCloseDropdown() : setIsDropdownOpen(true);
   };
 
@@ -66,7 +67,7 @@ export const Header = () => {
               )}
             </button>
 
-            {isDropdownOpen && (
+            <Activity mode={isDropdownOpen ? "visible" : "hidden"}>
               <div
                 className={`dropdown-menu ${
                   isDropdownOpen && !isClosing ? "active" : "closing"
@@ -80,14 +81,11 @@ export const Header = () => {
                 </div>
 
                 <hr className="dropdown-menu__separator" />
-
                 <DropdownItems onClick={() => setIsDropdownOpen(false)} />
-
                 <hr className="dropdown-menu__separator" />
-
                 <LogoutMenuItem />
               </div>
-            )}
+            </Activity>
           </div>
         ) : (
           <LoginMenuItem />

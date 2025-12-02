@@ -1,14 +1,14 @@
 import { LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth } from "@/context/auth";
+import { useAuth } from "@/providers/auth";
 
-export const LogoutMenuItem = () => {
+export const LogoutMenuItem = (): React.ReactElement => {
   const navigate = useNavigate();
   const { logout } = useAuth();
 
   // Обработчик для выхода из текущей сессии
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     logout();
     navigate("/login", { replace: true });
   };

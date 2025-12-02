@@ -1,10 +1,10 @@
-import { AuthProvider } from "@/context/auth";
+import { AuthProvider } from "@/providers/auth";
 
-import { AppRouter } from "./providers/route";
+import { AppRouter } from "./router/AppRouter";
 
 import "leaflet-geosearch/dist/geosearch.css";
 import "leaflet/dist/leaflet.css";
-import "@/assets/styles/App.css";
+import "@styles/App.css";
 
 function App() {
   return (
