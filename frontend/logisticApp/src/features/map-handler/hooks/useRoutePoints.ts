@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import type { RouteResponse } from "@/api/types";
-import type { Coordinates } from "@/types/common";
+import type { RouteResponse } from "@/services/api/types/route-api.types";
+import type { Coordinates } from "@/types/models/route.types";
 
 /**
  * Хук для конверсии координат

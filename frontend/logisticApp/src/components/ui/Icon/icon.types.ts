@@ -2,11 +2,19 @@ import type { LucideIcon } from "lucide-react";
 
 import type { Size } from "@/types/common.types";
 
-export type IconSize = Size;
-export type IconVariant = "default" | "success";
+export type IconSize = "xs" | Size;
+export type IconVariant =
+  | "default"
+  | "success"
+  | "info"
+  | "error"
+  | "open"
+  | "close";
 
 export interface IconProps {
-  size: IconSize;
+  size?: IconSize | number;
   icon: LucideIcon;
-  variant: "";
+  variant?: IconVariant;
+  className?: string;
+  color?: string;
 }

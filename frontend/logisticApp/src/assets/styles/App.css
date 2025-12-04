@@ -1,3 +1,26 @@
+/* Стили для header */
+header {
+  width: 100%;
+  padding-block: 25px;
+  margin-bottom: 20px;
+
+  & .container {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 45px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  header {
+    & .container {
+      padding-inline: 20px;
+    }
+  }
+}
+
 /* Блок аналитики */
 .analytics {
   display: grid;
@@ -114,6 +137,24 @@
   cursor: not-allowed;
 }
 
+.auth__link,
+.register__link {
+  font-size: 1.1rem;
+  line-height: 1.2;
+  color: var(--white);
+  margin-top: 20px;
+  outline: 0;
+  transition: color 0.3s ease;
+  animation: fade-up 0.5s ease-in-out 0.8s both;
+
+  &:hover {
+    color: var(--blue);
+  }
+  &:focus-visible {
+    color: var(--blue);
+  }
+}
+
 /* Плавное появление элементов */
 @keyframes fade-up {
   from {
@@ -147,5 +188,18 @@
   to {
     opacity: 0;
     transform: translateY(-10px);
+  }
+}
+
+/* Анимация градиента для иконки */
+@keyframes gradient-move {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }

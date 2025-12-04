@@ -1,1 +1,1 @@
-export { TrafficMap } from "./components/TrafficMap";
+export { MainPage } from "./MainPage";

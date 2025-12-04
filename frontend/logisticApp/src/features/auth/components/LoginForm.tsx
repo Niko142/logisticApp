@@ -2,17 +2,17 @@ import { useForm, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-import { loginUser } from "@/api";
-import { useAuth } from "@/context/auth";
-import { Button } from "@/shared/button";
+import { FormLayout } from "@/components/layout";
+import { Button } from "@/components/ui/Button";
+import { FormError, FormField } from "@/components/ui/Form";
+import { TOAST_SUCCESS_DURATION } from "@/constants/delay";
+import { useAuth } from "@/providers/auth";
+import { loginUser } from "@/services/api";
 
-import type { LoginFormData } from "../types/auth.types";
-import AuthLayout from "../ui/AuthLayout";
-import FormField from "../ui/FormField";
+import { loginValidation } from "../config/form.validation";
+import type { LoginRequest } from "../types/form.types";
 
-import "./Auth.css";
-
-export const LoginForm = () => {
+export const LoginForm = (): React.ReactElement => {
   const navigate = useNavigate();
   const { login } = useAuth();
   const {
@@ -20,12 +20,13 @@ export const LoginForm = () => {
     handleSubmit,
     setError,
     resetField,
+    setFocus,
     formState: { errors },
-  } = useForm<LoginFormData>({ mode: "onSubmit" });
+  } = useForm<LoginRequest>({ mode: "onSubmit" });
 
-  const onSubmit: SubmitHandler<LoginFormData> = async (formData) => {
+  const onSubmit: SubmitHandler<LoginRequest> = async (formData) => {
     try {
-      const data = await toast.promise(
+      const response = await toast.promise(
         loginUser(formData),
         {
           loading: "Осуществляем попытку входа...",
@@ -33,11 +34,14 @@ export const LoginForm = () => {
         },
         {
           success: {
-            duration: 3000,
+            duration: TOAST_SUCCESS_DURATION,
           },
         }
       );
-      login(data?.token);
+
+      if (!response?.token) throw new Error("Токен не получен");
+      login(response.token);
+
       navigate("/app");
     } catch (err) {
       setError("root", {
@@ -46,48 +50,33 @@ export const LoginForm = () => {
           err instanceof Error ? err.message : "Возникла неизвестная ошибка",
       });
       resetField("password");
+      setFocus("password");
     }
   };
 
   return (
-    <AuthLayout
-      role="auth"
-      title="Вход в систему"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <FormLayout title="Вход в систему" onSubmit={handleSubmit(onSubmit)}>
       <FormField
-        id="username"
-        label="Логин:"
         type="text"
-        role="auth"
+        name="username"
+        label="Логин:"
         register={register}
         error={errors.username}
-        name="username"
-        options={{
-          required: "Логин обязателен для заполнения",
-        }}
+        rules={loginValidation.username}
       />
 
       <FormField
-        id="password"
-        label="Пароль:"
+        name="password"
         type="password"
-        role="auth"
+        label="Пароль:"
         register={register}
         error={errors.password}
-        name="password"
-        options={{
-          required: "Пароль обязателен для заполнения",
-        }}
+        rules={loginValidation.password}
       />
 
-      {errors.root && (
-        <span className="auth__form--error main--error">
-          {errors.root.message}
-        </span>
-      )}
+      <FormError error={errors.root} global />
 
       <Button variant="authorization">Авторизация</Button>
-    </AuthLayout>
+    </FormLayout>
   );
 };

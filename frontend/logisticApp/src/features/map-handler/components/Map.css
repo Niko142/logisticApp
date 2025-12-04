@@ -37,19 +37,6 @@
   border: none;
   cursor: pointer;
   outline: 0;
-  & svg {
-    color: var(--white);
-    transition: color 0.3s ease;
-  }
-  &:hover,
-  &:focus-visible {
-    & svg.icon--open {
-      color: var(--blue);
-    }
-    & svg.icon--close {
-      color: var(--red);
-    }
-  }
 }
 
 .legend__list {

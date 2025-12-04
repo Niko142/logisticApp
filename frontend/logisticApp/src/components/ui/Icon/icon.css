@@ -1,0 +1,49 @@
+.icon {
+  display: block;
+  transition: color 0.3s ease;
+
+  &.icon--close {
+    color: var(--white);
+    &:hover,
+    &:focus-visible {
+      color: var(--red);
+    }
+  }
+  &.icon--open {
+    color: var(--white);
+    &:hover,
+    &:focus-visible {
+      color: var(--blue);
+    }
+  }
+  &.icon--success {
+    background: linear-gradient(
+      135deg,
+      var(--gradient-green),
+      var(--green),
+      var(--gradient-green)
+    );
+    background-size: 200% 200%;
+    border-radius: 50%;
+    padding: 15px;
+    animation: fade-up 0.7s 0.4s both, gradient-move 4s 1.1s ease infinite;
+  }
+}
+@media (max-width: 768px) {
+  .icon--success {
+    & svg {
+      width: 64px !important;
+      height: 64px !important;
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .icon--success {
+    padding: 8px;
+    & svg {
+      width: 55px !important;
+      height: 55px !important;
+    }
+  }
+}

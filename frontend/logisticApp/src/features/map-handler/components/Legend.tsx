@@ -1,6 +1,8 @@
 import { ChevronsLeft, X } from "lucide-react";
 import { useState } from "react";
 
+import { Icon } from "@/components/ui/Icon";
+
 import type { LegendMapProps } from "../types/map.types";
 
 export const Legend = ({ isShowing, onChange, data }: LegendMapProps) => {
@@ -20,9 +22,9 @@ export const Legend = ({ isShowing, onChange, data }: LegendMapProps) => {
         aria-label="Открыть/Закрыть легенду"
       >
         {isOpen ? (
-          <X className="icon--close" size={28} />
+          <Icon icon={X} variant="close" size="md" />
         ) : (
-          <ChevronsLeft className="icon--open" size={28} />
+          <Icon icon={ChevronsLeft} variant="open" size="md" />
         )}
       </button>
 

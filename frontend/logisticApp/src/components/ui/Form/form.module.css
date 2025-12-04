@@ -1,0 +1,43 @@
+.label {
+  align-self: baseline;
+  font-size: 1.15rem;
+  line-height: 1.2;
+  color: var(--white);
+  margin-bottom: 8px;
+  animation: global(fade-up) 0.5s ease-in-out 0.6s both;
+  &:not(:first-of-type) {
+    margin-top: 25px;
+  }
+}
+
+.input {
+  width: 100%;
+  display: block;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  padding: 10px 15px;
+  border-radius: 14px;
+  border: 0;
+  outline: 0;
+  animation: global(fade-up) 0.5s ease-in-out 0.6s both;
+
+  &:focus,
+  &:focus-visible {
+    box-shadow: var(--input-glow);
+  }
+}
+
+.message {
+  font-weight: 500;
+  align-self: baseline;
+  color: var(--error);
+  margin-block-start: 6px;
+}
+
+.globalMessage {
+  color: var(--error);
+  font-weight: 700;
+  font-size: 1.2rem;
+  align-self: center;
+  margin-top: 15px;
+}

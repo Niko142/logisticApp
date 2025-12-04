@@ -1,7 +1,7 @@
 import { useContext } from "react";
 
+import type { IAuthContext } from "./auth-context.types";
 import { AuthContext } from "./AuthContext";
-import type { IAuthContext } from "./authContext.types";
 
 // Гарантируем, что хук не возвращает нулевое значение, иначе ошибка
 export const useAuth = (): IAuthContext => {

@@ -1,18 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { getUserProfile } from "@/api";
-import type { ProfileResponse } from "@/api/types";
+import { getUserProfile } from "@/services/api";
+import type { LayoutProps } from "@/types/common.types";
+import type { UserProfile } from "@/types/user.types";
 
 import { AuthContext } from "./AuthContext";
-import type { AuthContextProps } from "./authContext.types";
 
-export const AuthProvider = ({ children }: AuthContextProps) => {
+export const AuthProvider = ({ children }: LayoutProps) => {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("auth_token")
   ); // храним токен
-  const [profile, setProfile] = useState<ProfileResponse["profile"] | null>(
-    null
-  ); // Данные о пользователе
+  const [profile, setProfile] = useState<UserProfile | null>(null); // Данные о пользователе
   const [isLoading, setIsLoading] = useState<boolean>(true); // Статус загрузки
 
   // Обработчик успешной авторизации
@@ -51,7 +49,6 @@ export const AuthProvider = ({ children }: AuthContextProps) => {
     if (!token) return;
 
     const controller = new AbortController();
-
     loadProfile(controller.signal);
 
     return () => controller.abort();

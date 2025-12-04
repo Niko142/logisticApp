@@ -2,16 +2,15 @@ import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
-import { registerUser } from "@/api";
-import { Button } from "@/shared/button";
+import { FormLayout } from "@/components/layout";
+import { Button } from "@/components/ui/Button";
+import { FormError, FormField } from "@/components/ui/Form";
+import { registerUser } from "@/services/api";
 
-import type { RegisterFormData } from "../types/auth.types";
-import AuthLayout from "../ui/AuthLayout";
-import FormField from "../ui/FormField";
+import { registerValidation } from "../config/form.validation";
+import type { RegisterRequest } from "../types/form.types";
 
-import "./Auth.css";
-
-export const RegisterForm = () => {
+export const RegisterForm = (): React.ReactElement => {
   const navigate = useNavigate();
   const {
     register,
@@ -19,19 +18,21 @@ export const RegisterForm = () => {
     control,
     setError,
     reset,
+    setFocus,
     formState: { errors },
-  } = useForm<RegisterFormData>({ mode: "onSubmit" });
+  } = useForm<RegisterRequest>({ mode: "onSubmit" });
 
   // Наблюдаем за password для валидации подтверждения пароля
   const password = useWatch({ control, name: "password" });
 
   // Обработчик отправки данных
-  const onSubmit: SubmitHandler<RegisterFormData> = async (formData) => {
+  const onSubmit: SubmitHandler<RegisterRequest> = async (formData) => {
     if (formData.password !== formData.confirmPassword) {
       setError("confirmPassword", {
         type: "custom",
         message: "Пароли не совпали, повторите попытку",
       });
+      setFocus("confirmPassword");
       return;
     }
 
@@ -51,92 +52,48 @@ export const RegisterForm = () => {
   };
 
   return (
-    <AuthLayout
-      role="register"
-      title="Регистрация"
-      onSubmit={handleSubmit(onSubmit)}
-    >
+    <FormLayout title="Регистрация" onSubmit={handleSubmit(onSubmit)}>
       <FormField
-        id="username"
-        label="Логин:"
         type="text"
-        role="register"
+        name="username"
+        label="Логин:"
         register={register}
         error={errors.username}
-        name="username"
-        options={{
-          required: "Логин обязателен для заполнения",
-          minLength: { value: 3, message: "Минимум 3 символа" },
-          maxLength: {
-            value: 25,
-            message: "Логин превышает максимальный размер - 25 символов",
-          },
-        }}
+        rules={registerValidation.username}
       />
 
       <FormField
-        id="email"
-        label="Email:"
         type="email"
+        name="email"
+        label="Email:"
         autoComplete="on"
-        role="register"
         register={register}
         error={errors.email}
-        name="email"
-        options={{
-          required: "Email обязателен для заполнения",
-          pattern: {
-            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: "Введите корректный email",
-          },
-          maxLength: {
-            value: 255,
-            message: "Превышена максимальная длина email",
-          },
-        }}
+        rules={registerValidation.email}
       />
 
       <FormField
-        id="password"
-        label="Пароль:"
         type="password"
-        role="register"
+        name="password"
+        label="Пароль:"
         register={register}
         error={errors.password}
-        name="password"
-        options={{
-          required: "Пароль обязателен",
-          minLength: { value: 6, message: "Минимум 6 символов" },
-          maxLength: {
-            value: 64,
-            message: "Превышена максимальная длина пароля",
-          },
-        }}
+        rules={registerValidation.password}
       />
+
       <FormField
-        id="confirmPassword"
-        label="Подтвердите пароль:"
         type="password"
-        role="register"
+        name="confirmPassword"
+        label="Подтвердите пароль:"
         register={register}
         error={errors.confirmPassword}
-        name="confirmPassword"
-        options={{
-          required: "Подтверждение пароля обязательно",
-        }}
-        renderError={(err) =>
-          password &&
-          err && <span className="register__form--error">{err.message}</span>
-        }
+        rules={registerValidation.confirmPassword}
+        customError={(err) => password && err && <FormError error={err} />}
       />
 
-      {errors.root && (
-        <span className="register__form--error main--error">
-          {errors.root.message}
-        </span>
-      )}
+      <FormError error={errors.root} global />
 
       <Button variant="authorization">Регистрация</Button>
-    </AuthLayout>
+    </FormLayout>
   );
 };

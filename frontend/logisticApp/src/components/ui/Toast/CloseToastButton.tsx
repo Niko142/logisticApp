@@ -1,5 +1,7 @@
 import { X } from "lucide-react";
 
+import { Icon } from "../Icon";
+
 interface CloseToastButtonProps {
   onClick: React.MouseEventHandler<HTMLButtonElement>;
 }
@@ -12,7 +14,7 @@ export const CloseToastButton = ({ onClick }: CloseToastButtonProps) => {
       type="button"
       aria-label="Close notification"
     >
-      <X size={24} />
+      <Icon icon={X} color="white" size="sm" />
     </button>
   );
 };

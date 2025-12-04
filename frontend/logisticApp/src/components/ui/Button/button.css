@@ -86,41 +86,6 @@
   }
 }
 
-/* Кнопка для осуществления выхода из аккаунта */
-.dropdown-menu__button,
-.header-menu__button {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  gap: 20px;
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 16px;
-  color: var(--white);
-  background-color: transparent;
-  border: 0;
-  cursor: pointer;
-  transition: background-color 0.4s ease;
-
-  &:hover {
-    background-color: rgba(239, 68, 68, 0.1);
-    & svg {
-      transition: color 0.25s ease;
-      color: var(--error);
-    }
-  }
-}
-
-.header-menu__button {
-  border-radius: 12px;
-  &:hover {
-    background-color: rgba(68, 148, 74, 0.2);
-    & svg {
-      color: var(--green);
-    }
-  }
-}
-
 @media screen and (max-width: 768px) {
   .btn {
     &.btn--back,

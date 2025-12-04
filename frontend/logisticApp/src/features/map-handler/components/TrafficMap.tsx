@@ -8,14 +8,14 @@ import {
   useMapEvents,
 } from "react-leaflet";
 
-import { getRoadGraph, setRoute } from "@/api";
-import type { Coordinates } from "@/types/common";
+import { getRoadGraph, setRoute } from "@/services/api";
+import type { Coordinates } from "@/types/models/route.types";
 
 import { Legend } from "./Legend";
 import SearchInput from "./SearchInput";
 import { useRoutePoints } from "../hooks/useRoutePoints";
 import type { GeoData } from "../types/geo.types";
-import { getColorByTraffic } from "../utils/trafficUtils";
+import { getColorByTraffic } from "../utils/traffic";
 
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
@@ -70,6 +70,8 @@ export const TrafficMap = () => {
     return null;
   };
 
+  // TODO: вынести данные по карте в config
+
   return (
     <>
       <MapContainer
@@ -107,8 +109,8 @@ export const TrafficMap = () => {
           <GeoJSON data={routeData} style={{ color: "blue", weight: 4 }} />
         )}
 
-        {points.map((point, i) => (
-          <Marker key={i} position={point} />
+        {points.map((point, index) => (
+          <Marker key={index} position={point} />
         ))}
 
         {/* Input для поиска адреса */}
