@@ -1,27 +1,30 @@
-import type { GeoData } from "@/features/map-handler/types";
 import type { AbortableOptions } from "@/types/common.types";
-import type { Coordinates } from "@/types/models/route.types";
+import type { Coordinates, RouteModel } from "@/types/models/route.types";
 
 import routeInstance from "./instances/route.instance";
-import type { RouteResponse } from "./types/route-api.types";
+import { mapRouteToModel } from "./route.mapper";
+import type {
+  RouteGraphResponse,
+  RouteResponse,
+} from "./types/route-api.types";
 
 /**
  * Получение маршрута между двумя точками
- * @param start - Начальная точка
- * @param end - Конечная точка
- * @returns Данные маршрута
+ * @param startPoint - Начальная точка
+ * @param endPoint - Конечная точка
+ * @returns Данные маршрута, приведенные в необходимый вид через mapper
  */
 export const setRoute = async (
-  start: Coordinates,
-  end: Coordinates
-): Promise<RouteResponse | null> => {
+  startPoint: Coordinates,
+  endPoint: Coordinates
+): Promise<RouteModel | null> => {
   try {
     const response = await routeInstance.post<RouteResponse>("/api/route", {
-      start,
-      end,
+      startPoint,
+      endPoint,
     });
 
-    return response.data;
+    return mapRouteToModel(response.data);
   } catch (err: unknown) {
     console.error("Ошибка при получении маршрута:", err);
     return null;
@@ -35,13 +38,13 @@ export const setRoute = async (
  */
 export const getRoadGraph = async ({
   signal,
-}: AbortableOptions): Promise<GeoData | null> => {
+}: AbortableOptions): Promise<RouteGraphResponse | null> => {
   try {
     const response = await routeInstance.get("/api/graph", {
       signal,
     });
     return response.data;
-  } catch (err) {
+  } catch (err: unknown) {
     if (err instanceof Error && err.name !== "CanceledError") {
       console.error("Ошибка при получении маршрута:", err);
     }

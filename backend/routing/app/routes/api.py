@@ -23,8 +23,8 @@ traffic_model = TrafficModel()
 traffic_model.load()
 
 class RouteRequest(BaseModel):
-    start: list[float]
-    end: list[float]
+    startPoint: list[float]
+    endPoint: list[float]
     departure_time: str = None
 
 @router.post("/route")
@@ -33,8 +33,8 @@ def get_route(data: RouteRequest, current_user = Depends(verify_token)):
     Построение маршрута (только для авторизованных пользователей)
     """
     try:
-        orig_node = ox.nearest_nodes(G, data.start[1], data.start[0])
-        dest_node = ox.nearest_nodes(G, data.end[1], data.end[0])
+        orig_node = ox.nearest_nodes(G, data.startPoint[1], data.startPoint[0])
+        dest_node = ox.nearest_nodes(G, data.endPoint[1], data.endPoint[0])
 
         current_time = datetime.now() if not data.departure_time else datetime.strptime(data.departure_time, "%Y-%m-%d %H:%M")
         current_hour = current_time.hour

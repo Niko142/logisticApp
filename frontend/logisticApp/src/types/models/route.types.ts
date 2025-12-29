@@ -1,7 +1,7 @@
 // Тип для координат
 export type Coordinates = [number, number];
 
-export type RouteLine = number[][];
+type RouteLine = Coordinates[];
 
 export type RouteModel = {
   path: RouteLine;

@@ -5,7 +5,7 @@ import { Icon } from "@/components/ui/Icon";
 
 import type { LegendMapProps } from "../types/map.types";
 
-export const Legend = ({ isShowing, onChange, data }: LegendMapProps) => {
+export const Legend = ({ isShowing, onChange, route }: LegendMapProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   // Обработчик клика по кнопке
@@ -21,11 +21,11 @@ export const Legend = ({ isShowing, onChange, data }: LegendMapProps) => {
         onClick={() => handleToggleButton()}
         aria-label="Открыть/Закрыть легенду"
       >
-        {isOpen ? (
-          <Icon icon={X} variant="close" size="md" />
-        ) : (
-          <Icon icon={ChevronsLeft} variant="open" size="md" />
-        )}
+        <Icon
+          icon={isOpen ? X : ChevronsLeft}
+          variant={isOpen ? "close" : "open"}
+          size="md"
+        />
       </button>
 
       {isOpen && (
@@ -37,7 +37,7 @@ export const Legend = ({ isShowing, onChange, data }: LegendMapProps) => {
               <label htmlFor="traffic">
                 <input
                   type="checkbox"
-                  id="traffic"
+                  // id="traffic"
                   checked={!isShowing}
                   onChange={onChange}
                 />
@@ -69,11 +69,12 @@ export const Legend = ({ isShowing, onChange, data }: LegendMapProps) => {
           </ul>
 
           {/* Время маршрута */}
-          {data?.summary?.total_predicted_time_min && (
+          {route?.totalTimeMin && (
             <div className="legend__total">
               Время маршрута:{" "}
               <span className="legend__time">
-                {data.summary.total_predicted_time_min} мин
+                {route.totalTimeMin}
+                мин
               </span>
             </div>
           )}

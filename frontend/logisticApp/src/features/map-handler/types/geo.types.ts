@@ -1,5 +1,4 @@
-// Тип для GeoJSON данных
-export interface GeoData {
+export interface TrafficGeoData {
   type: "FeatureCollection";
   features: Array<{
     type: "Feature";
@@ -8,7 +7,7 @@ export interface GeoData {
       [key: string]: unknown;
     };
     geometry: {
-      type: string;
+      type: "LineString";
       coordinates: number[][];
     };
   }>;

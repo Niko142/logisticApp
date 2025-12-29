@@ -6,6 +6,7 @@ import {
   MapContainer,
   TileLayer,
   useMapEvents,
+  Polyline,
 } from "react-leaflet";
 
 import { getRoadGraph, setRoute } from "@/services/api";
@@ -14,7 +15,7 @@ import type { Coordinates } from "@/types/models/route.types";
 import { Legend } from "./Legend";
 import SearchInput from "./SearchInput";
 import { useRoutePoints } from "../hooks/useRoutePoints";
-import type { GeoData } from "../types/geo.types";
+import type { TrafficGeoData } from "../types/geo.types";
 import { getColorByTraffic } from "../utils/traffic";
 
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
@@ -36,7 +37,7 @@ L.Icon.Default.mergeOptions({
 });
 
 export const TrafficMap = () => {
-  const [geoData, setGeoData] = useState<GeoData | null>(null); // GeoJSON-данные
+  const [geoData, setGeoData] = useState<TrafficGeoData | null>(null); // GeoJSON-данные
   const [showTraffic, setShowTraffic] = useState<boolean>(true); // Показываем загруженность дорог или нет
 
   const { points, routeData, addPoint, clearRoute } = useRoutePoints(setRoute);
@@ -105,22 +106,27 @@ export const TrafficMap = () => {
           />
         )}
 
+        {/* Сформированный маршрут */}
         {routeData && (
-          <GeoJSON data={routeData} style={{ color: "blue", weight: 4 }} />
+          <Polyline
+            positions={routeData.path}
+            pathOptions={{ color: "blue", weight: 4 }}
+          />
         )}
 
+        {/* Маркер */}
         {points.map((point, index) => (
           <Marker key={index} position={point} />
         ))}
 
-        {/* Input для поиска адреса */}
+        {/* Поле поиска */}
         <SearchInput onSelect={addPoint} />
       </MapContainer>
 
       <Legend
         isShowing={!showTraffic}
         onChange={() => setShowTraffic((prev) => !prev)}
-        data={routeData}
+        route={routeData}
       />
     </>
   );
