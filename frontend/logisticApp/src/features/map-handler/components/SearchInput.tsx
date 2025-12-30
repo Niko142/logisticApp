@@ -1,53 +1,31 @@
-import {
-  OpenStreetMapProvider,
-  type GeoSearchEvent,
-  GeoSearchControl,
-} from "leaflet-geosearch";
-import { useEffect } from "react";
-import { useMap } from "react-leaflet";
+import React, { useCallback, useMemo } from "react";
 
+import type { Coordinates } from "@/types/models/route.types";
+
+import { SEARCH_CONTROL_CONFIG } from "../config/search.config";
+import { useGeoSearch } from "../hooks/useGeosearch";
 import type { SearchInputProps } from "../types/map.types";
 
+import "@styles/search.css";
+
 const SearchInput = ({ onSelect }: SearchInputProps) => {
-  const map = useMap();
+  const config = useMemo(() => SEARCH_CONTROL_CONFIG, []);
 
-  useEffect(() => {
-    const provider = new OpenStreetMapProvider();
+  const handleSelect = useCallback(
+    (coords: Coordinates) => {
+      onSelect(coords);
+    },
+    [onSelect]
+  );
 
-    const searchControl = new GeoSearchControl({
-      provider,
-      style: "bar",
-      showMarker: false,
-      showPopup: false,
-      autoClose: true,
-      retainZoomLevel: false,
-      animateZoom: true,
-      keepResult: true,
-    });
-
-    map.addControl(searchControl);
-
-    // Обработчик выбора местоположения в поиске
-    const handleLocationSelect = (event: L.LeafletEvent) => {
-      // Безопасное приведение типа
-      const geoEvent = event as unknown as GeoSearchEvent;
-
-      if (geoEvent.location) {
-        const { x: lng, y: lat } = geoEvent.location;
-        onSelect([lat, lng]);
-      }
-    };
-
-    map.on("geosearch/showlocation", handleLocationSelect);
-
-    return () => {
-      map.off("geosearch/showlocation", handleLocationSelect);
-
-      map.removeControl(searchControl);
-    };
-  }, [map, onSelect]);
+  useGeoSearch({
+    onSelect: handleSelect,
+    options: config,
+  });
 
   return null;
 };
 
-export default SearchInput;
+SearchInput.displayName = "SearchInput";
+
+export default React.memo(SearchInput);

@@ -1,3 +1,7 @@
+import type { GeoSearchControl } from "leaflet-geosearch";
+
+import type { Coordinates } from "@/types/models/route.types";
+
 export interface TrafficGeoData {
   type: "FeatureCollection";
   features: Array<{
@@ -11,4 +15,9 @@ export interface TrafficGeoData {
       coordinates: number[][];
     };
   }>;
+}
+
+export interface GeoSearchOptions {
+  onSelect: (coords: Coordinates) => void;
+  options: ConstructorParameters<typeof GeoSearchControl>[0];
 }

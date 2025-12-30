@@ -1,19 +1,19 @@
-/* Карта и легенда */
+/* MAP */
 .map {
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.map__container {
+.container {
   position: relative;
   height: 80vh;
-  width: 90%;
+  width: 90vw;
   z-index: 90;
   outline: 0;
 }
 
+/* LEGEND */
 .legend {
   position: absolute;
   bottom: 2%;
@@ -21,16 +21,19 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+  width: auto;
+  height: auto;
   font-size: 1.1rem;
-  background-color: var(--dark-grey);
   color: var(--light-grey);
-  padding: 15px 20px;
+  background-color: var(--dark-grey);
+  padding: 18px;
   border-radius: 8px;
+  overflow: hidden;
   box-shadow: var(--block-shadow);
   z-index: 100;
 }
 
-.legend__button {
+.legendButton {
   display: flex;
   align-self: flex-end;
   background-color: transparent;
@@ -39,13 +42,20 @@
   outline: 0;
 }
 
-.legend__list {
+.list {
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
 
-.legend__item {
+.hr {
+  border: none;
+  height: 1px;
+  background-color: var(--grey);
+  margin-block: 8px;
+}
+
+.item {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -56,7 +66,7 @@
   }
 }
 
-.legend__indicator {
+.indicator {
   width: 13px;
   height: 13px;
   &.indicator--green {
@@ -69,6 +79,7 @@
     background-color: var(--red);
   }
 }
-.legend__time {
+
+.timeRoute {
   font-weight: 700;
 }
