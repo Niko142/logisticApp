@@ -88,6 +88,7 @@
 }
 
 .initials {
+  font-family: "Montserrat";
   font-size: 1.2rem;
   font-weight: 500;
   color: var(--white);
@@ -157,6 +158,7 @@
 
 .logoutButton,
 .loginButton {
+  font-family: "Montserrat SemiBold";
   display: flex;
   flex: 1;
   align-items: center;

@@ -1,5 +1,6 @@
 /* Стили для кнопки */
 .btn {
+  font-family: "Montserrat SemiBold";
   display: flex;
   justify-content: center;
   align-items: center;
