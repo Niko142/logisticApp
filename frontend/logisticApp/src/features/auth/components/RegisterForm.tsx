@@ -8,7 +8,7 @@ import { FormError, FormField } from "@/components/ui/Form";
 import { registerUser } from "@/services/api";
 
 import { registerValidation } from "../config/form.validation";
-import type { RegisterRequest } from "../types/form.types";
+import type { RegisterFormValues } from "../types/form.types";
 
 export const RegisterForm = (): React.ReactElement => {
   const navigate = useNavigate();
@@ -20,13 +20,13 @@ export const RegisterForm = (): React.ReactElement => {
     reset,
     setFocus,
     formState: { errors },
-  } = useForm<RegisterRequest>({ mode: "onSubmit" });
+  } = useForm<RegisterFormValues>({ mode: "onSubmit" });
 
   // Наблюдаем за password для валидации подтверждения пароля
   const password = useWatch({ control, name: "password" });
 
   // Обработчик отправки данных
-  const onSubmit: SubmitHandler<RegisterRequest> = async (formData) => {
+  const onSubmit: SubmitHandler<RegisterFormValues> = async (formData) => {
     if (formData.password !== formData.confirmPassword) {
       setError("confirmPassword", {
         type: "custom",

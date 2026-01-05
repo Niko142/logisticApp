@@ -10,7 +10,7 @@ import { useAuth } from "@/providers/auth";
 import { loginUser } from "@/services/api";
 
 import { loginValidation } from "../config/form.validation";
-import type { LoginRequest } from "../types/form.types";
+import type { LoginFormValues } from "../types/form.types";
 
 export const LoginForm = (): React.ReactElement => {
   const navigate = useNavigate();
@@ -22,9 +22,9 @@ export const LoginForm = (): React.ReactElement => {
     resetField,
     setFocus,
     formState: { errors },
-  } = useForm<LoginRequest>({ mode: "onSubmit" });
+  } = useForm<LoginFormValues>({ mode: "onSubmit" });
 
-  const onSubmit: SubmitHandler<LoginRequest> = async (formData) => {
+  const onSubmit: SubmitHandler<LoginFormValues> = async (formData) => {
     try {
       const response = await toast.promise(
         loginUser(formData),
