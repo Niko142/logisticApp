@@ -4,11 +4,11 @@ import { LoginButton } from "./LoginButton";
 import { UserDropdown } from "./UserDropdown";
 
 export const HeaderUserProfile = (): React.ReactElement => {
-  const { token, profile, isLoading } = useAuth();
+  const { profile, status } = useAuth();
 
-  if (!token) {
+  if (status === "anonymous") {
     return <LoginButton />;
   }
 
-  return <UserDropdown profile={profile} isLoading={isLoading} />;
+  return <UserDropdown profile={profile} status={status} />;
 };

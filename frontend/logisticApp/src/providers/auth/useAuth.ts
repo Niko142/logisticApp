@@ -1,14 +1,16 @@
 import { useContext } from "react";
 
-import type { IAuthContext } from "./auth-context.types";
+import type { IAuthContextType } from "./auth-context.types";
 import { AuthContext } from "./AuthContext";
 
-// Гарантируем, что хук не возвращает нулевое значение, иначе ошибка
-export const useAuth = (): IAuthContext => {
+/**
+ * Хук для получения контекста авторизации
+ * @returns Контекст авторизации
+ */
+export const useAuth = (): IAuthContextType => {
   const context = useContext(AuthContext);
   if (!context) {
     throw new Error("Хук useAuth не может быть использован без AuthProvider");
   }
-
   return context;
 };

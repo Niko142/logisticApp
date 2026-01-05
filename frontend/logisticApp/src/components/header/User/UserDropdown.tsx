@@ -13,10 +13,13 @@ import type { UserDropdownProps } from "../types/header.types";
 
 export const UserDropdown = ({
   profile,
-  isLoading,
+  status,
 }: UserDropdownProps): React.ReactElement => {
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const dropdownRef = useRef<HTMLDivElement | null>(null);
+
+  const isLoading = status === "checking";
+  const isDisabled = status !== "authenticated";
 
   // Деструктуризация получаемых данных
   const { username, email } = profile || {};
@@ -30,6 +33,7 @@ export const UserDropdown = ({
 
   // Обработчик клика по dropdown
   const handleToggleDropdown = (): void => {
+    if (isDisabled) return;
     return isDropdownOpen ? handleCloseDropdown() : setIsDropdownOpen(true);
   };
 

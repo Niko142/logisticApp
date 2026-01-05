@@ -4,66 +4,83 @@ import { getUserProfile } from "@/services/api";
 import type { LayoutProps } from "@/types/common.types";
 import type { UserProfile } from "@/types/user.types";
 
+import type { AuthStatus } from "./auth-context.types";
 import { AuthContext } from "./AuthContext";
 
 export const AuthProvider = ({ children }: LayoutProps) => {
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("auth_token")
-  ); // храним токен
+  ); // Токен авторизации
   const [profile, setProfile] = useState<UserProfile | null>(null); // Данные о пользователе
-  const [isLoading, setIsLoading] = useState<boolean>(true); // Статус загрузки
+  const [status, setStatus] = useState<AuthStatus>("checking"); // Статус авторизации
 
   // Обработчик успешной авторизации
-  const login = (newToken: string): void => {
+  const login = useCallback((newToken: string): void => {
     localStorage.setItem("auth_token", newToken);
     setToken(newToken);
-  };
+    setStatus("checking");
+  }, []);
 
   // Обработчик выхода из аккаунта
-  const logout = (): void => {
+  const logout = useCallback((): void => {
     localStorage.removeItem("auth_token");
     setToken(null);
     setProfile(null);
-  };
+    setStatus("anonymous");
+  }, []);
 
   // Получаем данные о профиле
   const loadProfile = useCallback(
     async (signal: AbortSignal) => {
-      if (!token) return;
+      if (!token) {
+        setStatus("anonymous");
+        return;
+      }
+
       try {
-        setIsLoading(true);
         const userData = await getUserProfile({ signal });
         setProfile(userData.profile);
+        setStatus("authenticated");
       } catch (err) {
-        if (err instanceof Error && err.message !== "CanceledError") {
-          console.error(err.message);
+        if (err instanceof Error) {
+          // Игнорируем отмену запроса
+          if (err.message === "CanceledError") {
+            return;
+          }
+          // Сетевая ошибка - сервер недоступен
+          if (err.message === "NETWORK_ERROR") {
+            setStatus("server-down");
+            return;
+          }
+          // Ошибка авторизации - токен невалиден
+          if (err.message === "UNAUTHORIZED") {
+            logout();
+            return;
+          }
+          logout();
         }
-      } finally {
-        setIsLoading(false);
       }
     },
-    [token]
+    [token, logout]
   );
 
   useEffect(() => {
-    if (!token) return;
-
     const controller = new AbortController();
     loadProfile(controller.signal);
 
     return () => controller.abort();
-  }, [token, loadProfile]);
+  }, [loadProfile]);
 
   const value = useMemo(
     () => ({
       token,
-      isLoading,
       profile,
+      status,
       loadProfile,
       login,
       logout,
     }),
-    [token, isLoading, profile, loadProfile]
+    [token, profile, status, loadProfile, login, logout]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

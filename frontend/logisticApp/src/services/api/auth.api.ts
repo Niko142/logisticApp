@@ -72,6 +72,19 @@ export const getUserProfile = async ({
     }
 
     const error = err as AxiosError<ErrorResponse>;
+
+    // Сетевые ошибки (сервер недоступен)
+    if (
+      error.code === "ERR_NETWORK" ||
+      error.code === "ERR_CONNECTION_REFUSED"
+    ) {
+      throw new Error("NETWORK_ERROR");
+    }
+
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      throw new Error("UNAUTHORIZED");
+    }
+
     throw new Error(
       error.response?.data?.message || "Не удалось загрузить профиль"
     );

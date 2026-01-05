@@ -21,6 +21,13 @@ header {
   }
 }
 
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: (-50%, -50%);
+}
+
 .leaflet-control-geosearch .results > *:hover {
   background-color: #f0f0f0;
 }

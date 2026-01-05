@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/Button";
 import { Icon } from "@/components/ui/Icon";
-import type { ErrorPageProps } from "@/types/error.types";
 
 import styles from "./error.module.css";
+import type { ErrorDisplayProps } from "./errorBoundary.types";
 
 const ErrorDisplay = ({
   status,
   description,
-}: ErrorPageProps): React.ReactElement => {
+}: ErrorDisplayProps): React.ReactElement => {
   const navigate = useNavigate();
 
   return (

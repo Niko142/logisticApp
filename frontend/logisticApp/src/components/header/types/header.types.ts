@@ -1,5 +1,6 @@
 import type { RefObject } from "react";
 
+import type { AuthStatus } from "@/providers/auth/auth-context.types";
 import type { LayoutProps } from "@/types/common.types";
 import type {
   NavigationItem,
@@ -27,7 +28,7 @@ export interface BurgerButtonProps {
 
 export interface UserDropdownProps {
   profile: UserProfile | null;
-  isLoading: boolean;
+  status: AuthStatus;
 }
 
 export interface DropdownListProps {
