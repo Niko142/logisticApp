@@ -19,7 +19,7 @@ export const AuthGate = () => {
     case "checking":
       return (
         <div className="loader">
-          <BeatLoader size={20} margin={5} color="var(--blue)" />;
+          <BeatLoader size={20} margin={5} color="var(--color-blue-300)" />;
         </div>
       );
 

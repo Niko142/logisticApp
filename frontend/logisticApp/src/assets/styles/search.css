@@ -1,6 +1,6 @@
 /* Map */
 .leaflet-container {
-  border-radius: 8px;
+  border-radius: var(--radius-2);
 }
 
 /* Search input */
@@ -12,14 +12,14 @@
     display: grid;
     grid-template-columns: 1fr 36px;
     align-items: center;
-    border-radius: 8px;
-    border: 1px solid var(--grey) !important;
+    border-radius: var(--radius-2);
+    border: 1px solid var(--color-gray-300) !important;
   }
 
   & input {
     font-family: "Montserrat", Arial, Helvetica, sans-serif !important;
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: var(--text-regular);
     height: 36px !important;
     border: none;
     outline: 0;
@@ -33,34 +33,33 @@
     height: 36px !important;
     width: 36px !important;
     font-size: 1.5rem;
-    font-weight: 500 !important;
+    font-weight: var(--text-medium) !important;
     outline: 0;
     &:hover {
-      color: var(--red);
+      color: var(--color-red-400);
     }
     &:focus-visible {
-      background-color: var();
-      color: var(--red);
+      color: var(--color-red-400);
     }
   }
 }
 
 .leaflet-control-geosearch .results.active {
   font-family: "Montserrat", Arial, Helvetica, sans-serif !important;
-  font-weight: 400;
+  font-weight: var(--text-regular);
   overflow-x: hidden !important;
   grid-column: span 2;
 }
 
 /* Zoom */
 .leaflet-control-zoom {
-  border: 1px solid var(--grey) !important;
+  border: 1px solid var(--color-gray-300) !important;
 }
 
 .leaflet-control-zoom-in,
 .leaflet-control-zoom-out {
-  background-color: #353535 !important;
-  color: var(--light-grey) !important;
+  background-color: var(--color-gray-700) !important;
+  color: var(--color-gray-200) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -69,12 +68,12 @@
   outline: 0;
 
   &:hover {
-    background-color: #3d3d3d !important;
+    background-color: var(--color-gray-600) !important;
   }
 
   &:focus-visible {
-    outline: 1px solid var(--white);
+    outline: 1px solid var(--color-white);
     outline-offset: 0;
-    background-color: #3d3d3d !important;
+    background-color: var(--color-gray-600) !important;
   }
 }

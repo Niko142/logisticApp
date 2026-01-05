@@ -38,18 +38,18 @@
 
 .navigationLink {
   display: block;
-  color: var(--white);
+  color: var(--color-white);
   border-bottom: 2px solid transparent;
   transition: color 0.25s ease-in-out;
   outline: 0;
   &.active {
-    color: var(--blue);
+    color: var(--color-blue-300);
   }
   &:hover {
-    color: var(--blue);
+    color: var(--color-blue-300);
   }
   &:focus-visible {
-    border-color: var(--blue);
+    border-color: var(--color-blue-300);
   }
 }
 
@@ -73,9 +73,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--blue);
-  border-radius: 50%;
-  border: 1px solid var(--btn-border);
+  background-color: var(--color-blue-300);
+  border-radius: var(--radius-round);
+  border: 1px solid var(--color-blue-500);
   cursor: pointer;
   outline: 0;
   transition: background-color 0.2s ease, transform 0.1s ease;
@@ -83,15 +83,15 @@
   &:hover,
   &:focus-visible {
     transform: scale(1.05);
-    background-color: var(--btn-auth);
+    background-color: var(--color-blue-500);
   }
 }
 
 .initials {
   font-family: "Montserrat";
   font-size: 1.2rem;
-  font-weight: 500;
-  color: var(--white);
+  font-weight: var(--text-medium);
+  color: var(--color-white);
 }
 
 .dropdownMenu {
@@ -99,8 +99,8 @@
   top: 70px;
   right: 0;
   width: 250px;
-  border-radius: 16px;
-  box-shadow: var(--block-shadow);
+  border-radius: var(--radius-4);
+  box-shadow: var(--shadow-base);
   z-index: 110;
 }
 
@@ -108,25 +108,25 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
-  background-color: var(--dark-blue);
+  background-color: var(--color-blue-800);
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
   padding: 16px;
-  color: var(--white);
+  color: var(--color-white);
 }
 
 .dropdownUsername {
   font-size: 1.1rem;
-  font-weight: 500;
+  font-weight: var(--text-medium);
 }
 
 .dropdownEmail {
   font-style: italic;
-  color: var(--light-grey);
+  color: var(--color-gray-200);
 }
 
 .dropdownList {
-  background-color: var(--dark-grey);
+  background-color: var(--color-gray-700);
 }
 
 .dropdownItem {
@@ -134,7 +134,7 @@
   align-items: center;
   gap: 15px;
   padding: 16px;
-  color: var(--white);
+  color: var(--color-white);
   background-color: transparent;
   transition: background-color 0.4s ease;
 
@@ -147,13 +147,13 @@
 .login {
   display: flex;
   align-items: center;
-  background-color: var(--dark-grey);
+  background-color: var(--color-gray-700);
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
 }
 
 .login {
-  border-radius: 12px;
+  border-radius: var(--radius-3);
 }
 
 .logoutButton,
@@ -164,9 +164,9 @@
   align-items: center;
   gap: 20px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: var(--text-semibold);
   padding: 16px;
-  color: var(--white);
+  color: var(--color-white);
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -177,20 +177,20 @@
   background-color: rgba(239, 68, 68, 0.1);
 }
 .logoutButton:hover svg {
-  color: var(--error);
+  color: var(--color-red-300);
 }
 
 .loginButton:hover {
   background-color: rgba(68, 148, 74, 0.2);
 }
 .loginButton:hover svg {
-  color: var(--green);
+  color: var(--color-green-400);
 }
 
 .hr {
   height: 1px;
   border: none;
-  background-color: var(--grey);
+  background-color: var(--color-gray-300);
 }
 
 /* SIDEBAR */
@@ -201,8 +201,8 @@
   left: 0;
   height: 100vh;
   padding: 100px 20px 20px;
-  background-color: var(--dark-grey);
-  box-shadow: var(--block-shadow);
+  background-color: var(--color-gray-700);
+  box-shadow: var(--shadow-base);
   z-index: 120;
   overflow-y: auto;
 }

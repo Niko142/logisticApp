@@ -13,6 +13,8 @@ const ErrorDisplay = ({
 }: ErrorDisplayProps): React.ReactElement => {
   const navigate = useNavigate();
 
+  // TODO: добавить конфиг actions
+
   return (
     <main className={styles.container}>
       <Icon icon={AlertCircle} size={100} color="red" />

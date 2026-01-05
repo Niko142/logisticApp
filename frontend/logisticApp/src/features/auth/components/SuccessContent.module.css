@@ -13,7 +13,7 @@
   align-items: center;
   text-align: center;
   gap: calc(16px * 3);
-  color: var(--white);
+  color: var(--color-white);
 }
 
 .info {
@@ -34,14 +34,14 @@
 .link {
   font-size: 1.2rem;
   padding: 10px 40px;
-  color: var(--white);
-  background-color: var(--btn-auth);
+  color: var(--color-white);
+  background-color: var(--color-blue-500);
   border: none;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   transition: background-color 0.3s ease-in-out;
 
   &:hover {
-    background-color: var(--btn-auth-hover);
+    background-color: var(--color-blue-600);
   }
 }
 

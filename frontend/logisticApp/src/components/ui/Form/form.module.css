@@ -1,8 +1,8 @@
 .label {
   align-self: baseline;
   font-size: 1.15rem;
-  line-height: 1.2;
-  color: var(--white);
+  line-height: var(--leading-dense);
+  color: var(--color-white);
   margin-bottom: 8px;
   animation: global(fade-up) 0.5s ease-in-out 0.6s both;
   &:not(:first-of-type) {
@@ -14,30 +14,30 @@
   width: 100%;
   display: block;
   font-size: 1.25rem;
-  line-height: 1.25;
+  line-height: var(--leading-tight);
   padding: 10px 15px;
-  border-radius: 14px;
+  border-radius: var(--radius-3);
   border: 0;
   outline: 0;
   animation: global(fade-up) 0.5s ease-in-out 0.6s both;
 
   &:focus,
   &:focus-visible {
-    box-shadow: var(--input-glow);
+    box-shadow: var(--shadow-glow);
   }
 }
 
 .message {
-  font-weight: 500;
   align-self: baseline;
-  color: var(--error);
+  font-weight: var(--text-medium);
+  color: var(color-red-300error);
   margin-block-start: 6px;
 }
 
 .globalMessage {
-  color: var(--error);
-  font-weight: 700;
-  font-size: 1.2rem;
   align-self: center;
+  font-size: 1.2rem;
+  font-weight: var(--text-bold);
   margin-top: 15px;
+  color: var(--color-red-300);
 }

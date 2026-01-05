@@ -1,45 +1,73 @@
 :root {
-  /* font */
-  --text-lg: 16px;
-  --text-md: 15px;
-  --text-sm: 14px;
+  /* === Типографика === */
+  --text-base: 16px;
+  --text-sm: 15px;
+  --text-xs: 14px;
 
-  /* TODO: поменять названия */
+  /* Line-height */
+  --leading-none: 1;
+  --leading-dense: 1.2;
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
 
-  /* Colors */
-  --black: #121113;
-  --white: #f7f9f7;
-  --blue: #1890ff;
-  --dark-blue: #2b3a55;
-  --green: #44944a;
-  --gradient-green: #3c896d;
-  --orange: #ffa500;
-  --red: #d80012;
-  --red-hover: #b6000f;
-  --light-grey: #bbc7ce;
-  --grey: #707070;
-  --grey-hover: #535353;
-  --dark-grey: #353535;
+  /* Font-weight */
+  --text-light: 300;
+  --text-regular: 400;
+  --text-medium: 500;
+  --text-semibold: 600;
+  --text-bold: 700;
 
-  --error: #fb4d3d;
+  /* === Цветовая палитра === */
+  --color-black: #121113;
+  --color-white: #f7f9f7;
 
-  /* Фон и тени */
-  --background-phone: linear-gradient(134deg, #1e2a38 0%, #2b2b2b 100%);
-  --block-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-  --input-glow: 0px 0px 20px 2px rgba(24, 144, 255, 0.4);
+  --color-gray-100: #ececec;
+  --color-gray-200: #bbc7ce;
+  --color-gray-300: #707070;
+  --color-gray-400: #555;
+  --color-gray-500: #535353;
+  --color-gray-600: #3d3d3d;
+  --color-gray-700: #353535;
+  --color-gray-900: #2b2b2b;
 
-  /* Стили для кнопки */
-  --btn-auth: #006bd0;
-  --btn-auth-hover: #00529f;
-  --btn-border: rgb(13, 78, 255);
+  --color-blue-300: #1890ff;
+  --color-blue-500: #006bd0;
+  --color-blue-600: #00529f;
+  --color-blue-800: #2b3a55;
+  --color-blue-900: #1e2a38;
 
-  /* Стили для блока с фильтрами */
-  --filter-background: #ececec;
-  --title: #555;
+  --color-green-400: #44944a;
+  --color-emerald: #3c896d;
 
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --color-orange: #ffa500;
+
+  --color-red-300: #fb4d3d;
+  --color-red-400: #d80012;
+  --color-red-600: #b6000f;
+
+  /* Тени */
+  --shadow-base: 0 2px 6px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0px 0px 20px 2px rgba(24, 144, 255, 0.4);
+
+  /* Градиенты */
+  --gradient-dark: linear-gradient(
+    134deg,
+    var(--color-blue-900) 0%,
+    var(--color-gray-900) 100%
+  );
+
+  /* Закругления (border-radius) */
+  --radius-1: 4px;
+  --radius-2: 8px;
+  --radius-3: 12px;
+  --radius-4: 16px;
+  --radius-6: 24px;
+  --radius-round: 50%;
+  --radius-full: 9999px;
+
+  font-family: "Montserrat", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: var(--leading-normal);
+  font-weight: var(--text-regular);
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -99,16 +127,15 @@
 
 body,
 html {
-  color: var(--black);
+  color: var(--color-black);
 }
 
 html {
-  font-size: var(--text-lg);
+  font-size: var(--text-base);
 }
 
 body {
-  font-family: "Montserrat", sans-serif, -apple-system;
-  background: var(--background-phone);
+  background: var(--gradient-dark);
   min-height: 100vh;
 }
 
@@ -118,11 +145,11 @@ body {
 
 h1 {
   font-size: 3rem;
-  line-height: 1.25;
+  line-height: var(--leading-tight);
 }
 
 a {
-  font-weight: 500;
+  font-weight: var(--text-medium);
   text-decoration: inherit;
 }
 
@@ -142,12 +169,12 @@ ul {
 
 @media screen and (max-width: 992px) {
   html {
-    font-size: var(--text-md);
+    font-size: var(--text-sm);
   }
 }
 
 @media screen and (max-width: 640px) {
   html {
-    font-size: var(--text-sm);
+    font-size: var(--text-xs);
   }
 }

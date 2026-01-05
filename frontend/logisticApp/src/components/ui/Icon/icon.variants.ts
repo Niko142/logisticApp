@@ -9,9 +9,9 @@ export const iconSizeVariants: Record<IconSize, number> = {
 };
 
 export const colorVariants: Record<string, string> = {
-  white: "var(--white)",
-  red: "var(--red)",
-  blue: "var(--blue)",
+  white: "var(--color-white)",
+  red: "var(--color-red-400)",
+  blue: "var(--color-blue-300)",
 };
 
 export const themeVariants: Record<IconVariant, string> = {

@@ -5,7 +5,7 @@
   justify-items: center;
   align-content: center;
   gap: 70px;
-  color: var(--white);
+  color: var(--color-white);
 }
 
 .content {
@@ -17,7 +17,7 @@
 
 .title {
   font-size: 6rem;
-  line-height: 1;
+  line-height: var(--leading-none);
   animation: global(fade-up) 0.5s ease-out 0.3s both;
 }
 

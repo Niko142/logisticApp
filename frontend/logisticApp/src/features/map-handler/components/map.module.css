@@ -24,12 +24,12 @@
   width: auto;
   height: auto;
   font-size: 1.1rem;
-  color: var(--light-grey);
-  background-color: var(--dark-grey);
+  color: var(--color-gray-200);
+  background-color: var(--color-gray-700);
   padding: 18px;
-  border-radius: 8px;
+  border-radius: var(--radius-2);
   overflow: hidden;
-  box-shadow: var(--block-shadow);
+  box-shadow: var(--shadow-base);
   z-index: 100;
 }
 
@@ -51,7 +51,7 @@
 .hr {
   border: none;
   height: 1px;
-  background-color: var(--grey);
+  background-color: var(--color-gray-300);
   margin-block: 8px;
 }
 
@@ -70,16 +70,16 @@
   width: 13px;
   height: 13px;
   &.indicator--green {
-    background-color: var(--green);
+    background-color: var(--color-green-400);
   }
   &.indicator--orange {
-    background-color: var(--orange);
+    background-color: var(--color-orange);
   }
   &.indicator--red {
-    background-color: var(--red);
+    background-color: var(--color-red-400);
   }
 }
 
 .timeRoute {
-  font-weight: 700;
+  font-weight: var(--text-bold);
 }
