@@ -1,5 +1,7 @@
+import type { ActionType } from "@/types/common.types";
+
 // Тип назначений кнопок
-export type ButtonVariant = "default" | "reload" | "authorization" | "back";
+export type ButtonVariant = ActionType | "default";
 
 export interface ButtonProps {
   children: React.ReactNode;

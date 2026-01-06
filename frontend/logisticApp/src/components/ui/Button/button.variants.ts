@@ -6,4 +6,5 @@ export const btnVariants: Record<ButtonVariant, string> = {
   reload: "btn--reload",
   authorization: "btn--auth",
   back: "btn--back",
+  home: "btn--home",
 } as const;

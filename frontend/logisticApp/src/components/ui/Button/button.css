@@ -38,46 +38,65 @@
     }
   }
 
-  &.btn--back {
+  &:where(.btn--back, .btn--reload, .btn--home) {
     font-size: 1.2rem;
-    background-color: var(--color-gray-300);
-    border: 2px solid var(--color-gray-200);
+    border: 2px solid transparent;
     padding: 15px 30px;
-
-    &:hover {
-      border: 2px solid var(--color-gray-300);
-      background-color: var(--color-gray-500);
-    }
-
-    &:focus-visible {
-      color: var(--color-black);
-    }
-  }
-
-  &.btn--reload {
-    font-size: 1.2rem;
-    padding: 15px 30px;
-    background-color: var(--color-red-400);
     align-items: center;
     &:hover {
       transform: scale(1);
-      background-color: var(--color-red-600);
     }
     &:active {
       transform: scale(0.95);
     }
+  }
+
+  &.btn--back {
+    background-color: var(--color-gray-300);
+    border-color: var(--color-gray-200);
+
+    &:hover {
+      border-color: var(--color-gray-300);
+      background-color: var(--color-gray-500);
+    }
+
     &:focus-visible {
+      background-color: var(--color-gray-500);
+      outline: 3px solid var(--color-gray-300);
+    }
+  }
+
+  &.btn--reload {
+    border-color: var(--color-red-800);
+    background-color: var(--color-red-400);
+    &:hover {
+      background-color: var(--color-red-600);
+    }
+    &:focus-visible {
+      background-color: var(--color-red-600);
       outline: 3px solid var(--color-red-600);
+    }
+  }
+
+  &.btn--home {
+    border-color: var(--color-emerald);
+    background-color: var(--color-green-600);
+    &:hover {
+      background-color: var(--color-green-700);
+    }
+    &:focus-visible {
+      background-color: var(--color-green-700);
+      outline: 3px solid var(--color-green-700);
     }
   }
 }
 
 /* Кнопка закрытия для toast и модальных окон */
 .btn--close {
-  background-color: transparent;
-  border: 0;
-  cursor: pointer;
   align-self: baseline;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
   & svg {
     color: var(--color-white);
     transition: color 0.2s ease-in-out;
@@ -89,8 +108,7 @@
 
 @media screen and (max-width: 768px) {
   .btn {
-    &.btn--back,
-    &.btn--reload {
+    &:where(.btn--back, .btn--reload, .btn--home) {
       padding: 12px 24px;
     }
     &.btn--auth {

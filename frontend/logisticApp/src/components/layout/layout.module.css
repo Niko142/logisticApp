@@ -46,6 +46,9 @@
       width: 100%;
     }
   }
+  .title {
+    font-size: 2.4rem;
+  }
   .logo {
     width: 55px;
   }

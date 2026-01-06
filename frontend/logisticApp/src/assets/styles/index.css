@@ -37,6 +37,8 @@
   --color-blue-900: #1e2a38;
 
   --color-green-400: #44944a;
+  --color-green-600: #2f694f;
+  --color-green-700: #285943;
   --color-emerald: #3c896d;
 
   --color-orange: #ffa500;
@@ -44,6 +46,7 @@
   --color-red-300: #fb4d3d;
   --color-red-400: #d80012;
   --color-red-600: #b6000f;
+  --color-red-800: #920000;
 
   /* Тени */
   --shadow-base: 0 2px 6px rgba(0, 0, 0, 0.3);
