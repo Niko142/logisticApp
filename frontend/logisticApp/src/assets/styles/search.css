@@ -77,3 +77,14 @@
     background-color: var(--color-gray-600) !important;
   }
 }
+
+/* Attribution Control */
+
+.leaflet-control-attribution {
+  padding: 2px 24px !important;
+  margin: 0 10px 5px 0 !important;
+  border-radius: var(--radius-full) !important;
+  & > a {
+    color: var(--black) !important;
+  }
+}

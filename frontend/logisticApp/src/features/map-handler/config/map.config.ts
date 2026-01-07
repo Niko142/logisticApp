@@ -1,25 +1,8 @@
-import L from "leaflet";
-
 import type { Coordinates } from "@/types/models/route.types";
 
-import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
-import markerIcon from "leaflet/dist/images/marker-icon.png";
-import markerShadow from "leaflet/dist/images/marker-shadow.png";
+const MAPTILER_KEY = import.meta.env.VITE_MAPTILER_KEY;
 
-// удаляем ненужные иконки маркеров по умолчанию
-export const initLeafletIcons = () => {
-  delete (
-    L.Icon.Default.prototype as unknown as {
-      _getIconUrl: unknown;
-    }
-  )._getIconUrl;
-
-  L.Icon.Default.mergeOptions({
-    iconRetinaUrl: markerIcon2x,
-    iconUrl: markerIcon,
-    shadowUrl: markerShadow,
-  });
-};
+if (!MAPTILER_KEY) console.warn("MAPTILER_KEY отсутствует");
 
 export const MAP_CONFIG = {
   center: [53.1959, 50.1008] as Coordinates,
@@ -27,6 +10,19 @@ export const MAP_CONFIG = {
 } as const;
 
 export const TILE_LAYER_CONFIG = {
-  attribution: "OpenStreetMap",
-  url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+  attribution: `
+    &copy; <a href="https://mourner.github.io/Leaflet/reference">Leaflet</a>, 
+    &copy; <a href="https://www.maptiler.com">MapTiler</a>, 
+    &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors
+  `,
+  url: `https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=${MAPTILER_KEY}`,
+  tileSize: 512,
+  zoomOffset: -1,
+} as const;
+
+export const POLYLINE_CONFIG = {
+  color: "var(--color-blue-300)",
+  weight: 4,
+  opacity: 0.95,
+  lineCap: "round",
 } as const;

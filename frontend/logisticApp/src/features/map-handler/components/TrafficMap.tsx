@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   GeoJSON,
   Marker,
   MapContainer,
   TileLayer,
   Polyline,
+  AttributionControl,
 } from "react-leaflet";
 
 import { setRoute } from "@/services/api";
@@ -14,13 +15,14 @@ import { LocationMarker } from "./LocationMarker";
 import styles from "./map.module.css";
 import SearchInput from "./SearchInput";
 import {
-  initLeafletIcons,
   MAP_CONFIG,
   TILE_LAYER_CONFIG,
+  POLYLINE_CONFIG,
 } from "../config/map.config";
 import { useRoadGraph } from "../hooks/useRoadGraph";
 import { useRoutePoints } from "../hooks/useRoutePoints";
 import { initTrafficStyle } from "../utils/geo";
+import { createMarkerIcon } from "../utils/marker";
 
 export const TrafficMap = () => {
   const { geoData } = useRoadGraph();
@@ -28,14 +30,15 @@ export const TrafficMap = () => {
 
   const { points, routeData, addPoint, clearRoute } = useRoutePoints(setRoute);
 
-  // Инициализация необходимых иконок
-  useEffect(() => {
-    initLeafletIcons();
-  }, []);
-
   return (
     <section className={styles.map}>
-      <MapContainer {...MAP_CONFIG} className={styles.container}>
+      <MapContainer
+        {...MAP_CONFIG}
+        className={styles.container}
+        attributionControl={false}
+      >
+        <AttributionControl position="bottomright" prefix={false} />
+
         <TileLayer {...TILE_LAYER_CONFIG} />
 
         {/* Обработка событий клика по карте */}
@@ -51,15 +54,20 @@ export const TrafficMap = () => {
 
         {/* Сформированный маршрут */}
         {routeData && (
-          <Polyline
-            positions={routeData.path}
-            pathOptions={{ color: "blue", weight: 4 }}
-          />
+          <Polyline positions={routeData.path} pathOptions={POLYLINE_CONFIG} />
         )}
 
         {/* Маркер */}
         {points.map((point, i) => (
-          <Marker key={i} position={point} />
+          <Marker
+            key={i}
+            position={point}
+            icon={
+              i === 0
+                ? createMarkerIcon()
+                : createMarkerIcon("var(--color-red-300)")
+            }
+          />
         ))}
 
         {/* Поле поиска */}
