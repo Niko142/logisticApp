@@ -1,3 +1,5 @@
+// TODO: убрать бесполезные и повторяющие типы
+
 interface AuthBase {
   username: string;
   password: string;

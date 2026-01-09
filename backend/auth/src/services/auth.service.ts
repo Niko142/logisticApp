@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { AppDataSource } from "../config";
 import { User } from "../entities";
 import type { LoginData, RegisterData } from "../types/auth.types";
-import { HttpError } from "../utils/error";
+import { HttpError } from "../utils/error.utils";
 
 const userRepository = () => AppDataSource.getRepository(User);
 

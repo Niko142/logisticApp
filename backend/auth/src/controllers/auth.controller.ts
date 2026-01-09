@@ -2,7 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 
 import type { User } from "../entities";
 import { AuthService } from "../services";
-import { generateToken } from "../utils/jwt";
+import { generateToken } from "../utils/jwt.utils";
 
 const authService = new AuthService();
 
@@ -11,6 +11,7 @@ export class AuthController {
     try {
       const { username, email, password } = req.body;
       const user = await authService.register({ username, email, password });
+
       res.status(201).json({
         success: true,
         message: "Пользователь успешно зарегистрирован",

@@ -4,6 +4,7 @@ import { ChevronsLeft, X } from "lucide-react";
 import { useState } from "react";
 
 import { Icon } from "@/components/ui/Icon";
+import { formateMinuteTime } from "@/utils/time.utils";
 
 import styles from "./map.module.css";
 import { legendItems } from "../constants/legend.data";
@@ -81,8 +82,7 @@ export const Legend = ({ isShowing, onChange, route }: LegendMapProps) => {
               <div>
                 Время маршрута:{" "}
                 <span className={styles.timeRoute}>
-                  {route.totalTimeMin}
-                  мин
+                  {formateMinuteTime(route.totalTimeMin)}
                 </span>
               </div>
             )}

@@ -10,7 +10,7 @@ export const initTrafficStyle =
 
       (layer as L.Path).setStyle({
         color: showTraffic ? getColorByTraffic(traffic) : undefined,
-        weight: 2,
+        weight: 1.5,
       });
     }
   };
