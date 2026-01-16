@@ -1,0 +1,34 @@
+services:
+  routing-service:
+    build:
+      context: ./backend/routing
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/routing/.env.production
+    environment:
+      - ENVIRONMENT=production
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+
+  auth-service:
+    build:
+      context: ./backend/auth
+      dockerfile: Dockerfile
+    env_file:
+      - ./backend/auth/.env.production
+    environment:
+      - ENVIRONMENT=production
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend/logisticApp
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+    ports:
+      - "80:80"
+    restart: unless-stopped

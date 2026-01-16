@@ -30,7 +30,7 @@
 .message {
   align-self: baseline;
   font-weight: var(--text-medium);
-  color: var(color-red-300error);
+  color: var(--color-red-300);
   margin-block-start: 6px;
 }
 

@@ -8,6 +8,8 @@ import type {
   RouteResponse,
 } from "./types/route-api.types";
 
+// const API_ROUTING = import.meta.env.VITE_API_ROUTING_URL;
+
 /**
  * Получение маршрута между двумя точками
  * @param startPoint - Начальная точка
@@ -16,10 +18,10 @@ import type {
  */
 export const setRoute = async (
   startPoint: Coordinates,
-  endPoint: Coordinates
+  endPoint: Coordinates,
 ): Promise<RouteModel | null> => {
   try {
-    const response = await routeInstance.post<RouteResponse>("/api/route", {
+    const response = await routeInstance.post<RouteResponse>("/route", {
       startPoint,
       endPoint,
     });
@@ -40,7 +42,7 @@ export const getRoadGraph = async ({
   signal,
 }: AbortableOptions): Promise<RouteGraphResponse | null> => {
   try {
-    const response = await routeInstance.get("/api/graph", {
+    const response = await routeInstance.get("/graph", {
       signal,
     });
     return response.data;

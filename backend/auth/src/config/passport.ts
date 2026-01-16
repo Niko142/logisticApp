@@ -29,8 +29,8 @@ passport.use(
         }
         return done(err);
       }
-    }
-  )
+    },
+  ),
 );
 
 // Стратегия для защищенных route
@@ -52,6 +52,6 @@ passport.use(
         }
         return done(err);
       }
-    }
-  )
+    },
+  ),
 );

@@ -10,7 +10,7 @@ export const generateToken = (payload: JwtPayload): string => {
     JWT_SECRET as Secret,
     {
       expiresIn: JWT_EXPIRES_IN,
-    } as SignOptions
+    } as SignOptions,
   );
 };
 

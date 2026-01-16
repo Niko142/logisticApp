@@ -3,6 +3,8 @@ import { AxiosError, CanceledError } from "axios";
 import type { AbortableOptions } from "@/types/common.types";
 import type { ErrorResponse } from "@/types/error.types";
 
+// const API_AUTH = import.meta.env.VITE_API_AUTH_URL;
+
 import authInstance from "./instances/auth.instance";
 import type {
   LoginPayload,
@@ -19,15 +21,12 @@ import type {
  */
 export const loginUser = async (data: LoginPayload): Promise<LoginResponse> => {
   try {
-    const response = await authInstance.post<LoginResponse>(
-      "/auth/login",
-      data
-    );
+    const response = await authInstance.post<LoginResponse>("/login", data);
     return response.data;
   } catch (err) {
     const error = err as AxiosError<ErrorResponse>;
     throw new Error(
-      error.response?.data?.message || "Соединение с сервером не установлено"
+      error.response?.data?.message || "Соединение с сервером не установлено",
     );
   }
 };
@@ -38,18 +37,18 @@ export const loginUser = async (data: LoginPayload): Promise<LoginResponse> => {
  * @returns Данные зарегистрированного пользователя и возможность авторизации в системе
  */
 export const registerUser = async (
-  data: RegisterPayload
+  data: RegisterPayload,
 ): Promise<RegisterResponse> => {
   try {
     const response = await authInstance.post<RegisterResponse>(
-      "/auth/register",
-      data
+      "/register",
+      data,
     );
     return response.data;
   } catch (err) {
     const error = err as AxiosError<ErrorResponse>;
     throw new Error(
-      error.response?.data?.message || "Соединение с сервером не установлено"
+      error.response?.data?.message || "Соединение с сервером не установлено",
     );
   }
 };
@@ -62,7 +61,7 @@ export const getUserProfile = async ({
   signal,
 }: AbortableOptions): Promise<ProfileResponse> => {
   try {
-    const response = await authInstance.get<ProfileResponse>("/auth/profile", {
+    const response = await authInstance.get<ProfileResponse>("/profile", {
       signal,
     });
     return response.data;
@@ -86,7 +85,7 @@ export const getUserProfile = async ({
     }
 
     throw new Error(
-      error.response?.data?.message || "Не удалось загрузить профиль"
+      error.response?.data?.message || "Не удалось загрузить профиль",
     );
   }
 };

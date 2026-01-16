@@ -3,7 +3,7 @@ import clsx from "clsx";
 import type { ButtonProps } from "./button.types";
 import { btnVariants } from "./button.variants";
 
-import "./Button.css";
+import "./button.css";
 
 const Button = ({
   variant = "default",

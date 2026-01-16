@@ -5,8 +5,8 @@ import { AnalyticsPage } from "@/features/analytics";
 import { LoginPage, RegisterPage, SuccessPage } from "@/features/auth";
 import { MainPage } from "@/features/map-handler";
 import { PredictPage } from "@/features/predict";
-import { ProfilePage } from "@/features/user-account/profile";
-import { SettingsPage } from "@/features/user-account/settings";
+// import { ProfilePage } from "@/features/user-account/profile";
+// import { SettingsPage } from "@/features/user-account/settings";
 
 import { AuthGate } from "./AuthGate";
 
@@ -53,14 +53,14 @@ export const routes = createBrowserRouter([
             path: "analytics",
             element: <AnalyticsPage />,
           },
-          {
-            path: "settings",
-            element: <SettingsPage />,
-          },
-          {
-            path: "account",
-            element: <ProfilePage />,
-          },
+          // {
+          //   path: "settings",
+          //   element: <SettingsPage />,
+          // },
+          // {
+          //   path: "account",
+          //   element: <ProfilePage />,
+          // },
         ],
       },
     ],

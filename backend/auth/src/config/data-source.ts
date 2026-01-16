@@ -17,8 +17,12 @@ export const AppDataSource = new DataSource({
   database: DATABASE_NAME,
   username: DATABASE_USERNAME,
   password: DATABASE_PASSWORD,
-  // synchronize: true, // Подумать касательно использования
+  ssl:
+    process.env.ENVIRONMENT === "production"
+      ? { rejectUnauthorized: false }
+      : false,
   logging: true,
+  synchronize: false,
   entities: [User],
   subscribers: [],
   migrations: [],

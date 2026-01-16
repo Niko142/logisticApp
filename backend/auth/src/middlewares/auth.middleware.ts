@@ -8,7 +8,7 @@ import type { AuthInfo } from "../types/auth.types";
 export const authenticateLocal = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   passport.authenticate(
     "local",
@@ -30,7 +30,7 @@ export const authenticateLocal = (
 
       req.user = user;
       next();
-    }
+    },
   )(req, res, next);
 };
 
@@ -38,7 +38,7 @@ export const authenticateLocal = (
 export const authenticateJWT = (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) =>
   passport.authenticate(
     "jwt",
@@ -60,5 +60,5 @@ export const authenticateJWT = (
 
       req.user = user;
       next();
-    }
+    },
   )(req, res, next);

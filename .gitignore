@@ -1,5 +1,6 @@
 # Общие
 .env
+.env.production
 .log
 .DS_Store
 .vscode

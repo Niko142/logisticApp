@@ -1,6 +1,6 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import "dotenv/config";
+import "dotenv-flow/config";
 import express, { type Application } from "express";
 import helmet from "helmet";
 import passport from "passport";
@@ -14,20 +14,22 @@ const PORT = process.env.PORT || 3000; // Определяем порт для �
 
 const app: Application = express();
 
+// === CORS конфигурация ===
+const corsOrigins = (process.env.CORS_ORIGINS || process.env.DEV_ORIGINS || "")
+  .split(",")
+  .map((o) => o.trim())
+  .filter(Boolean);
+
+// Настройки Middleware
+app.use(helmet());
 app.use(express.json());
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "http://localhost:5173",
-      "http://localhost:4173",
-      "https://logistic-app-psi.vercel.app", // Production-домен
-    ],
+    origin: corsOrigins.length ? corsOrigins : false,
     credentials: true,
-  })
+  }),
 );
 app.use(express.urlencoded({ extended: false })); // Для работы с формами
-app.use(helmet());
 app.use(cookieParser());
 
 app.use(passport.initialize());
@@ -38,7 +40,7 @@ app.use(errorHandler);
 
 app.get("/", (_, res) => {
   res.json({
-    service: "Auth-service",
+    service: "Auth-Backend",
     status: "running",
     timestamp: new Date().toISOString(),
   });
@@ -54,7 +56,7 @@ app.get("/health", (_, res) => {
 AppDataSource.initialize()
   .then(() => {
     app.listen(PORT, () => {
-      console.log(`Сервер для auth-логики успешно запущен. Порт: ${PORT}`);
+      console.log(`Auth-backend успешно запущен. Порт: ${PORT}`);
     });
   })
   .catch((err) => {

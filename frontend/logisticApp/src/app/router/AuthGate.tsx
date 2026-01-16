@@ -43,7 +43,7 @@ export const AuthGate = () => {
         throw new AppError(
           ErrorCode.AUTH_SERVER_DOWN,
           503,
-          "Сервер авторизации временно недоступен"
+          "Сервер авторизации временно недоступен",
         );
       }
       return <Outlet />;

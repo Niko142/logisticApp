@@ -13,8 +13,8 @@ RUN npm ci
 # Копируем файлы в рабочий каталог
 COPY . .
 
-# Осуществляем сборку для production-версии
-RUN npm run build
+# Собираем в development режиме
+RUN npm run build -- --mode development
 
 # build собран, теперь берем образ Nginx
 FROM nginx:alpine

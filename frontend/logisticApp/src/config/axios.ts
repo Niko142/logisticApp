@@ -11,13 +11,13 @@ const BASE_CONFIG: CreateAxiosDefaults = {
 };
 
 export const AUTH_CONFIG = {
-  baseURL: import.meta.env.VITE_AUTH_URL,
+  baseURL: import.meta.env.VITE_API_AUTH_URL,
   timeout: AUTH_INSTANCE_TIMEOUT,
   ...BASE_CONFIG,
 };
 
 export const ROUTE_CONFIG = {
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: import.meta.env.VITE_API_ROUTING_URL,
   timeout: ROUTE_INSTANCE_TIMEOUT,
   ...BASE_CONFIG,
 };

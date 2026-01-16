@@ -1,4 +1,3 @@
-// import type { RouteResponse } from "@/services/api/types/route-api.types";
 import type { Coordinates, RouteModel } from "@/types/models/route.types";
 
 export interface LocationMarkerProps {

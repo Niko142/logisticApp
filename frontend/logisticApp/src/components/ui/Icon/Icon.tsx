@@ -3,7 +3,7 @@ import clsx from "clsx";
 import type { IconProps } from "./icon.types";
 import { iconSizeVariants, themeVariants } from "./icon.variants";
 
-import "./Icon.css";
+import "./icon.css";
 
 export const Icon = ({
   size = "md",
