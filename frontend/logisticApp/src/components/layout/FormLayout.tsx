@@ -2,7 +2,7 @@ import type { LayoutProps } from "@/types/common.types";
 
 import styles from "./layout.module.css";
 
-import Logo from "@images/logo.svg";
+import Logo from "@images/auth-logo.svg";
 
 export interface FormLayoutProps extends LayoutProps {
   title: string;
