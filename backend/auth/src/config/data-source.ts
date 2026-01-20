@@ -1,29 +1,42 @@
 import "reflect-metadata";
-import { DataSource } from "typeorm";
+import { DataSource, DataSourceOptions } from "typeorm";
+import { User } from "../entities";
 
 import {
   DATABASE_HOST,
-  DATABASE_NAME,
-  DATABASE_PASSWORD,
   DATABASE_PORT,
+  DATABASE_NAME,
   DATABASE_USERNAME,
+  DATABASE_PASSWORD,
 } from "./db";
-import { User } from "../entities";
 
-export const AppDataSource = new DataSource({
-  type: "postgres",
-  host: DATABASE_HOST,
-  port: DATABASE_PORT,
-  database: DATABASE_NAME,
-  username: DATABASE_USERNAME,
-  password: DATABASE_PASSWORD,
-  ssl:
-    process.env.ENVIRONMENT === "production"
-      ? { rejectUnauthorized: false }
-      : false,
-  logging: true,
+const isProduction = process.env.ENVIRONMENT === "production";
+
+const baseConfig = {
+  logging: !isProduction,
   synchronize: false,
   entities: [User],
-  subscribers: [],
-  migrations: [],
-});
+  migrations: isProduction ? ["dist/migrations/*.js"] : ["src/migrations/*.ts"],
+  migrationsTableName: "typeorm_migrations",
+};
+
+const databaseConfig: DataSourceOptions = process.env.DATABASE_URL
+  ? {
+      ...baseConfig,
+      type: "postgres",
+      url: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+      extra: { family: 4 },
+    }
+  : {
+      ...baseConfig,
+      type: "postgres",
+      host: DATABASE_HOST,
+      port: DATABASE_PORT,
+      database: DATABASE_NAME,
+      username: DATABASE_USERNAME,
+      password: DATABASE_PASSWORD,
+      ssl: false,
+    };
+
+export const AppDataSource = new DataSource(databaseConfig);
