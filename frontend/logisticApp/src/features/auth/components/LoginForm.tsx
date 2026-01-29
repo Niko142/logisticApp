@@ -6,8 +6,9 @@ import { FormLayout } from "@/components/layout";
 import { Button } from "@/components/ui/Button";
 import { FormError, FormField } from "@/components/ui/Form";
 import { TOAST_SUCCESS_DURATION } from "@/constants/delay";
+import { APP_BASE_PATH } from "@/constants/domain";
 import { useAuth } from "@/providers/auth";
-import { loginUser } from "@/services/api";
+import { authService } from "@/services/api";
 
 import { loginValidation } from "../config/form.validation";
 import type { LoginFormValues } from "../types/form.types";
@@ -27,7 +28,7 @@ export const LoginForm = (): React.ReactElement => {
   const onSubmit: SubmitHandler<LoginFormValues> = async (formData) => {
     try {
       const response = await toast.promise(
-        loginUser(formData),
+        authService.loginUser(formData),
         {
           loading: "Осуществляем попытку входа...",
           success: "Вход выполнен успешно",
@@ -36,13 +37,13 @@ export const LoginForm = (): React.ReactElement => {
           success: {
             duration: TOAST_SUCCESS_DURATION,
           },
-        }
+        },
       );
 
       if (!response?.token) throw new Error("Токен не получен");
       login(response.token);
 
-      navigate("/app");
+      navigate(APP_BASE_PATH);
     } catch (err) {
       setError("root", {
         type: "server",

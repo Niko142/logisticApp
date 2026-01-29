@@ -1,5 +1,7 @@
 import { CornerDownLeft, HomeIcon, LogIn, RefreshCcw } from "lucide-react";
 
+import { APP_BASE_PATH, LOGIN_PATH } from "@/constants/domain";
+
 import type { ErrorAction } from "./errorBoundary.types";
 
 // Конфигурация опций в зависимости от статуса ошибки
@@ -11,7 +13,7 @@ export const ERROR_ACTIONS: Record<string | number, ErrorAction[]> = {
       label: "Войти",
       variant: "authorization",
       icon: LogIn,
-      handler: (navigate) => navigate("/login"),
+      handler: (navigate) => navigate(LOGIN_PATH),
     },
   ],
 
@@ -29,7 +31,7 @@ export const ERROR_ACTIONS: Record<string | number, ErrorAction[]> = {
       label: "На главную",
       variant: "home",
       icon: HomeIcon,
-      handler: (navigate) => navigate("/app"),
+      handler: (navigate) => navigate(APP_BASE_PATH),
     },
   ],
 
@@ -40,7 +42,7 @@ export const ERROR_ACTIONS: Record<string | number, ErrorAction[]> = {
       label: "На главную",
       icon: HomeIcon,
       variant: "home",
-      handler: (navigate) => navigate("/app"),
+      handler: (navigate) => navigate(APP_BASE_PATH),
     },
     {
       type: "reload",

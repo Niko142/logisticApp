@@ -5,34 +5,36 @@ import type {
   AxiosResponse,
 } from "axios";
 
+import { useAuthStore } from "@/store/auth-store";
+
 type InterceptorOptions = {
   onUnauthorized?: () => void;
 };
 
 export function setupInterceptors<T = unknown>(
   instance: AxiosInstance,
-  options?: InterceptorOptions
+  options?: InterceptorOptions,
 ): AxiosInstance {
   instance.interceptors.request.use(
     (config: InternalAxiosRequestConfig<T>) => {
-      const token = localStorage.getItem("auth_token");
+      const token = useAuthStore.getState().token;
       if (token && config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
       }
       return config;
     },
-    (error: AxiosError) => Promise.reject(error)
+    (error: AxiosError) => Promise.reject(error),
   );
 
   instance.interceptors.response.use(
     (response: AxiosResponse<T>) => response,
     (error: AxiosError) => {
       if (error.response?.status === 401) {
-        localStorage.removeItem("auth_token");
+        useAuthStore.getState().clearToken();
         options?.onUnauthorized?.();
       }
       return Promise.reject(error);
-    }
+    },
   );
 
   return instance;

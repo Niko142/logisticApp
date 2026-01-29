@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { FormLayout } from "@/components/layout";
 import { Button } from "@/components/ui/Button";
 import { FormError, FormField } from "@/components/ui/Form";
-import { registerUser } from "@/services/api";
+import { REGISTER_PATH } from "@/constants/domain";
+import { authService } from "@/services/api";
 
 import { registerValidation } from "../config/form.validation";
 import type { RegisterFormValues } from "../types/form.types";
@@ -37,11 +38,11 @@ export const RegisterForm = (): React.ReactElement => {
     }
 
     try {
-      await toast.promise(registerUser(formData), {
+      await toast.promise(authService.registerUser(formData), {
         loading: "Проверяем указанные данные",
       });
       reset();
-      navigate("/register/success");
+      navigate(`${REGISTER_PATH}/success`);
     } catch (err) {
       setError("root", {
         type: "server",

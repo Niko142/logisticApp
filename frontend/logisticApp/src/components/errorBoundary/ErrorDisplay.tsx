@@ -16,8 +16,6 @@ const ErrorDisplay = ({
 
   const actions = ERROR_ACTIONS[status] || ERROR_ACTIONS.default;
 
-  // TODO: добавить конфиг actions
-
   return (
     <main className={styles.container}>
       <Icon icon={AlertCircle} size={100} color="red" />

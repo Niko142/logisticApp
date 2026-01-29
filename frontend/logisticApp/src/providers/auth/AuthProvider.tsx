@@ -1,86 +1,62 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { useCallback, useEffect, useMemo } from "react";
 
-import { getUserProfile } from "@/services/api";
+import { authService } from "@/services/api";
+import { clearToken, setToken, useToken } from "@/store/auth-store";
 import type { LayoutProps } from "@/types/common.types";
-import type { UserProfile } from "@/types/user.types";
 
 import type { AuthStatus } from "./auth-context.types";
 import { AuthContext } from "./AuthContext";
 
 export const AuthProvider = ({ children }: LayoutProps) => {
-  const [token, setToken] = useState<string | null>(
-    localStorage.getItem("auth_token")
-  ); // Токен авторизации
-  const [profile, setProfile] = useState<UserProfile | null>(null); // Данные о пользователе
-  const [status, setStatus] = useState<AuthStatus>("checking"); // Статус авторизации
+  const token = useToken();
+
+  const { data, isLoading, error, isError } = useQuery({
+    queryKey: ["auth"],
+    queryFn: authService.getUserProfile,
+    enabled: !!token,
+    retry: false,
+  });
 
   // Обработчик успешной авторизации
   const login = useCallback((newToken: string): void => {
-    localStorage.setItem("auth_token", newToken);
     setToken(newToken);
-    setStatus("checking");
   }, []);
 
   // Обработчик выхода из аккаунта
   const logout = useCallback((): void => {
-    localStorage.removeItem("auth_token");
-    setToken(null);
-    setProfile(null);
-    setStatus("anonymous");
+    clearToken();
   }, []);
 
-  // Получаем данные о профиле
-  const loadProfile = useCallback(
-    async (signal: AbortSignal) => {
-      if (!token) {
-        setStatus("anonymous");
-        return;
-      }
-
-      try {
-        const userData = await getUserProfile({ signal });
-        setProfile(userData.profile);
-        setStatus("authenticated");
-      } catch (err) {
-        if (err instanceof Error) {
-          // Игнорируем отмену запроса
-          if (err.message === "CanceledError") {
-            return;
-          }
-          // Сетевая ошибка - сервер недоступен
-          if (err.message === "NETWORK_ERROR") {
-            setStatus("server-down");
-            return;
-          }
-          // Ошибка авторизации - токен невалиден
-          if (err.message === "UNAUTHORIZED") {
-            logout();
-            return;
-          }
-          logout();
-        }
-      }
-    },
-    [token, logout]
-  );
-
   useEffect(() => {
-    const controller = new AbortController();
-    loadProfile(controller.signal);
+    if (isError && error instanceof Error && error.message === "UNAUTHORIZED") {
+      logout();
+    }
+  }, [isError, error, logout]);
 
-    return () => controller.abort();
-  }, [loadProfile]);
+  const status: AuthStatus = useMemo(() => {
+    if (!token) return "anonymous";
+    if (isLoading) return "checking";
+
+    if (isError && error instanceof Error) {
+      if (error.message === "NETWORK_ERROR") return "server-down";
+      if (error.message === "UNAUTHORIZED") return "anonymous";
+    }
+
+    if (isError) return "anonymous";
+
+    return "authenticated";
+  }, [token, isLoading, isError, error]);
 
   const value = useMemo(
     () => ({
       token,
-      profile,
+      profile: data?.profile ?? null,
       status,
-      loadProfile,
       login,
       logout,
     }),
-    [token, profile, status, loadProfile, login, logout]
+    [token, data?.profile, status, login, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

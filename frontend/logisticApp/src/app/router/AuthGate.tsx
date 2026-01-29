@@ -1,18 +1,25 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { BeatLoader } from "react-spinners";
 
+import { APP_BASE_PATH, LOGIN_PATH, REGISTER_PATH } from "@/constants/domain";
 import { AppError } from "@/lib/errors/AppError";
 import { ErrorCode } from "@/lib/errors/error.codes";
 import { useAuth } from "@/providers/auth";
 
-const publicPaths = ["/", "/login", "/register", "/register/success"]; // Публичные маршруты
+// Публичные маршруты
+const publicPaths = [
+  "/",
+  LOGIN_PATH,
+  REGISTER_PATH,
+  `${REGISTER_PATH}/success`,
+];
 
 export const AuthGate = () => {
   const { status } = useAuth();
   const location = useLocation();
 
   const isPublicPath = publicPaths.includes(location.pathname);
-  const isAppPath = location.pathname.startsWith("/app");
+  const isAppPath = location.pathname.startsWith(APP_BASE_PATH);
 
   switch (status) {
     // 1. Инициация статуса загрузки
@@ -25,17 +32,13 @@ export const AuthGate = () => {
 
     // 2. Если авторизован и на публичной странице - редирект в app
     case "authenticated":
-      if (isPublicPath) {
-        return <Navigate to="/app" replace />;
-      }
+      if (isPublicPath) return <Navigate to={APP_BASE_PATH} replace />;
+
       return <Outlet />;
 
     // 3. Если не авторизован и пытается в app - выбрасываем ошибку
     case "anonymous":
-      if (isAppPath) {
-        return <Navigate to="/login" replace />;
-      }
-      return <Outlet />;
+      return isAppPath ? <Navigate to={LOGIN_PATH} replace /> : <Outlet />;
 
     // 4. Если сервер недоступен и пытается в app - выбрасываем ошибку
     case "server-down":
