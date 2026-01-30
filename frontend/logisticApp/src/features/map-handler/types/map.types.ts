@@ -1,16 +1,19 @@
-import type { Coordinates, RouteModel } from "@/types/models/route.types";
+import type { QueryStatus } from "@tanstack/react-query";
 
-export interface LocationMarkerProps {
-  onAddPoint: (point: Coordinates) => void;
+import type { Coordinates } from "@/types/models/route.types";
+
+type MapOverlayType = Exclude<QueryStatus, "success">;
+
+export interface MapEventHandlerProps {
+  onAddPoint: (coordinates: Coordinates) => void;
   onClear: () => void;
-}
-
-export interface LegendMapProps {
-  isShowing: boolean;
-  onChange: () => void;
-  route: RouteModel | null;
 }
 
 export interface SearchInputProps {
   onSelect: (coordinates: Coordinates) => void;
+}
+
+export interface MapOverlayProps {
+  type: MapOverlayType;
+  message?: string;
 }

@@ -15,7 +15,7 @@ const SearchInput = ({ onSelect }: SearchInputProps) => {
     (coords: Coordinates) => {
       onSelect(coords);
     },
-    [onSelect]
+    [onSelect],
   );
 
   useGeoSearch({

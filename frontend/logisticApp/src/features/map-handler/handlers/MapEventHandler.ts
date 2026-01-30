@@ -2,12 +2,17 @@ import { useMapEvents } from "react-leaflet";
 
 import type { Coordinates } from "@/types/models/route.types";
 
-import type { LocationMarkerProps } from "../types/map.types";
+import type { MapEventHandlerProps } from "../types/map.types";
 
-export const LocationMarker = ({
+/**
+ *
+ *
+ * @returns
+ */
+export const MapEventHandler = ({
   onAddPoint,
   onClear,
-}: LocationMarkerProps) => {
+}: MapEventHandlerProps) => {
   useMapEvents({
     click(e) {
       const newPoint: Coordinates = [e.latlng.lat, e.latlng.lng];

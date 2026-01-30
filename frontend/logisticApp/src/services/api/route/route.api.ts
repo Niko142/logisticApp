@@ -1,14 +1,9 @@
 import type { AbortableOptions } from "@/types/common.types";
 import type { Coordinates, RouteModel } from "@/types/models/route.types";
 
-import routeInstance from "./instances/route.instance";
+import type { RouteGraphResponse, RouteResponse } from "./route-api.types";
+import routeInstance from "./route.instance";
 import { mapRouteToModel } from "./route.mapper";
-import type {
-  RouteGraphResponse,
-  RouteResponse,
-} from "./types/route-api.types";
-
-// const API_ROUTING = import.meta.env.VITE_API_ROUTING_URL;
 
 /**
  * Получение маршрута между двумя точками
@@ -16,21 +11,16 @@ import type {
  * @param endPoint - Конечная точка
  * @returns Данные маршрута, приведенные в необходимый вид через mapper
  */
-export const setRoute = async (
+export const buildRoute = async (
   startPoint: Coordinates,
   endPoint: Coordinates,
-): Promise<RouteModel | null> => {
-  try {
-    const response = await routeInstance.post<RouteResponse>("/route", {
-      startPoint,
-      endPoint,
-    });
+): Promise<RouteModel> => {
+  const response = await routeInstance.post<RouteResponse>("/route", {
+    startPoint,
+    endPoint,
+  });
 
-    return mapRouteToModel(response.data);
-  } catch (err: unknown) {
-    console.error("Ошибка при получении маршрута:", err);
-    return null;
-  }
+  return mapRouteToModel(response.data);
 };
 
 /**
@@ -41,15 +31,8 @@ export const setRoute = async (
 export const getRoadGraph = async ({
   signal,
 }: AbortableOptions): Promise<RouteGraphResponse | null> => {
-  try {
-    const response = await routeInstance.get("/graph", {
-      signal,
-    });
-    return response.data;
-  } catch (err: unknown) {
-    if (err instanceof Error && err.name !== "CanceledError") {
-      console.error("Ошибка при получении маршрута:", err);
-    }
-    return null;
-  }
+  const response = await routeInstance.get("/graph", {
+    signal,
+  });
+  return response.data;
 };

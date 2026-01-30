@@ -1,22 +1,27 @@
-import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronsLeft, X } from "lucide-react";
 import { useState } from "react";
 
 import { Icon } from "@/components/ui/Icon";
+import { RouteQueries } from "@/hooks/useRouteQuery";
+import { useRouteStore } from "@/store/route-store";
 import { formateMinuteTime } from "@/utils/time.utils";
 
-import styles from "./map.module.css";
-import { legendItems } from "../constants/legend.data";
+import { legendItems } from "./constants/legend.data";
 import {
   legendAsideVariants,
   legendContentVariants,
-} from "../constants/legend.variants";
-import type { LegendMapProps } from "../types/map.types";
+} from "./constants/legend.variants";
+import { IndicatorItems } from "./IndicatorItems";
+import styles from "./legend.module.css";
+import { ToggleItem } from "./ToggleItem";
 
-export const Legend = ({ isShowing, onChange, route }: LegendMapProps) => {
+export const Legend = (): React.ReactElement => {
+  const { showTraffic, toggleTraffic } = useRouteStore();
+  const { data: routeData } = RouteQueries.useCurrentRoute();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
+  // Обработчик кнопки открытия/закрытия блока
   const handleToggleButton = () => {
     setIsOpen((prev) => !prev);
   };
@@ -53,36 +58,24 @@ export const Legend = ({ isShowing, onChange, route }: LegendMapProps) => {
 
             <ul className={styles.list}>
               {/* Переключатель загруженности */}
-              <li className={styles.item}>
-                <label htmlFor="traffic">
-                  <input
-                    type="checkbox"
-                    id="traffic"
-                    checked={!isShowing}
-                    onChange={onChange}
-                  />
-                  Показывать загруженность
-                </label>
-              </li>
+              <ToggleItem
+                key={"traffic"}
+                id="traffic"
+                label="Показывать загруженность"
+                checked={showTraffic}
+                onChange={toggleTraffic}
+              />
 
               {/* Индикаторы */}
-              {legendItems.map((level) => (
-                <li key={level.colorClass} className={styles.item}>
-                  <span
-                    className={clsx(styles.indicator, styles[level.colorClass])}
-                    aria-label={level.description}
-                  />
-                  {level.label}
-                </li>
-              ))}
+              <IndicatorItems items={legendItems} />
             </ul>
 
             {/* Время маршрута */}
-            {route?.totalTimeMin && (
+            {routeData?.totalTimeMin && (
               <div>
                 Время маршрута:{" "}
                 <span className={styles.timeRoute}>
-                  {formateMinuteTime(route.totalTimeMin)}
+                  {formateMinuteTime(routeData.totalTimeMin)}
                 </span>
               </div>
             )}

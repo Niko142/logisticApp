@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }: LayoutProps) => {
     queryFn: authService.getUserProfile,
     enabled: !!token,
     retry: false,
+    staleTime: Infinity,
   });
 
   // Обработчик успешной авторизации

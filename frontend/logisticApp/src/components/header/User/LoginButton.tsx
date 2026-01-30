@@ -2,6 +2,7 @@ import { LogIn } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 import { Icon } from "@/components/ui/Icon";
+import { LOGIN_PATH } from "@/constants/domain";
 
 import styles from "../header.module.css";
 
@@ -10,7 +11,7 @@ export const LoginButton = (): React.ReactElement => {
 
   // Обработчик для выхода из текущей сессии
   const handleLogin = (): void => {
-    navigate("/login", { replace: true });
+    navigate(LOGIN_PATH, { replace: true });
   };
 
   return (
