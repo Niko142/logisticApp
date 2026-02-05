@@ -1,57 +1,148 @@
-import pandas as pd
 import joblib
+import numpy as np
+import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import make_scorer
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_absolute_error, mean_squared_error
 from app.ml.config import MODEL_PATH
+from app.utils.time_utils import is_peak_hour
 
 class TrafficModel:
+    
     def __init__(self):
-        self.model = RandomForestRegressor(n_estimators=100, random_state=42)
-
-    def train(self, df):
-        X = df[["length", "time_of_day", "traffic_level", "is_peak_hour"]]
+        """Инициализация модели и рассматриваемых признаков"""
+        self.model = RandomForestRegressor(random_state=42)
+        self.feature_columns = [
+            "length",
+            "time_of_day",
+            "traffic_level",
+            "is_peak_hour",
+            "maxspeed",
+            "road_category"
+        ]
+    
+    def train(self, df, quick=False):
+        """Обучение модели на предоставленном датасете"""
+        # Проверка признаков
+        missing_features = set(self.feature_columns) - set(df.columns)
+        if missing_features:
+            raise ValueError(f"Отсутствуют признаки: {missing_features}")
+        
+        X = df[self.feature_columns]
         y = df["travel_time"]
+        
+        # Разделение выборки на обучающую и тестовую
+        X_train, X_val, y_train, y_val = train_test_split(
+            X, y, test_size=0.2, random_state=42
+        )
+        
+        if quick:
+            # Быстрое обучение для тестов
+            print("\nБыстрое обучение...")
+            self.model = RandomForestRegressor(
+                n_estimators=150,
+                max_depth=15,
+                min_samples_split=5,
+                min_samples_leaf=2,
+                max_features="sqrt",
+                random_state=42,
+                n_jobs=-1
+            )
+        else:
+            # Стандартное обучение
+            print("\nСтандартное обучение...")
+            self.model = RandomForestRegressor(
+                n_estimators=100,
+                random_state=42,
+                n_jobs=-1
+            )
+        
+        self.model.fit(X_train, y_train)
+        
+        # Оценка
+        self._evaluate(X_train, y_train, X_val, y_val)
+    
+    def _evaluate(self, X_train, y_train, X_val, y_val):
+        """Оценка модели"""
+        
+        y_train_pred = self.model.predict(X_train)
+        y_val_pred = self.model.predict(X_val)
+        
+        # Метрики
+        train_mae = mean_absolute_error(y_train, y_train_pred)
+        val_mae = mean_absolute_error(y_val, y_val_pred)
+        
+        train_rmse = np.sqrt(mean_squared_error(y_train, y_train_pred))
+        val_rmse = np.sqrt(mean_squared_error(y_val, y_val_pred))
+        
+        train_success = np.mean(np.abs(y_train - y_train_pred) <= 1.0) * 100
+        val_success = np.mean(np.abs(y_val - y_val_pred) <= 1.0) * 100
 
-        # Функция для подсчета успешных предсказаний
-        def success_scorer(y_true, y_pred):
-            errors = abs(y_true - y_pred) <= 1
-            return errors.mean()
-
-        # Параметры для подбора
-        param_grid = {
-            'n_estimators': [100, 200, 300],        # Количество деревьев
-            'max_depth': [None, 10, 20, 30],        # Максимальная глубина дерева
-            'min_samples_split': [2, 5, 10],        # Минимальное количество образцов для разделения
-            'min_samples_leaf': [1, 2, 4],          # Минимальное количество образцов в листьях
-            'max_features': ['auto', 'sqrt', 'log2'],  # Количество признаков для разделения
-            'bootstrap': [True, False]              # Использование bootstrap
-        }
-
-        # Подбор гиперпараметров с использованием custom-счетчика
-        grid_search = GridSearchCV(estimator=self.model, param_grid=param_grid, 
-                                   cv=3, scoring=make_scorer(success_scorer), verbose=2, n_jobs=-1)
-        grid_search.fit(X, y)
-
-        print(f"Лучшие параметры: {grid_search.best_params_}")
-
-        self.model = grid_search.best_estimator_
-        self.model.fit(X, y)
-
-    def predict(self, length, time_of_day, traffic_level):
-        peak = 1 if time_of_day in [7, 8, 9, 17, 18, 19] else 0
-       
+        print("РЕЗУЛЬТАТЫ:")
+        print("-"*60)
+        
+        print("\nОбучающая выборка:")
+        print(f"MAE:  {train_mae:.3f} мин")
+        print(f"RMSE: {train_rmse:.3f} мин")
+        print(f"Точность (±1 мин): {train_success:.1f}%")
+        
+        print("\nТестовая выборка:")
+        print(f"MAE:  {val_mae:.3f} мин")
+        print(f"RMSE: {val_rmse:.3f} мин")
+        print(f"Точность (±1 мин): {val_success:.1f}%")
+        
+        # Важность признаков
+        print("\nОценка важности признаков:")
+        importance = pd.DataFrame({
+            "feature": self.feature_columns,
+            "importance": self.model.feature_importances_
+        }).sort_values("importance", ascending=False)
+        
+        for _, row in importance.iterrows():
+            bar = "█" * int(row["importance"] * 50)
+            print(f"  {row['feature']:20s} {row['importance']:.4f} {bar}")
+    
+    def predict(self, length, time_of_day, traffic_level, maxspeed=50, road_category=1):
+        """Прогноз времени проезда"""
+                
         X = pd.DataFrame([{
             "length": length,
             "time_of_day": time_of_day,
             "traffic_level": traffic_level,
-            "is_peak_hour": peak
+            "is_peak_hour": is_peak_hour(time_of_day),
+            "maxspeed": maxspeed,
+            "road_category": road_category
         }])
         return self.model.predict(X)[0]
+    
+    def predict_from_edge(self, edge_data, time_of_day):
+        """Прогноз с автоматическим извлечением признаков"""
+        
+        length = edge_data.get("length", 100)
 
+        traffic_level = generate_traffic_level(
+            road_category=edge_data.get("road_category", 1),
+            hour=time_of_day
+        )
 
+        
+        maxspeed = edge_data.get("maxspeed", 50)
+        if isinstance(maxspeed, list):
+            maxspeed = maxspeed[0]
+        try:
+            maxspeed = float(maxspeed)
+        except (ValueError, TypeError):
+            maxspeed = 50
+        
+        road_category = edge_data.get("road_category", 1)
+        
+        return self.predict(length, time_of_day, traffic_level, 
+                          maxspeed, road_category)
+    
     def save(self, path=MODEL_PATH):
         joblib.dump(self.model, path)
-
+        print(f"\nМодель сохранена: {path}")
+    
     def load(self, path=MODEL_PATH):
         self.model = joblib.load(path)
+        print(f"\nМодель загружена: {path}")

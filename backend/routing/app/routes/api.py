@@ -1,15 +1,20 @@
-from fastapi import APIRouter, Depends
-import osmnx as ox
-import networkx as nx
-from app.ml.model import TrafficModel
-from pydantic import BaseModel
-from shapely.geometry import LineString, Point
-from fastapi.responses import JSONResponse
-from app.config import GRAPHML_PATH
-import random
-import json
 from datetime import datetime
+from fastapi import APIRouter, Depends
+from fastapi.responses import JSONResponse
+import json
+import networkx as nx
+import osmnx as ox
+from pydantic import BaseModel
+import random
+from shapely.geometry import LineString, Point
+
+from app.config import GRAPHML_PATH
 from app.middlewares.auth import verify_token, optional_verify_token
+from app.ml.model import TrafficModel
+from app.utils.graph_utils import project_point, prepare_graph, pick_closer_node
+from app.utils.geojson_utils import build_feature_collection, build_feature_line
+from app.utils.route_utils import traffic_weight
+from app.utils.traffic_utils import generate_traffic_level
 
 # TODO: Добавить историю маршрутов для авторизированных пользователей
 
@@ -27,29 +32,8 @@ class RouteRequest(BaseModel):
     endPoint: list[float]
     departure_time: str = None
 
-# Функция выбора ближайшего узла
-def pick_closer_node(u, v, point):
-    du = ox.distance.great_circle(
-        G.nodes[u]["y"], G.nodes[u]["x"],
-        point[0], point[1]
-    )
-    dv = ox.distance.great_circle(
-        G.nodes[v]["y"], G.nodes[v]["x"],
-        point[0], point[1]
-    )
-    return u if du < dv else v
-
-# Функция проекции точки на ребро
-def project_point(u, v, k, lat, lon):
-    edge = G.get_edge_data(u, v, k)
-    geom = edge.get("geometry")
-    if geom is None:
-        geom = LineString([
-            (G.nodes[u]["x"], G.nodes[u]["y"]),
-            (G.nodes[v]["x"], G.nodes[v]["y"])
-        ])
-    point = Point(lon, lat)
-    return geom.interpolate(geom.project(point))
+# Вызываем подготовку графа при старте сервера
+prepare_graph(G)
 
 @router.post("/route")
 def get_route(data: RouteRequest, current_user = Depends(verify_token)):
@@ -68,8 +52,8 @@ def get_route(data: RouteRequest, current_user = Depends(verify_token)):
         u2, v2, k2 = edge_end
 
         # Проецируем точки
-        start_proj = project_point(u1, v1, k1, *data.startPoint)
-        end_proj = project_point(u2, v2, k2, *data.endPoint)
+        start_proj = project_point(G, u1, v1, k1, *data.startPoint)
+        end_proj = project_point(G, u2, v2, k2, *data.endPoint)
 
         # Вычисляем расстояния начальной и конечной точки до проекций
         dist_start = ox.distance.great_circle(
@@ -82,8 +66,8 @@ def get_route(data: RouteRequest, current_user = Depends(verify_token)):
         )
 
         # Выбираем ближайшие узлы к проекциям
-        start_node = pick_closer_node(u1, v1, data.startPoint)
-        end_node = pick_closer_node(u2, v2, data.endPoint)
+        start_node = pick_closer_node(G, u1, v1, data.startPoint)
+        end_node = pick_closer_node(G, u2, v2, data.endPoint)
 
         current_time = (
             datetime.now() 
@@ -92,109 +76,117 @@ def get_route(data: RouteRequest, current_user = Depends(verify_token)):
         )
         current_hour = current_time.hour
 
-        # Определяем вес маршрута, влияющий на выбор итогового пути
-        def weight_function(u, v, edge_data):
-            length = edge_data.get("length", 100)
-            traffic_level = edge_data.get("traffic_level", random.choice([0, 1, 2]))
-            return length * (1 + traffic_level * 0.5)
-
-        # Поиск кратчайшего пути, который будет выступать основой маршрута
-        route_nodes = nx.shortest_path(G, start_node, end_node, weight=weight_function)
+        # Поиск кратчайшего пути, который будет выступать основой для маршрута
+        route_nodes = nx.shortest_path(
+            G, start_node, end_node, 
+            weight=lambda u, v, d: traffic_weight(d, current_hour)
+        )
 
         features = []
         total_time = 0
         total_length = 0
 
-        # Линия от точки клика до проекции на дороге
+        # Начальный участок
         start_line = LineString([
             (data.startPoint[1], data.startPoint[0]),
             (start_proj.x, start_proj.y)
         ])
-
-        # Расчет времени для начального участка
         start_time = (dist_start / 50000) * 60
         total_length += dist_start
         total_time += start_time
 
-        features.append({
-            "type": "Feature",
-            "geometry": json.loads(json.dumps(start_line.__geo_interface__)),
-            "properties": {
-                "segment_type": "start_connection",
-                "length": round(dist_start, 1),
-                "traffic_level": 0,
-                "predicted_time": round(start_time, 1),
-            }
-        })
+        features.append(
+            build_feature_line(
+                coords=[(data.startPoint[1], data.startPoint[0]),(start_proj.x, start_proj.y)],
+                segment_type="start_connection",
+                predicted_time=start_time,
+                traffic_level=0,
+                length=dist_start
+            )
+        )
 
-        # Основной маршрут 
+        # Основной маршрут
         for u, v in zip(route_nodes[:-1], route_nodes[1:]):
-            edge_data = G.get_edge_data(u, v)[0]
+            edge_data = list(G.get_edge_data(u, v).values())[0]
             length = edge_data.get("length", 100)
             geometry = edge_data.get("geometry")
 
-            coords = (
-                list(geometry.coords)
-                if geometry
-                else [
-                    (G.nodes[u]["x"], G.nodes[u]["y"]),
-                    (G.nodes[v]["x"], G.nodes[v]["y"])
-                ]
+            coords = list(geometry.coords) if geometry else [
+                (G.nodes[u]["x"], G.nodes[u]["y"]),
+                (G.nodes[v]["x"], G.nodes[v]["y"])
+            ]
+
+            traffic_level = generate_traffic_level(
+                road_category=edge_data.get("road_category", 1),
+                hour=current_hour
             )
 
-            # Формируем уровень загруженности на основе случайного подбора уровня
-            traffic_level = edge_data.get("traffic_level", random.choice([0, 1, 2]))
-            predicted_time = traffic_model.predict(length, current_hour, traffic_level)
+            maxspeed = edge_data.get("maxspeed", 50)
+            if isinstance(maxspeed, list):
+                maxspeed = maxspeed[0]
+            try:
+                maxspeed = float(maxspeed)
+            except (ValueError, TypeError):
+                maxspeed = 50
+
+            road_category = edge_data.get("road_category", 1)
+
+            predicted_time = traffic_model.predict(
+                length=length,
+                time_of_day=current_hour,
+                traffic_level=traffic_level,
+                maxspeed=maxspeed,
+                road_category=road_category
+            )
 
             total_length += length
             total_time += predicted_time
-    
+
             line = LineString(coords)
 
-            features.append({
-                "type": "Feature",
-                "geometry": json.loads(json.dumps(line.__geo_interface__)),
-                "properties": {
-                    "segment_type": "route",
-                    "length": round(length, 1),
-                    "traffic_level": traffic_level,
-                    "predicted_time": round(predicted_time, 1),
-                }
-            })
-
-        # Линия от проекции на дороге до конечной точки маркера
+            features.append(
+                build_feature_line(
+                    coords=coords,
+                    segment_type="route",
+                    predicted_time=predicted_time,
+                    traffic_level=traffic_level,
+                    length=length,
+                    extra_props={
+                        "maxspeed": maxspeed,
+                        "road_category": road_category
+                    }
+                )
+            )
+        
+        # Конечный участок
         end_line = LineString([
             (end_proj.x, end_proj.y),
             (data.endPoint[1], data.endPoint[0])
         ])
-
-        # Расчет времени для конечного участка
         end_time = (dist_end / 50000) * 60
         total_length += dist_end
         total_time += end_time
 
-        features.append({
-            "type": "Feature",
-            "geometry": json.loads(json.dumps(end_line.__geo_interface__)),
-            "properties": {
-                "segment_type": "end_connection",
-                "length": round(dist_end, 1),
-                "traffic_level": 0,
-                "predicted_time": round(end_time, 1),
-            }
-        })
-        
-        response = {
-            "type": "FeatureCollection",
-            "features": features,
-            "summary": {
+        features.append(
+            build_feature_line(
+                coords=[(end_proj.x, end_proj.y), (data.endPoint[1], data.endPoint[0])],
+                segment_type="end_connection",
+                predicted_time=end_time,
+                traffic_level=0,
+                length=dist_end
+            )
+        )
+
+        # Формируем итоговый GeoJSON
+        response = build_feature_collection(
+            features=features,
+            summary= {
                 "total_length_km": round(total_length / 1000, 1),
                 "total_predicted_time_min": round(total_time),
                 "departure_time": current_time.isoformat(),
                 "user": current_user["username"]
             }
-        }
-
+        )
         return JSONResponse(content=response)
 
     except Exception as e:
@@ -204,12 +196,14 @@ def get_route(data: RouteRequest, current_user = Depends(verify_token)):
 def get_full_graph(current_user = Depends(optional_verify_token)):
     """Получение полного графа с информацией о загруженности дорог"""
     features = []
-
-    # Для авторизованных пользователей показываем больше деталей
     show_detailed_info = current_user is not None
+    current_hour = datetime.now().hour
 
     for u, v, k in G.edges(keys=True):
         edge_data = G.get_edge_data(u, v, k)
+        if not isinstance(edge_data, dict):
+            continue
+
         geometry = edge_data.get("geometry")
 
         coords = list(geometry.coords) if geometry else [
@@ -218,30 +212,38 @@ def get_full_graph(current_user = Depends(optional_verify_token)):
         ]
 
         # Имитация загруженности
-        traffic_level = random.choice([0, 1, 2])
+        traffic_level = generate_traffic_level(
+            road_category=edge_data.get("road_category", 1),
+            hour=current_hour
+        )
+
         line = LineString(coords)
 
         properties = {"traffic_level": traffic_level}
-        
+
         # Дополнительная информация для авторизованных пользователей
         if show_detailed_info:
+            maxspeed = edge_data.get("maxspeed", 40)
+            if isinstance(maxspeed, list):
+                maxspeed = maxspeed[0]
             properties.update({
                 "length": edge_data.get("length", 100),
                 "highway": edge_data.get("highway", "unknown"),
-                "max-speed": edge_data.get("max-speed", "unknown")
+                "maxspeed": maxspeed,
+                "road_category": edge_data.get("road_category", 1)
             })
 
-        feature = {
+        features.append({
             "type": "Feature",
             "geometry": json.loads(json.dumps(line.__geo_interface__)),
             "properties": properties
-        }
-        features.append(feature)
+        })
 
     geojson = {
         "type": "FeatureCollection",
         "features": features,
-        "user_authenticated": current_user is not None
+        "user_authenticated": current_user is not None,
+        "current_hour": current_hour
     }
 
     return JSONResponse(content=geojson)
