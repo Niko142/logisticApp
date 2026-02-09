@@ -1,23 +1,26 @@
 import json
 from shapely.geometry import LineString
+from typing import Optional, Union, Any
+from app.types.common import Coords, PredictTime, TrafficLevel, RoadCategory, Speed
+from app.types.geo import FeatureProperties, SegmentType, RouteSummary
 
-def build_feature_line(coords, segment_type, predicted_time, traffic_level, length=None, extra_props=None):
+def build_feature_line(
+    *,
+    coords: Coords, 
+    properties: FeatureProperties
+    ) -> dict:
     """Формируем GeoJSON Feature для линии маршрута"""
-    props = {
-        "segment_type": segment_type,
-        "length": round(length, 1) if length else 0,
-        "traffic_level": traffic_level,
-        "predicted_time": round(predicted_time, 1)
-    }
-    if extra_props:
-        props.update(extra_props)
+
     return {
         "type": "Feature",
         "geometry": json.loads(json.dumps(LineString(coords).__geo_interface__)),
-        "properties": props
+        "properties": properties
     }
 
-def build_feature_collection(features, summary):
+def build_feature_collection(
+    features: list[dict], 
+    summary: RouteSummary
+    ) -> dict:
     """Формируем GeoJSON FeatureCollection для ответа API"""
     return {
         "type": "FeatureCollection",

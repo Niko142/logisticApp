@@ -1,6 +1,7 @@
+from app.types.graph import EdgeData
 from app.utils.traffic_utils import generate_traffic_level
 
-def traffic_weight(edge_data, hour):
+def traffic_weight(edge_data: EdgeData, hour: int) -> float:
     """Функция для назначения весовых коэффициентов ребрам дорожного графа"""
     length = edge_data.get("length", 100)
 

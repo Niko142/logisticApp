@@ -2,7 +2,7 @@ import sys
 from app.ml.dataset import DatasetGenerator
 from app.ml.model import TrafficModel
 
-def train(num_samples=10000):
+def train(num_samples: int=10000):
     """Обучение модели"""
 
     print("ОБУЧЕНИЕ МОДЕЛИ")

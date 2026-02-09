@@ -5,6 +5,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from app.ml.config import MODEL_PATH
+from app.types.common import TrafficLevel, RoadCategory, Speed
+from app.types.graph import EdgeData
 from app.utils.time_utils import is_peak_hour
 
 class TrafficModel:
@@ -21,7 +23,7 @@ class TrafficModel:
             "road_category"
         ]
     
-    def train(self, df, quick=False):
+    def train(self, df: pd.DataFrame, quick: bool=False):
         """Обучение модели на предоставленном датасете"""
         # Проверка признаков
         missing_features = set(self.feature_columns) - set(df.columns)
@@ -102,7 +104,7 @@ class TrafficModel:
             bar = "█" * int(row["importance"] * 50)
             print(f"  {row['feature']:20s} {row['importance']:.4f} {bar}")
     
-    def predict(self, length, time_of_day, traffic_level, maxspeed=50, road_category=1):
+    def predict(self, length, time_of_day: int, traffic_level: TrafficLevel, maxspeed:Speed=50, road_category: RoadCategory=1):
         """Прогноз времени проезда"""
                 
         X = pd.DataFrame([{
@@ -115,7 +117,7 @@ class TrafficModel:
         }])
         return self.model.predict(X)[0]
     
-    def predict_from_edge(self, edge_data, time_of_day):
+    def predict_from_edge(self, edge_data: EdgeData, time_of_day: int):
         """Прогноз с автоматическим извлечением признаков"""
         
         length = edge_data.get("length", 100)

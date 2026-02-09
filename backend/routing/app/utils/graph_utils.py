@@ -1,8 +1,10 @@
 import osmnx as ox
 from shapely.geometry import LineString, Point
+from app.types.common import RoadCategory, HighWayType, Speed
+from app.types.graph import EdgeData
 from app.utils.traffic_utils import generate_traffic_level
 
-def categorize_road(highway):
+def categorize_road(highway: HighWayType) -> RoadCategory:
     """ Простая разделение дороги на категории:
     3 = крупные дороги
     2 = средние дороги
@@ -23,7 +25,7 @@ def categorize_road(highway):
     else:
         return 0
 
-def get_default_speed(highway):
+def get_default_speed(highway: HighWayType) -> Speed:
     """Получаем скорость по умолчанию"""
     if isinstance(highway, list):
         highway = highway[0]
@@ -45,7 +47,7 @@ def get_default_speed(highway):
     
     return 40
 
-def get_default_lanes(highway):
+def get_default_lanes(highway: HighWayType) -> int:
     """Получаем количество полос у дороги по умолчанию"""
     if isinstance(highway, list):
         highway = highway[0]
@@ -59,9 +61,9 @@ def get_default_lanes(highway):
     else:
         return 1
 
-def project_point(G, u, v, k, lat, lon):
+def project_point(G, u: int, v: int, k: int, lat: float, lon: float) -> Point:
     """Функция для формирования проекции точки на ребро графа"""
-    edge = G.get_edge_data(u, v, k)
+    edge: EdgeData = G.get_edge_data(u, v, k)
     geom = edge.get("geometry")
     if geom is None:
         geom = LineString([
@@ -71,7 +73,7 @@ def project_point(G, u, v, k, lat, lon):
     point = Point(lon, lat)
     return geom.interpolate(geom.project(point))
 
-def pick_closer_node(G, u, v, point):
+def pick_closer_node(G, u: int, v: int, point: tuple[float, float]) -> int:
     """Функция выбора ближайшего узла (для достраивания маршрутов)"""
     du = ox.distance.great_circle(
         G.nodes[u]["y"], G.nodes[u]["x"],
@@ -83,11 +85,11 @@ def pick_closer_node(G, u, v, point):
     )
     return u if du < dv else v
 
-def prepare_graph(G):
+def prepare_graph(G) -> None:
     """Подготовка графа: добавление атрибутов"""
 
     for u, v, k, data in G.edges(keys=True, data=True):
-        highway = data.get("highway", "unknown")
+        highway: HighWayType = data.get("highway", "unknown")
 
         G[u][v][k]["road_category"] = categorize_road(highway)
 

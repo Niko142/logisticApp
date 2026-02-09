@@ -2,7 +2,9 @@ import numpy as np
 import osmnx as ox
 import pandas as pd
 import random
+from typing import Union
 from app.config import GRAPHML_PATH
+from app.types.common import TrafficLevel, Speed
 from app.utils.graph_utils import categorize_road, get_default_speed, get_default_lanes
 from app.utils.time_utils import is_peak_hour
 from app.utils.traffic_utils import generate_traffic_level
@@ -32,7 +34,7 @@ class DatasetGenerator:
             if "lanes" not in data or data["lanes"] is None:
                 self.G[u][v][k]["lanes"] = get_default_lanes(highway)
     
-    def _calculate_travel_time(self, length, maxspeed, traffic_level):
+    def _calculate_travel_time(self, length: Union[int, float], maxspeed: Speed, traffic_level: TrafficLevel) -> float:
         """ Расчет времени проезда
         Логика:
         - traffic_level=0: полная скорость
@@ -59,7 +61,7 @@ class DatasetGenerator:
         
         return travel_time
     
-    def generate_dataset(self, num_samples=10000):
+    def generate_dataset(self, num_samples: int=10000):
         """Генерация датасета"""
         
         edges_list = list(self.G.edges(keys=True))

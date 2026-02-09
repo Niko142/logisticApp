@@ -3,7 +3,7 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error
 from app.ml.model import TrafficModel
 
 
-def test():
+def test() -> None:
     print("ТЕСТИРОВАНИЕ МОДЕЛИ")
     print("-"*60)
     

@@ -98,10 +98,12 @@ def get_route(data: RouteRequest, current_user = Depends(verify_token)):
         features.append(
             build_feature_line(
                 coords=[(data.startPoint[1], data.startPoint[0]),(start_proj.x, start_proj.y)],
-                segment_type="start_connection",
-                predicted_time=start_time,
-                traffic_level=0,
-                length=dist_start
+                properties={
+                    "segment_type": 'start_connection',
+                    "length": dist_start,
+                    "traffic_level": 0,
+                    "predicted_time": start_time
+                }
             )
         )
 
@@ -147,11 +149,11 @@ def get_route(data: RouteRequest, current_user = Depends(verify_token)):
             features.append(
                 build_feature_line(
                     coords=coords,
-                    segment_type="route",
-                    predicted_time=predicted_time,
-                    traffic_level=traffic_level,
-                    length=length,
-                    extra_props={
+                    properties={
+                        "segment_type": "route",
+                        "predicted_time": predicted_time,
+                        "traffic_level": traffic_level,
+                        "length": length,
                         "maxspeed": maxspeed,
                         "road_category": road_category
                     }
@@ -170,10 +172,12 @@ def get_route(data: RouteRequest, current_user = Depends(verify_token)):
         features.append(
             build_feature_line(
                 coords=[(end_proj.x, end_proj.y), (data.endPoint[1], data.endPoint[0])],
-                segment_type="end_connection",
-                predicted_time=end_time,
-                traffic_level=0,
-                length=dist_end
+                properties={
+                    "segment_type": "end_connection",
+                    "predicted_time": end_time,
+                    "traffic_level": 0,
+                    "length": dist_end
+                }
             )
         )
 
@@ -193,7 +197,7 @@ def get_route(data: RouteRequest, current_user = Depends(verify_token)):
         return JSONResponse(content={"error": str(e)}, status_code=500)
 
 @router.get("/graph")
-def get_full_graph(current_user = Depends(optional_verify_token)):
+def get_full_graph(current_user=Depends(optional_verify_token)):
     """Получение полного графа с информацией о загруженности дорог"""
     features = []
     show_detailed_info = current_user is not None
