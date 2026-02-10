@@ -1,4 +1,5 @@
 import sys
+
 from app.ml.dataset import DatasetGenerator
 from app.ml.model import TrafficModel
 

@@ -1,4 +1,4 @@
-from app.types.graph import EdgeData
+from app.types import EdgeData
 from app.utils.traffic_utils import generate_traffic_level
 
 def traffic_weight(edge_data: EdgeData, hour: int) -> float:

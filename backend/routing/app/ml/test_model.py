@@ -1,16 +1,16 @@
 import numpy as np
 from sklearn.metrics import mean_absolute_error, mean_squared_error
-from app.ml.model import TrafficModel
 
+from app.ml.traffic_model import get_traffic_model
 
 def test() -> None:
     print("ТЕСТИРОВАНИЕ МОДЕЛИ")
     print("-"*60)
     
     # Загрузка
-    model = TrafficModel()
+    train_model = get_traffic_model()
     try:
-        model.load()
+        train_model
     except FileNotFoundError:
         print("\nОшибка: Модель не найдена!")
         return
@@ -65,7 +65,7 @@ def test() -> None:
     expected = []
     
     for i, (length, hour, traffic, speed, cat, exp, desc) in enumerate(tests, 1):
-        pred = model.predict(length, hour, traffic, speed, cat)
+        pred = train_model.predict(length, hour, traffic, speed, cat)
         error = abs(pred - exp)
         
         predictions.append(pred)

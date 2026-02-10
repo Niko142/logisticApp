@@ -1,5 +1,5 @@
 from typing import Literal, TypedDict, Union
-from app.types.common import PredictTime, RoadCategory, TrafficLevel, Speed
+from app.types import PredictTime, RoadCategory, TrafficLevel, Speed
 
 SegmentType = Literal['start_connection', 'route', 'end_connection']
 

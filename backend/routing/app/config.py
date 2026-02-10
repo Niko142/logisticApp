@@ -10,3 +10,4 @@ DATA_DIR.mkdir(parents=True, exist_ok=True)
 # Пути к файлам
 GRAPHML_PATH = DATA_DIR / "samara_graph.graphml"
 GEOJSON_PATH = DATA_DIR / "samara_graph.json"
+SCHEMAS_PATH = BASE_DIR / "schemas.py"

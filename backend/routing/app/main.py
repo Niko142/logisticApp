@@ -1,7 +1,8 @@
-import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+import os
+
 from app.config import GEOJSON_PATH
 from app.routes import api
 

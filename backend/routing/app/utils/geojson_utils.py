@@ -1,8 +1,16 @@
 import json
 from shapely.geometry import LineString
 from typing import Optional, Union, Any
-from app.types.common import Coords, PredictTime, TrafficLevel, RoadCategory, Speed
-from app.types.geo import FeatureProperties, SegmentType, RouteSummary
+from app.types import (
+    Coords, 
+    FeatureProperties, 
+    PredictTime, 
+    RoadCategory, 
+    RouteSummary,
+    SegmentType, 
+    Speed,
+    TrafficLevel
+)
 
 def build_feature_line(
     *,

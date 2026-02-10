@@ -1,10 +1,11 @@
-import osmnx as ox
-import os
 import json
+import os
+import osmnx as ox
 from pathlib import Path
 from config import GRAPHML_PATH, GEOJSON_PATH
 
 def download_samara_graph(save_path=GRAPHML_PATH):
+    """Загрузка дорожного графа в области г. Самара"""
     # Выбранная область, город
     place_name = "Samara, Russia"
 
@@ -18,8 +19,8 @@ def download_samara_graph(save_path=GRAPHML_PATH):
 
     return graph
 
-# преобразование графа в geoJson для frontend-части
 def export_to_geojson(graph, filename=GEOJSON_PATH):
+    """Преобразование графа в GeoJSON-формат"""
     gdf_edges = ox.graph_to_gdfs(graph, nodes=False)
     geojson_data = gdf_edges.to_json()
 

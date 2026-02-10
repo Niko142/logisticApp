@@ -3,8 +3,9 @@ import osmnx as ox
 import pandas as pd
 import random
 from typing import Union
+
 from app.config import GRAPHML_PATH
-from app.types.common import TrafficLevel, Speed
+from app.types import TrafficLevel, Speed
 from app.utils.graph_utils import categorize_road, get_default_speed, get_default_lanes
 from app.utils.time_utils import is_peak_hour
 from app.utils.traffic_utils import generate_traffic_level

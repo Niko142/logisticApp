@@ -4,16 +4,17 @@ import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, mean_squared_error
+
 from app.ml.config import MODEL_PATH
-from app.types.common import TrafficLevel, RoadCategory, Speed
-from app.types.graph import EdgeData
+from app.types import EdgeData, TrafficLevel, RoadCategory, Speed
+from app.utils.graph_utils import generate_traffic_level
 from app.utils.time_utils import is_peak_hour
 
 class TrafficModel:
     
     def __init__(self):
         """Инициализация модели и рассматриваемых признаков"""
-        self.model = RandomForestRegressor(random_state=42)
+        self.model = joblib.load(MODEL_PATH)
         self.feature_columns = [
             "length",
             "time_of_day",
@@ -28,7 +29,7 @@ class TrafficModel:
         # Проверка признаков
         missing_features = set(self.feature_columns) - set(df.columns)
         if missing_features:
-            raise ValueError(f"Отсутствуют признаки: {missing_features}")
+            raise ValueError(f"Отсутствуют необходимые признаки: {missing_features}")
         
         X = df[self.feature_columns]
         y = df["travel_time"]
@@ -116,30 +117,6 @@ class TrafficModel:
             "road_category": road_category
         }])
         return self.model.predict(X)[0]
-    
-    def predict_from_edge(self, edge_data: EdgeData, time_of_day: int):
-        """Прогноз с автоматическим извлечением признаков"""
-        
-        length = edge_data.get("length", 100)
-
-        traffic_level = generate_traffic_level(
-            road_category=edge_data.get("road_category", 1),
-            hour=time_of_day
-        )
-
-        
-        maxspeed = edge_data.get("maxspeed", 50)
-        if isinstance(maxspeed, list):
-            maxspeed = maxspeed[0]
-        try:
-            maxspeed = float(maxspeed)
-        except (ValueError, TypeError):
-            maxspeed = 50
-        
-        road_category = edge_data.get("road_category", 1)
-        
-        return self.predict(length, time_of_day, traffic_level, 
-                          maxspeed, road_category)
     
     def save(self, path=MODEL_PATH):
         joblib.dump(self.model, path)

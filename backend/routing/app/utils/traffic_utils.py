@@ -1,5 +1,6 @@
 import random
-from app.types.common import RoadCategory, TrafficLevel
+
+from app.types import RoadCategory, TrafficLevel
 from app.utils.time_utils import is_peak_hour
 
 def generate_traffic_level(road_category: RoadCategory, hour: int) -> TrafficLevel:
