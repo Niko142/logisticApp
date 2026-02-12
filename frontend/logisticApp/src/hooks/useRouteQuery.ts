@@ -1,6 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { getRoadGraph, buildRoute } from "@/services/api";
+import {
+  getRoadGraph,
+  buildRoute,
+  buildAlternativeRoute,
+} from "@/services/api";
 import { clearPoints } from "@/store/route-store";
 import type { Coordinates, RouteModel } from "@/types/models/route.types";
 
@@ -17,13 +21,13 @@ const useRoadGraph = () => {
 };
 
 /**
- * Построение маршрута
+ * Построение основного маршрута
  */
 const useBuildRoute = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ["route"],
+    mutationKey: ["main_route"],
     mutationFn: ({
       startPoint,
       endPoint,
@@ -31,6 +35,10 @@ const useBuildRoute = () => {
       startPoint: Coordinates;
       endPoint: Coordinates;
     }) => buildRoute(startPoint, endPoint),
+
+    onMutate: () => {
+      queryClient.removeQueries({ queryKey: ["alternative_routes"] });
+    },
 
     onSuccess: (data: RouteModel) => {
       // Сохраняем текущий маршрут
@@ -40,6 +48,22 @@ const useBuildRoute = () => {
     onError: (error: Error) => {
       console.error("Ошибка построения маршрута:", error);
     },
+  });
+};
+
+/**
+ * Построение альтернативного маршрута (на основе текущего)
+ */
+const useAlternativeRoutes = (
+  startPoint?: Coordinates,
+  endPoint?: Coordinates,
+  enabled?: boolean,
+) => {
+  return useQuery<RouteModel[]>({
+    queryKey: ["alternative_routes"],
+    queryFn: () => buildAlternativeRoute(startPoint!, endPoint!),
+    enabled: enabled && !!startPoint && !!endPoint,
+    staleTime: Infinity,
   });
 };
 
@@ -56,20 +80,23 @@ const useCurrentRoute = () => {
 };
 
 /**
- * Полная очистка маршрута (включая отображение на карте)
+ * Полная очистка данных маршрута из кеша
  */
 const useClearRoute = () => {
   const queryClient = useQueryClient();
 
   return () => {
     clearPoints();
-    queryClient.setQueryData(["currentRoute"], null); // Очищаем маршрут в менеджере
+    //Очищаем маршруты в менеджере
+    queryClient.removeQueries({ queryKey: ["currentRoute"] });
+    queryClient.removeQueries({ queryKey: ["alternative_routes"] });
   };
 };
 
 export const RouteQueries = {
   useRoadGraph,
   useBuildRoute,
+  useAlternativeRoutes,
   useCurrentRoute,
   useClearRoute,
 };

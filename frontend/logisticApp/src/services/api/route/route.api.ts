@@ -6,10 +6,10 @@ import routeInstance from "./route.instance";
 import { mapRouteToModel } from "./route.mapper";
 
 /**
- * Получение маршрута между двумя точками
+ * Получение основного маршрута между двумя точками
  * @param startPoint - Начальная точка
  * @param endPoint - Конечная точка
- * @returns Данные маршрута, приведенные в необходимый вид через mapper
+ * @returns Данные основного маршрута, приведенные в необходимый вид через mapper
  */
 export const buildRoute = async (
   startPoint: Coordinates,
@@ -20,7 +20,30 @@ export const buildRoute = async (
     endPoint,
   });
 
-  return mapRouteToModel(response.data);
+  return mapRouteToModel(response.data.routes.main);
+};
+
+/**
+ * Получение альтернативного маршрута между двумя точками
+ * @param startPoint - Начальная точка
+ * @param endPoint - Конечная точка
+ * @returns Данные альтернативного маршрута, приведенные в необходимый вид через mapper
+ */
+export const buildAlternativeRoute = async (
+  startPoint: Coordinates,
+  endPoint: Coordinates,
+): Promise<RouteModel[]> => {
+  const response = await routeInstance.post<RouteResponse>(
+    "/route/alternatives",
+    {
+      startPoint,
+      endPoint,
+    },
+  );
+
+  const alternatives = response.data.routes.alternatives ?? [];
+
+  return alternatives.map(mapRouteToModel);
 };
 
 /**

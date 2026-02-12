@@ -17,7 +17,12 @@ import styles from "./legend.module.css";
 import { ToggleItem } from "./ToggleItem";
 
 export const Legend = (): React.ReactElement => {
-  const { showTraffic, toggleTraffic } = useRouteStore();
+  const {
+    showTraffic,
+    toggleTraffic,
+    showAlternativeRoutes,
+    toggleAlternativeRoutes,
+  } = useRouteStore();
   const { data: routeData } = RouteQueries.useCurrentRoute();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -64,6 +69,14 @@ export const Legend = (): React.ReactElement => {
                 label="Показывать загруженность"
                 checked={showTraffic}
                 onChange={toggleTraffic}
+              />
+
+              <ToggleItem
+                key={"alternative_route"}
+                id="alternative_route"
+                label="Показать альтернативный маршрут"
+                checked={showAlternativeRoutes}
+                onChange={toggleAlternativeRoutes}
               />
 
               {/* Индикаторы */}

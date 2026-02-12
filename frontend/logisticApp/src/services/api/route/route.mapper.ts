@@ -1,6 +1,6 @@
 import type { Coordinates, RouteModel } from "@/types/models/route.types";
 
-import type { RouteResponse } from "./route-api.types";
+import type { RouteApiModel } from "./route-api.types";
 
 /**
  * Преобразование ответа от API в модель маршрута для отображения на карте
@@ -11,7 +11,7 @@ import type { RouteResponse } from "./route-api.types";
  * @param response - Ответ от API с данными маршрута
  * @returns Модель маршрута с координатами и общей предсказанной длительностью
  */
-export const mapRouteToModel = (response: RouteResponse): RouteModel => {
+export const mapRouteToModel = (response: RouteApiModel): RouteModel => {
   if (!response.features || response.features.length === 0) {
     return { path: [] };
   }
@@ -31,11 +31,8 @@ export const mapRouteToModel = (response: RouteResponse): RouteModel => {
       lng,
     ]);
 
-    if (index === 0) {
-      path.push(...convertedCoords);
-    } else {
-      path.push(...convertedCoords.slice(1));
-    }
+    if (index === 0) path.push(...convertedCoords);
+    else path.push(...convertedCoords.slice(1));
   });
 
   return {

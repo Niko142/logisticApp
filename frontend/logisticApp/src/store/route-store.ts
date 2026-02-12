@@ -7,11 +7,13 @@ interface IActions {
   addPoint: (point: Coordinates) => void;
   clearPoints: () => void;
   toggleTraffic: () => void;
+  toggleAlternativeRoutes: () => void;
 }
 
 interface IInitialState {
   points: Coordinates[];
   showTraffic: boolean;
+  showAlternativeRoutes: boolean;
 }
 
 type RouteStore = IActions & IInitialState;
@@ -19,6 +21,7 @@ type RouteStore = IActions & IInitialState;
 const initialState: IInitialState = {
   points: [],
   showTraffic: true,
+  showAlternativeRoutes: false,
 };
 
 export const useRouteStore = create<RouteStore>()(
@@ -38,22 +41,33 @@ export const useRouteStore = create<RouteStore>()(
         set((state) => ({
           showTraffic: !state.showTraffic,
         })),
+      // Выкл/вкл демонстрацию и формирование альтернативного маршрута
+      toggleAlternativeRoutes: () =>
+        set((state) => ({
+          showAlternativeRoutes: !state.showAlternativeRoutes,
+        })),
     }),
     {
       name: "route-state",
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({
         showTraffic: state.showTraffic,
+        showAlternativeRoutes: state.showAlternativeRoutes,
       }),
     },
   ),
 );
 
-// Селекторы
-export const useRoutePoints = () => useRouteStore((state) => state.points);
-export const useShowTraffic = () => useRouteStore((state) => state.showTraffic);
+// Селекторы для быстрого вызова
+export const useRoutePoints = () => useRouteStore((s) => s.points);
+export const useShowTraffic = () => useRouteStore((s) => s.showTraffic);
+export const useShowAlternativeRoutes = () =>
+  useRouteStore((s) => s.showAlternativeRoutes);
+
 export const addPoint = (point: Coordinates): void =>
   useRouteStore.getState().addPoint(point);
 export const clearPoints = (): void => useRouteStore.getState().clearPoints();
 export const toggleTraffic = (): void =>
   useRouteStore.getState().toggleTraffic();
+export const toggleAlternativeRoutes = (): void =>
+  useRouteStore.getState().toggleAlternativeRoutes();

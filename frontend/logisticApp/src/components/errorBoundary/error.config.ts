@@ -42,7 +42,7 @@ export const ERROR_ACTIONS: Record<string | number, ErrorAction[]> = {
       label: "На главную",
       icon: HomeIcon,
       variant: "home",
-      handler: (navigate) => navigate(APP_BASE_PATH),
+      handler: (navigate) => navigate(LOGIN_PATH),
     },
     {
       type: "reload",

@@ -7,6 +7,7 @@ import styles from "./map.module.css";
 import SearchInput from "./SearchInput";
 import { MAP_CONFIG } from "../config/map.config";
 import { MapEventHandler } from "../handlers/MapEventHandler";
+import { AlternativeRouteLayer } from "./layers/AlternativeRouteLayer";
 import { MarkerLayer } from "./layers/MarkerLayer";
 import { RouteLayer } from "./layers/RouteLayer";
 import { TrafficLayer } from "./layers/TrafficLayer";
@@ -42,8 +43,10 @@ export const TrafficMap = () => {
 
         {/* Слой дорожного графа, отображающий загруженность дорог */}
         <TrafficLayer />
-        {/* Слой сформированного маршрута */}
+        {/* Слой для сформированного основного маршрута */}
         <RouteLayer />
+        {/* Слой для альтернативных маршрутов */}
+        <AlternativeRouteLayer />
         {/* Слой маркеров точек (стартовая и конечная точка) */}
         <MarkerLayer />
 

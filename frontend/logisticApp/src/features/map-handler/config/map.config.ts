@@ -19,9 +19,18 @@ export const MAP_CONFIG = {
     zoomOffset: -1,
   } as const,
   polyline: {
-    color: "var(--color-blue-300)",
-    weight: 4,
-    opacity: 0.95,
-    lineCap: "round",
+    mainRoute: {
+      color: "var(--color-blue-300)",
+      weight: 4,
+      opacity: 0.95,
+      lineCap: "round",
+    },
+    alternativeRoute: {
+      color: "var(--color-gray-500)",
+      weight: 4,
+      opacity: 0.95,
+      dashArray: "8",
+      lineCap: "round",
+    },
   } as const,
 } as const;
