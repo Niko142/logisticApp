@@ -16,7 +16,9 @@ const useRoadGraph = () => {
     queryKey: ["graph"],
     queryFn: ({ signal }) => getRoadGraph({ signal }),
     retry: 3,
-    staleTime: Infinity,
+    retryDelay: 3000,
+    staleTime: 30 * 60 * 1000, // 30 минут
+    gcTime: 6 * 60 * 60 * 1000, // 6 часов
   });
 };
 
@@ -44,10 +46,6 @@ const useBuildRoute = () => {
       // Сохраняем текущий маршрут
       queryClient.setQueryData(["currentRoute"], data);
     },
-
-    onError: (error: Error) => {
-      console.error("Ошибка построения маршрута:", error);
-    },
   });
 };
 
@@ -60,7 +58,7 @@ const useAlternativeRoutes = (
   enabled?: boolean,
 ) => {
   return useQuery<RouteModel[]>({
-    queryKey: ["alternative_routes"],
+    queryKey: ["alternative_routes", startPoint, endPoint],
     queryFn: () => buildAlternativeRoute(startPoint!, endPoint!),
     enabled: enabled && !!startPoint && !!endPoint,
     staleTime: Infinity,
@@ -87,9 +85,11 @@ const useClearRoute = () => {
 
   return () => {
     clearPoints();
-    //Очищаем маршруты в менеджере
+    // Очищаем маршруты в менеджере
     queryClient.removeQueries({ queryKey: ["currentRoute"] });
     queryClient.removeQueries({ queryKey: ["alternative_routes"] });
+    // Сбрасываем основной маршрут, чтобы не было "зависших" данных
+    queryClient.resetQueries({ queryKey: ["main_route"] });
   };
 };
 

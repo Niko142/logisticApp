@@ -17,6 +17,7 @@ export const useRouteController = (points: Coordinates[]) => {
       addPoint(point);
 
       if (points.length === 1) {
+        buildRoute.reset(); // Сброс предыдущего состояния запроса
         buildRoute.mutate({
           startPoint: points[0],
           endPoint: point,
@@ -29,5 +30,6 @@ export const useRouteController = (points: Coordinates[]) => {
   return {
     handleAddPoint,
     isBuilding: buildRoute.isPending,
+    isError: buildRoute.isError,
   };
 };

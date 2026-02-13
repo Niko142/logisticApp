@@ -3,22 +3,25 @@ import { MapContainer, TileLayer, AttributionControl } from "react-leaflet";
 import { RouteQueries } from "@/hooks/useRouteQuery";
 import { useRouteStore } from "@/store/route-store";
 
+import {
+  AlternativeRouteLayer,
+  MarkerLayer,
+  RouteLayer,
+  TrafficLayer,
+} from "./layers";
+import { Legend } from "./Legend";
 import styles from "./map.module.css";
 import SearchInput from "./SearchInput";
 import { MAP_CONFIG } from "../config/map.config";
 import { MapEventHandler } from "../handlers/MapEventHandler";
-import { AlternativeRouteLayer } from "./layers/AlternativeRouteLayer";
-import { MarkerLayer } from "./layers/MarkerLayer";
-import { RouteLayer } from "./layers/RouteLayer";
-import { TrafficLayer } from "./layers/TrafficLayer";
-import { Legend } from "./Legend";
 import { useRouteController } from "../hooks/useRouteController";
+import { RouteOverlay } from "./overlays/RouteOverlay";
 
 export const TrafficMap = () => {
   const { points } = useRouteStore();
 
   // Обработчик добавления точки
-  const { handleAddPoint } = useRouteController(points);
+  const { handleAddPoint, isBuilding, isError } = useRouteController(points);
 
   // Обработчик для очистки маршрута на карте (правый клик мыши)
   const handleClearRoute = RouteQueries.useClearRoute();
@@ -52,6 +55,8 @@ export const TrafficMap = () => {
 
         {/* Поле поиска */}
         <SearchInput onSelect={handleAddPoint} />
+        {/* Обработка состояний при выполнении запроса на формирование маршрута */}
+        <RouteOverlay isFetching={isBuilding} isError={isError} />
       </MapContainer>
 
       <Legend />
