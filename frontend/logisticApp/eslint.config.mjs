@@ -1,29 +1,33 @@
-import js from "@eslint/js";
-import globals from "globals";
+// @ts-check
+import { defineConfig } from "eslint/config";
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
-import tseslint from "typescript-eslint";
-import { globalIgnores } from "eslint/config";
 import importPlugin from "eslint-plugin-import";
 
-export default tseslint.config([
-  globalIgnores(["dist"]),
+export default defineConfig(
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
+
   {
     files: ["**/*.{ts,tsx}"],
-    extends: [
-      js.configs.recommended,
-      tseslint.configs.recommended,
-      reactHooks.configs["recommended-latest"],
-      reactRefresh.configs.vite,
-    ],
+
     plugins: {
+      "react-hooks": reactHooks,
+      "react-refresh": reactRefresh,
       import: importPlugin,
     },
+
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: {
+        browser: true,
+      },
     },
+
     rules: {
+      // Порядок импортов
       "import/order": [
         "error",
         {
@@ -36,16 +40,8 @@ export default tseslint.config([
             "object",
           ],
           pathGroups: [
-            {
-              pattern: "@/**",
-              group: "internal",
-              position: "after",
-            },
-            {
-              pattern: "**/*.{css,scss}",
-              group: "index",
-              position: "after",
-            },
+            { pattern: "@/**", group: "internal", position: "after" },
+            { pattern: "**/*.{css,scss}", group: "index", position: "after" },
             {
               pattern: "**/*.{png,jpg,jpeg,svg}",
               group: "index",
@@ -54,12 +50,14 @@ export default tseslint.config([
           ],
           pathGroupsExcludedImportTypes: ["builtin"],
           "newlines-between": "always",
-          alphabetize: {
-            order: "asc",
-            caseInsensitive: true,
-          },
+          alphabetize: { order: "asc", caseInsensitive: true },
         },
       ],
+
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn",
     },
+
+    ignores: ["dist"],
   },
-]);
+);
