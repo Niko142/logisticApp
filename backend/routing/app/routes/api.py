@@ -1,12 +1,11 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
-from typing import Optional
 
 from app.core.graph import load_graph
-from app.middlewares.auth import verify_token, optional_verify_token
+from app.middlewares.auth import optional_verify_token, verify_token
 from app.routing.main import build_routes
-from app.types import RouteRequest
-from app.services import RoutingService, GraphService, build_response
+from app.services import GraphService, RoutingService, build_response
+from app.schemas import RouteRequest
 
 # TODO: Добавить историю маршрутов для авторизированных пользователей
 
@@ -18,6 +17,7 @@ G = load_graph()
 # Подключаем сервисы
 routing_service = RoutingService(G)
 graph_service = GraphService(G)
+
 
 @router.post("/route")
 def get_route(data: RouteRequest, current_user=Depends(verify_token)):
@@ -32,7 +32,7 @@ def get_route(data: RouteRequest, current_user=Depends(verify_token)):
             start_node=route_context["start_node"],
             end_node=route_context["end_node"],
             hour=route_context["current_hour"],
-            include_alternatives=False
+            include_alternatives=False,
         )
 
         # Формируем ответ
@@ -42,13 +42,15 @@ def get_route(data: RouteRequest, current_user=Depends(verify_token)):
             route=main_route,
             route_context=route_context,
             user=current_user,
-            include_alternatives=False
+            include_alternatives=False,
         )
 
     except Exception as e:
         import traceback
+
         traceback.print_exc()
         return JSONResponse(content={"error": str(e)}, status_code=500)
+
 
 @router.post("/route/alternatives")
 def get_alternatives(data: RouteRequest, current_user=Depends(verify_token)):
@@ -63,7 +65,7 @@ def get_alternatives(data: RouteRequest, current_user=Depends(verify_token)):
             start_node=route_context["start_node"],
             end_node=route_context["end_node"],
             hour=route_context["current_hour"],
-            include_alternatives=True
+            include_alternatives=True,
         )
 
         return build_response(
@@ -71,12 +73,11 @@ def get_alternatives(data: RouteRequest, current_user=Depends(verify_token)):
             route_context=route_context,
             user=current_user,
             include_alternatives=True,
-            alternatives=routes_data.get("alternatives", [])
+            alternatives=routes_data.get("alternatives", []),
         )
 
     except Exception as e:
         return JSONResponse(content={"error": str(e)}, status_code=500)
-
 
 
 @router.get("/graph")

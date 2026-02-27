@@ -1,7 +1,9 @@
 import osmnx as ox
-from app.types import RouteRequest
-from app.utils.graph_utils import project_point, pick_closer_node
+
+from app.schemas import RouteRequest
+from app.utils.graph_utils import pick_closer_node, project_point
 from app.utils.time_utils import parse_datetime
+
 
 class RoutingService:
     def __init__(self, graph):
@@ -10,7 +12,9 @@ class RoutingService:
     def resolve_route_context(self, data: RouteRequest):
         """Подготовка контекста для построения маршрута"""
         # 1. Находим ближайшие ребра
-        edge_start = ox.nearest_edges(self.G, X=data.startPoint[1], Y=data.startPoint[0])
+        edge_start = ox.nearest_edges(
+            self.G, X=data.startPoint[1], Y=data.startPoint[0]
+        )
         edge_end = ox.nearest_edges(self.G, X=data.endPoint[1], Y=data.endPoint[0])
         u1, v1, k1 = edge_start
         u2, v2, k2 = edge_end
@@ -21,12 +25,10 @@ class RoutingService:
 
         # 3. Расстояния
         dist_start = ox.distance.great_circle(
-            data.startPoint[0], data.startPoint[1],
-            start_proj.y, start_proj.x
+            data.startPoint[0], data.startPoint[1], start_proj.y, start_proj.x
         )
         dist_end = ox.distance.great_circle(
-            data.endPoint[0], data.endPoint[1],
-            end_proj.y, end_proj.x
+            data.endPoint[0], data.endPoint[1], end_proj.y, end_proj.x
         )
 
         # 4. Ближайшие узлы

@@ -1,5 +1,7 @@
-from typing import Literal, TypedDict, Union
-from app.types.common import RoadCategory, TrafficLevel, Speed
+from typing import TypedDict, Union
+
+from app.schemas import RoadCategory, Speed
+
 
 class EdgeData(TypedDict, total=False):
     length: Union[int, float]

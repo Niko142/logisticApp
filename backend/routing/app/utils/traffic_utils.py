@@ -1,10 +1,11 @@
 import random
 
-from app.types import RoadCategory, TrafficLevel
+from app.schemas import RoadCategory, TrafficLevel
 from app.utils.time_utils import is_peak_hour
 
+
 def generate_traffic_level(road_category: RoadCategory, hour: int) -> TrafficLevel:
-    """ Логика загруженности ориентировочно на основе типа дороги и времени
+    """Логика загруженности ориентировочно на основе типа дороги и времени
     Принцип:
     - Крупные дороги (category =3): высокая загруженность в час-пик
     - Средние дороги (category=2): умеренная загруженность
@@ -19,7 +20,7 @@ def generate_traffic_level(road_category: RoadCategory, hour: int) -> TrafficLev
         else:
             # Не в час-пик: 50% свободно, 40% умеренно, 10% пробка
             weights = [0.5, 0.4, 0.1]
-        
+
     elif road_category == 2:  # Средние дороги
         if peak:
             # В час-пик: 20% свободно, 50% умеренно, 30% пробка
@@ -27,7 +28,7 @@ def generate_traffic_level(road_category: RoadCategory, hour: int) -> TrafficLev
         else:
             # Не в час-пик: 60% свободно, 30% умеренно, 10% пробка
             weights = [0.6, 0.3, 0.1]
-        
+
     elif road_category == 1:  # Мелкие дороги
         if peak:
             # В час-пик: 40% свободно, 40% умеренно, 20% пробка
@@ -39,4 +40,4 @@ def generate_traffic_level(road_category: RoadCategory, hour: int) -> TrafficLev
     else:  # Остальное
         weights = [0.7, 0.2, 0.1]
 
-    return random.choices([0, 1, 2], weights=weights)[0] # type: ignore
+    return random.choices([0, 1, 2], weights=weights)[0]  # type: ignore

@@ -1,8 +1,9 @@
-import json
 import os
-import osmnx as ox
 from pathlib import Path
-from config import GRAPHML_PATH, GEOJSON_PATH
+
+import osmnx as ox
+from config import GEOJSON_PATH, GRAPHML_PATH
+
 
 def download_samara_graph(save_path=GRAPHML_PATH):
     """Загрузка дорожного графа в области г. Самара"""
@@ -19,6 +20,7 @@ def download_samara_graph(save_path=GRAPHML_PATH):
 
     return graph
 
+
 def export_to_geojson(graph, filename=GEOJSON_PATH):
     """Преобразование графа в GeoJSON-формат"""
     gdf_edges = ox.graph_to_gdfs(graph, nodes=False)
@@ -30,6 +32,7 @@ def export_to_geojson(graph, filename=GEOJSON_PATH):
         f.write(geojson_data)
 
     print(f"GeoJSON сформирован и сохранен: {filename}")
+
 
 # Проверка
 if __name__ == "__main__":

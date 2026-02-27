@@ -1,12 +1,15 @@
+from typing import Optional, TypedDict
+
 from pydantic import BaseModel
 from shapely.geometry import Point
-from typing import Optional, TypedDict
+
 
 class RouteRequest(BaseModel):
     startPoint: list[float]
     endPoint: list[float]
     departure_time: Optional[str] = None
     include_alternatives: bool = False
+
 
 class RouteContext(TypedDict, total=False):
     start_node: int

@@ -2,6 +2,7 @@ from app.ml.model import TrafficModel
 
 _traffic_model: TrafficModel | None = None
 
+
 def get_traffic_model() -> TrafficModel:
     """
     Возвращает глобальный экземпляр TrafficModel.

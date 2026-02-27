@@ -4,13 +4,13 @@ from app.utils.traffic_utils import generate_traffic_level
 
 
 def build_route_features(G, route_nodes: list, hour: int, traffic_model):
-    """ Построение GeoJSON features для заданного маршрута.
+    """Построение GeoJSON features для заданного маршрута.
     Args:
         G: граф дорожной сети
         route_nodes: список узлов маршрута
         hour: текущий час
         traffic_model: обученная ML модель для предсказания времени
-    
+
     Returns:
         tuple: (features, total_length, total_time)
             - features: список GeoJSON features
@@ -31,17 +31,20 @@ def build_route_features(G, route_nodes: list, hour: int, traffic_model):
         geometry = edge_data.get("geometry")
 
         # Формируем координаты
-        coords = list(geometry.coords) if geometry else [
-            (G.nodes[u]["x"], G.nodes[u]["y"]),
-            (G.nodes[v]["x"], G.nodes[v]["y"])
-        ]
+        coords = (
+            list(geometry.coords)
+            if geometry
+            else [
+                (G.nodes[u]["x"], G.nodes[u]["y"]),
+                (G.nodes[v]["x"], G.nodes[v]["y"]),
+            ]
+        )
 
         road_category = edge_data.get("road_category", 1)
 
         # Получаем уровень трафика
         traffic_level = generate_traffic_level(
-            road_category=edge_data.get("road_category", 1),
-            hour=hour
+            road_category=edge_data.get("road_category", 1), hour=hour
         )
 
         maxspeed = edge_data.get("maxspeed", 50)
@@ -57,7 +60,7 @@ def build_route_features(G, route_nodes: list, hour: int, traffic_model):
             time_of_day=hour,
             traffic_level=traffic_level,
             maxspeed=maxspeed,
-            road_category=road_category
+            road_category=road_category,
         )
 
         total_length += length
@@ -71,7 +74,7 @@ def build_route_features(G, route_nodes: list, hour: int, traffic_model):
                     "predicted_time": predicted_time,
                     "traffic_level": traffic_level,
                     "length": length,
-                }
+                },
             )
         )
 
