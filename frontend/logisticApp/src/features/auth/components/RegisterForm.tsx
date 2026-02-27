@@ -1,4 +1,4 @@
-import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
@@ -16,27 +16,16 @@ export const RegisterForm = (): React.ReactElement => {
   const {
     register,
     handleSubmit,
-    control,
     setError,
     reset,
-    setFocus,
     formState: { errors },
-  } = useForm<RegisterFormValues>({ mode: "onSubmit" });
-
-  // Наблюдаем за password для валидации подтверждения пароля
-  const password = useWatch({ control, name: "password" });
+  } = useForm<RegisterFormValues>({
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
 
   // Обработчик отправки данных
   const onSubmit: SubmitHandler<RegisterFormValues> = async (formData) => {
-    if (formData.password !== formData.confirmPassword) {
-      setError("confirmPassword", {
-        type: "custom",
-        message: "Пароли не совпали, повторите попытку",
-      });
-      setFocus("confirmPassword");
-      return;
-    }
-
     try {
       await toast.promise(authService.registerUser(formData), {
         loading: "Проверяем указанные данные",
@@ -87,9 +76,8 @@ export const RegisterForm = (): React.ReactElement => {
         name="confirmPassword"
         label="Подтвердите пароль:"
         register={register}
-        error={errors.confirmPassword}
+        error={errors.password ? undefined : errors.confirmPassword}
         rules={registerValidation.confirmPassword}
-        customError={(err) => password && err && <FormError error={err} />}
       />
 
       <FormError error={errors.root} global />

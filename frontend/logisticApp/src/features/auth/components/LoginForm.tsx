@@ -23,8 +23,12 @@ export const LoginForm = (): React.ReactElement => {
     resetField,
     setFocus,
     formState: { errors },
-  } = useForm<LoginFormValues>({ mode: "onSubmit" });
+  } = useForm<LoginFormValues>({
+    mode: "onSubmit",
+    reValidateMode: "onSubmit",
+  });
 
+  // Обработчик отправки данных
   const onSubmit: SubmitHandler<LoginFormValues> = async (formData) => {
     try {
       const response = await toast.promise(

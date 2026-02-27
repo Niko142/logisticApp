@@ -14,8 +14,7 @@ export const FormField = <T extends FieldValues>({
   error,
   autoComplete = "off",
 }: FormFieldProps<T>) => {
-  // !!! для связки label и input хорошее решение
-  const formId = useId();
+  const formId = useId(); // Для связи label и input
 
   return (
     <>

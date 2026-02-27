@@ -19,5 +19,4 @@ export interface FormFieldProps<T extends FieldValues> {
   register: UseFormRegister<T>;
   error?: FieldError;
   rules?: RegisterOptions<T, Path<T>>;
-  customError?: (err: FieldError | undefined) => React.ReactNode;
 }
