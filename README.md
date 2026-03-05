@@ -12,7 +12,7 @@
 
 В результате, компоненты успешно взаимодействуют между собой, свидетельствуя о корректно организованной программе.
 
-[Демонстрация проекта](logistic-app-psi.vercel.app)
+[Демонстрация проекта](https://logistic-app-psi.vercel.app)
 
 ## Установка и запуск проекта
 
@@ -23,9 +23,9 @@ git clone https://github.com/Niko142/logisticApp.git
 cd logisticApp
 ```
 
-### Вариант 1 - запуск через Docker
+### Вариант 1 - запуск через Docker (рекомендуется)
 
-Позволяет запустить frontend и backend в одном терминале
+Позволяет запустить все сервисы (`frontend`, `routing-backend`, `auth-backend`, `db`) в одном терминале
 
 #### Запуск проекта
 
@@ -35,7 +35,9 @@ docker-compose up --build
 
 Frontend: `http://localhost:5173`
 
-Backend API: `http://localhost:8000`
+Routing API: `http://localhost:8000`
+
+Auth API: `http://localhost:3000`
 
 ### Вариант 2 - ручная сборка
 
@@ -55,53 +57,74 @@ npm run build
 npm run preview
 ```
 
-#### :two: Установка и запуск backend
+#### :two: Установка и запуск auth-сервиса
 
-Переходим в папку backend:
+Переходим в папку `auth`:
+
+```bash
+cd backend/auth
+```
+
+Устанавливаем зависимости и собираем проект:
+
+```bash
+npm install
+npm run build
+```
+
+Запускаем production-версию:
+
+```bash
+npm run start
+```
+
+#### :three: Установка и запуск routing-сервиса
+
+Переходим в папку `routing`:
 
 ```bash
 cd backend/routing
 ```
 
-Формируем виртуальное окружение:
+Устанавливаем зависимости через `uv`:
 
 ```bash
-python -m venv .venv
+uv sync
 ```
 
-Теперь активируем его и устанавливаем зависимости:
+Если `uv` не установлен, то:
 
 ```bash
-.\.venv\Scripts\activate
-pip install -r requirements.txt
+# Linux or MacOS
+curl -LsSf https://astral.sh/uv/install.sh | sh
+# Windows
+powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
 ```
 
-#### :three: Загрузка необходимых модулей
+#### :four: Загрузка необходимых модулей
 
 Для корректной работы системы подгружаем граф:
 
 ```bash
-python app/map_loader.py
+uv run python -m app.map_loader
 ```
 
-Для обучения модели (сама модель сформирована) можно применить следующий модуль:
+Для обучения модели (опционально):
 
 ```bash
-python -m app.ml.train_model
+uv run python -m app.ml.train_model
 ```
 
 Проверка модели:
 
 ```bash
-python -m app.ml.test_model
+uv run python -m app.ml.test_model
 ```
 
-#### :four: Запуск backend (если не применяется Docker)
-
-Поскольку используется FastAPI:
+#### :five: Запуск routing-сервиса
 
 ```bash
-uvicorn app.main:app --reload
+uv run uvicorn main:app --reload
 ```
 
 ## Стек технологий
@@ -109,40 +132,33 @@ uvicorn app.main:app --reload
 **Frontend**:
 
 - React + Router
-
-- JavaScript
-
+- TypeScript
 - CSS
+- Leaflet - визуализация интерактивных карт
+- Recharts - визуализация аналитических графиков
 
-- Leaflet (визуализация интерактивных карт)
+**Auth-backend**:
 
-- Recharts (визуализация графика)
+- Node.js/TypeScript
+- Express
+- TypeORM + PostgreSQL
+- JWT + Passport.js
 
-**Backend**:
+**Routing-backend**:
 
-- Python
-
-- FastAPI
-
-- Uvicorn
-
-- Scikit-learn (ML-модель на базе Random Forest)
-
-- NetworkX (алгоритм поиска маршрута)
-
-- OSM (Географические данные)
+- Python + FastAPI + Uvicorn
+- uv - менеджер зависимостей и запуска сервиса
+- Scikit-learn - ML-модель на базе Random Forest
+- NetworkX - алгоритм поиска маршрутов
+- OSMnx - Географические данные
 
 **Прочее**:
 
-- Vite (Сборщик)
-
-- Docker
-
-- Vercel (frontend deploy)
-
-- Render (backend deploy)
-
-- Nginx (обработка запросов для Docker)
+- Vite - сборщик клиентской части
+- Docker + Nginx - контейнеризация и проксирование запросов
+- Vercel - деплой frontend-части
+- Render - деплой backend-сервисов
+- Supabase - хостинг БД в production
 
 ## Database & migrations
 
