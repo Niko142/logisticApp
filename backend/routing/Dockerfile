@@ -2,7 +2,8 @@
 FROM python:3.13-slim
 
 ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1
+    PYTHONDONTWRITEBYTECODE=1 \
+    UV_SYSTEM_PYTHON=1
 
 # Устанавливаем системные зависимости
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -13,36 +14,39 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     proj-data \
     proj-bin \
     libgeos-dev \
-    ca-certificates \
     gcc \
+    ca-certificates \
+    curl \
     && rm -rf /var/lib/apt/lists/*
+
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
 # Рабочий каталог
 WORKDIR /app
 
-# Копируем файл с зависимостями
-COPY app/requirements.txt .
+COPY pyproject.toml uv.lock ./
 
-# Устанавливаем зависимости
-RUN pip install --no-cache-dir -r requirements.txt
+# Установка зависимостей без установки проекта и dev-зависимостей
+RUN uv sync --frozen --no-install-project --no-dev --no-cache
 
 # Копируем весь проект (сохраняя папку app внутри /app)
 COPY app ./app
 
-# # Запускаем подготовительный скрипт (он уже будет видеть app как пакет)
-# RUN python app/map_loader.py
+# Устанавливаем проект и зависимости для разработки (если нужно)
+COPY main.py ./
 
-# # Запуск приложения
-# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Создаем папку для кэша и скрипт для первого запуска
+RUN mkdir -p /app/cache
 
-# Создаем скрипт для инициализации при первом запуске
+# Скрипт для первого запуска инициализирует кэш и загружает карту, а затем запускает сервер
 RUN echo '#!/bin/sh\n\
+set -e\n\
 if [ ! -f /app/cache/.initialized ]; then\n\
     echo "Первый запуск - загрузка карты..."\n\
-    python app/map_loader.py\n\
-    mkdir -p /app/cache && touch /app/cache/.initialized\n\
+    uv run python -m app.map_loader\n\
+    touch /app/cache/.initialized\n\
 fi\n\
-exec uvicorn app.main:app --host 0.0.0.0 --port 8000' > /entrypoint.sh \
+exec uv run uvicorn main:app --host 0.0.0.0 --port 8000\n' > /entrypoint.sh \
     && chmod +x /entrypoint.sh
 
 CMD ["/entrypoint.sh"]

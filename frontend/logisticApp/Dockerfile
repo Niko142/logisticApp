@@ -14,7 +14,7 @@ RUN npm ci
 COPY . .
 
 # Собираем в development режиме
-RUN npm run build -- --mode development
+RUN npm run build
 
 # build собран, теперь берем образ Nginx
 FROM nginx:alpine

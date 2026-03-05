@@ -7,6 +7,8 @@ build
 .git
 .gitignore
 README.md
+Dockerfile
+docker-compose.yml
 .vscode
 .idea
 coverage

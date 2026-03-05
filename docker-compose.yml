@@ -63,7 +63,8 @@ services:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       timeout: 5s
       interval: 5s
-      retries: 5
+      retries: 10
+      start_period: 90s
     restart: always
     networks:
       - app_net
