@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 import osmnx as ox
-from config import GEOJSON_PATH, GRAPHML_PATH
+from app.config import GEOJSON_PATH, GRAPHML_PATH
 
 
 def download_samara_graph(save_path=GRAPHML_PATH):

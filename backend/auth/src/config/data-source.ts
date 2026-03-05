@@ -16,7 +16,7 @@ const baseConfig = {
   logging: !isProduction,
   synchronize: false,
   entities: [User],
-  migrations: isProduction ? ["dist/migrations/*.js"] : ["src/migrations/*.ts"],
+  migrations: ["dist/migrations/*.js"],
   migrationsTableName: "typeorm_migrations",
 };
 
