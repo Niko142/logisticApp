@@ -6,7 +6,7 @@ import { SEARCH_CONTROL_CONFIG } from "../config/search.config";
 import { useGeoSearch } from "../hooks/useGeosearch";
 import type { SearchInputProps } from "../types/map.types";
 
-import "@styles/search.css";
+import "@styles/leaflet.css";
 
 const SearchInput = ({ onSelect }: SearchInputProps) => {
   const config = useMemo(() => SEARCH_CONTROL_CONFIG, []);

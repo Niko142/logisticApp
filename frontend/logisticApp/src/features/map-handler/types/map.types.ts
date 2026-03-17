@@ -7,3 +7,9 @@ export interface MapEventHandlerProps {
 export interface SearchInputProps {
   onSelect: (coordinates: Coordinates) => void;
 }
+
+export interface LayerControlProps {
+  isOpen: boolean;
+  onToggle: () => void;
+  position?: L.ControlPosition;
+}

@@ -1,0 +1,64 @@
+.actions {
+  position: absolute;
+  bottom: 2%;
+  left: 2%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: auto;
+  height: auto;
+  font-size: 1.1rem;
+  color: var(--color-gray-200);
+  background-color: var(--color-gray-700);
+  padding: 18px;
+  border-radius: var(--radius-2);
+  overflow: hidden;
+  box-shadow: var(--shadow-base);
+  z-index: 100;
+}
+
+.closeButton {
+  display: flex;
+  align-self: flex-end;
+  background-color: transparent;
+  color: var(--color-white);
+  border: none;
+  cursor: pointer;
+  outline: 0;
+
+  &:hover {
+    color: var(--color-red-400);
+  }
+}
+
+.title {
+  margin-bottom: 10px;
+}
+
+.hr {
+  border: none;
+  height: 2px;
+  background-color: var(--color-gray-300);
+  margin-block: 8px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  & label {
+    display: flex;
+    gap: 8px;
+  }
+}
+
+.timeRoute {
+  font-weight: var(--text-bold);
+}

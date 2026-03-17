@@ -3,13 +3,8 @@ export interface LegendItem {
   label: string;
   colorClass: string;
   description: string;
-}
-
-export interface ToggleItemProps {
-  id: string;
-  label: string;
-  checked: boolean;
-  onChange: () => void;
+  variant: "dot" | "line";
+  dashed?: boolean;
 }
 
 export interface IndicatorItemProps {

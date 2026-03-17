@@ -24,7 +24,11 @@
   background-color: transparent;
   border: none;
   cursor: pointer;
-  outline: 0;
+  outline: none;
+}
+
+.title {
+  margin-bottom: 10px;
 }
 
 .list {
@@ -65,6 +69,27 @@
   }
 }
 
-.timeRoute {
-  font-weight: var(--text-bold);
+.indicatorLine {
+  width: 24px;
+  height: 4px;
+  border-radius: 2px;
+}
+
+.indicatorLine--dashed {
+  background: repeating-linear-gradient(
+    to right,
+    currentColor 1px,
+    currentColor 5px,
+    transparent 5px,
+    transparent 10px
+  ) !important;
+}
+
+.indicator--blue {
+  background-color: var(--color-blue-300);
+}
+
+.indicator--gray {
+  background-color: var(--color-gray-300);
+  color: var(--color-gray-300);
 }

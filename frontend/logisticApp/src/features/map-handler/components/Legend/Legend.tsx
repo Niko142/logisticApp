@@ -3,9 +3,6 @@ import { ChevronsLeft, X } from "lucide-react";
 import { useState } from "react";
 
 import { Icon } from "@/components/ui/Icon";
-import { RouteQueries } from "@/hooks/useRouteQuery";
-import { useRouteStore } from "@/store/route-store";
-import { formateMinuteTime } from "@/utils/time.utils";
 
 import { legendItems } from "./constants/legend.data";
 import {
@@ -14,16 +11,8 @@ import {
 } from "./constants/legend.variants";
 import { IndicatorItems } from "./IndicatorItems";
 import styles from "./legend.module.css";
-import { ToggleItem } from "./ToggleItem";
 
 export const Legend = (): React.ReactElement => {
-  const {
-    showTraffic,
-    toggleTraffic,
-    showAlternativeRoutes,
-    toggleAlternativeRoutes,
-  } = useRouteStore();
-  const { data: routeData } = RouteQueries.useCurrentRoute();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   // Обработчик кнопки открытия/закрытия блока
@@ -57,41 +46,21 @@ export const Legend = (): React.ReactElement => {
             animate="open"
             exit="closed"
           >
-            <h4>Легенда:</h4>
-
-            <hr className={styles.hr} />
+            <h4 className={styles.title}>Легенда:</h4>
 
             <ul className={styles.list}>
-              {/* Переключатель загруженности */}
-              <ToggleItem
-                key={"traffic"}
-                id="traffic"
-                label="Показывать загруженность"
-                checked={showTraffic}
-                onChange={toggleTraffic}
+              <IndicatorItems
+                items={legendItems.filter(
+                  (indicator) => indicator.variant === "dot",
+                )}
               />
-
-              <ToggleItem
-                key={"alternative_route"}
-                id="alternative_route"
-                label="Показать альтернативный маршрут"
-                checked={showAlternativeRoutes}
-                onChange={toggleAlternativeRoutes}
+              <hr className={styles.hr} />
+              <IndicatorItems
+                items={legendItems.filter(
+                  (indicator) => indicator.variant === "line",
+                )}
               />
-
-              {/* Индикаторы */}
-              <IndicatorItems items={legendItems} />
             </ul>
-
-            {/* Время маршрута */}
-            {routeData?.totalTimeMin && (
-              <div>
-                Время маршрута:{" "}
-                <span className={styles.timeRoute}>
-                  {formateMinuteTime(routeData.totalTimeMin)}
-                </span>
-              </div>
-            )}
           </motion.div>
         )}
       </AnimatePresence>

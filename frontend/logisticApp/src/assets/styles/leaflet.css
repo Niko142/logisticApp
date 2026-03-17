@@ -57,7 +57,8 @@
 }
 
 .leaflet-control-zoom-in,
-.leaflet-control-zoom-out {
+.leaflet-control-zoom-out,
+.leaflet-control-actions {
   background-color: var(--color-gray-700) !important;
   color: var(--color-gray-200) !important;
   display: flex !important;
@@ -78,8 +79,20 @@
   }
 }
 
-/* Attribution Control */
+.leaflet-control-actions {
+  margin-left: 11px !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  outline: 0 !important;
 
+  &:focus-visible {
+    outline: 1px solid var(--color-white);
+    outline-offset: 0;
+    background-color: var(--color-gray-600) !important;
+  }
+}
+
+/* Attribution Control */
 .leaflet-control-attribution {
   padding: 2px 24px !important;
   margin: 0 10px 5px 0 !important;

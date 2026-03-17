@@ -3,11 +3,7 @@ import toast from "react-hot-toast";
 import { ClipLoader } from "react-spinners";
 
 import styles from "./overlay.module.css";
-
-type RouteOverlayProps = {
-  isFetching: boolean;
-  isError: boolean;
-};
+import type { RouteOverlayProps } from "./overlay.types";
 
 export const RouteOverlay = ({ isFetching, isError }: RouteOverlayProps) => {
   const hasShownToast = useRef(false);

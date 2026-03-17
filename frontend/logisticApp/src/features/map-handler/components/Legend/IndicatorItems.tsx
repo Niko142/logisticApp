@@ -7,7 +7,13 @@ export const IndicatorItems = ({ items }: IndicatorItemProps) =>
   items.map((indicator) => (
     <li className={styles.item} key={indicator.id}>
       <span
-        className={clsx(styles.indicator, styles[indicator.colorClass])}
+        className={clsx(
+          indicator.variant === "line"
+            ? styles.indicatorLine
+            : styles.indicator,
+          styles[indicator.colorClass],
+          indicator.dashed && styles["indicatorLine--dashed"],
+        )}
         aria-label={indicator.description}
       />
       {indicator.label}
