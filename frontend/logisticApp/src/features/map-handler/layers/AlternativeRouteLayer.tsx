@@ -3,7 +3,7 @@ import { Polyline } from "react-leaflet";
 import { RouteQueries } from "@/hooks/useRouteQuery";
 import { useRoutePoints, useShowAlternativeRoutes } from "@/store/route-store";
 
-import { MAP_CONFIG } from "../../config/map.config";
+import { MAP_CONFIG } from "../config/map.config";
 
 export const AlternativeRouteLayer = () => {
   const points = useRoutePoints();

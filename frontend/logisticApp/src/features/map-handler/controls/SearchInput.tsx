@@ -8,6 +8,11 @@ import type { SearchInputProps } from "../types/map.types";
 
 import "@styles/leaflet.css";
 
+/**
+ * Контроллер для управления логикой input-поиска на карте
+ * @param onSelect - Callback
+ * @returns null
+ */
 const SearchInput = ({ onSelect }: SearchInputProps) => {
   const config = useMemo(() => SEARCH_CONTROL_CONFIG, []);
 

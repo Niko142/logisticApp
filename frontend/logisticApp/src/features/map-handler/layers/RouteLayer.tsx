@@ -2,7 +2,7 @@ import { Polyline } from "react-leaflet";
 
 import { RouteQueries } from "@/hooks/useRouteQuery";
 
-import { MAP_CONFIG } from "../../config/map.config";
+import { MAP_CONFIG } from "../config/map.config";
 
 export const RouteLayer = () => {
   const { data: routeData } = RouteQueries.useCurrentRoute(); // Данные о  маршруте

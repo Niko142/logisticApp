@@ -4,21 +4,20 @@ import { MapContainer, TileLayer, AttributionControl } from "react-leaflet";
 import { RouteQueries } from "@/hooks/useRouteQuery";
 import { useRouteStore } from "@/store/route-store";
 
+import { ActionsPanel } from "./components/actions-panel";
+import { Legend } from "./components/legend";
+import { MAP_CONFIG } from "./config/map.config";
+import { LayerControl, SearchInput } from "./controls";
+import { MapEventHandler } from "./handlers/MapEventHandler";
+import { useRouteController } from "./hooks/useRouteController";
 import {
   AlternativeRouteLayer,
   MarkerLayer,
   RouteLayer,
   TrafficLayer,
 } from "./layers";
-import { Legend } from "./legend";
 import styles from "./map.module.css";
-import SearchInput from "./SearchInput";
-import { MAP_CONFIG } from "../config/map.config";
-import { MapEventHandler } from "../handlers/MapEventHandler";
-import { useRouteController } from "../hooks/useRouteController";
-import { ActionsPanel } from "./actions-panel/ActionsPanel";
 import { RouteOverlay } from "./overlays/RouteOverlay";
-import { LayerControl } from "../controls/LayerControl";
 
 export const TrafficMap = () => {
   const { points } = useRouteStore();
@@ -39,10 +38,10 @@ export const TrafficMap = () => {
       >
         <AttributionControl position="bottomright" prefix={false} />
 
-        {/* Базовый слой OpenStreetMap */}
+        {/* Базовый слой OSM */}
         <TileLayer {...MAP_CONFIG.tileLayer} />
 
-        {/* Обработка событий клика по карте (добавление и очистка) */}
+        {/* Обработка событий клика по карте */}
         <MapEventHandler
           onAddPoint={handleAddPoint}
           onClear={handleClearRoute}
@@ -53,9 +52,9 @@ export const TrafficMap = () => {
         <AlternativeRouteLayer />
         <MarkerLayer />
 
-        {/* Настройка поиска */}
+        {/* Контроллер для custom-настройки поля ввода */}
         <SearchInput onSelect={handleAddPoint} />
-        {/*  */}
+        {/* Custom-кнопка для управления показываемыми слоями */}
         <LayerControl
           isOpen={isLayerPanelOpen}
           onToggle={() => setIsLayerPanelOpen((prev) => !prev)}
@@ -64,6 +63,7 @@ export const TrafficMap = () => {
         <RouteOverlay isFetching={isBuilding} isError={isError} />
       </MapContainer>
 
+      {/* Панель для управления логикой показа данных/слоев */}
       <ActionsPanel
         isOpen={isLayerPanelOpen}
         onClose={() => setIsLayerPanelOpen(false)}

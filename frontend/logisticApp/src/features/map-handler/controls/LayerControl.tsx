@@ -5,15 +5,15 @@ import { useEffect, useState, type ReactPortal } from "react";
 import { createPortal } from "react-dom";
 import { useMap } from "react-leaflet";
 
-import styles from "../components/map.module.css";
+import styles from "../map.module.css";
 import type { LayerControlProps } from "../types/map.types";
 
 /**
- *
- * @param isOpen
- * @param onToggle
- * @param position
- * @returns
+ * Контроллер управления слоями карты
+ * @param isOpen - Текущее состояние панели (открыто/закрыто)
+ * @param onToggle - Функция для переключения состояния панели
+ * @param position - Позиция расположения кнопки относительно контейнера
+ * @returns ReactPortal с кнопкой или null
  */
 export const LayerControl = ({
   isOpen,

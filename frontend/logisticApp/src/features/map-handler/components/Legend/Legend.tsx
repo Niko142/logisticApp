@@ -1,8 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronsLeft, X } from "lucide-react";
 import { useState } from "react";
-
-import { Icon } from "@/components/ui/Icon";
 
 import { legendItems } from "./constants/legend.data";
 import {
@@ -11,6 +8,7 @@ import {
 } from "./constants/legend.variants";
 import { IndicatorItems } from "./IndicatorItems";
 import styles from "./legend.module.css";
+import { LegendButton } from "./LegendButton";
 
 export const Legend = (): React.ReactElement => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -26,17 +24,7 @@ export const Legend = (): React.ReactElement => {
       variants={legendAsideVariants}
       animate={isOpen ? "open" : "close"}
     >
-      <button
-        className={styles.legendButton}
-        onClick={handleToggleButton}
-        aria-label="Открыть/Закрыть легенду"
-      >
-        <Icon
-          icon={isOpen ? X : ChevronsLeft}
-          variant={isOpen ? "close" : "open"}
-          size="md"
-        />
-      </button>
+      <LegendButton isOpen={isOpen} onToggle={handleToggleButton} />
 
       <AnimatePresence mode="wait">
         {isOpen && (
@@ -54,7 +42,9 @@ export const Legend = (): React.ReactElement => {
                   (indicator) => indicator.variant === "dot",
                 )}
               />
+
               <hr className={styles.hr} />
+
               <IndicatorItems
                 items={legendItems.filter(
                   (indicator) => indicator.variant === "line",

@@ -43,6 +43,7 @@ export const ActionsPanel = ({
 
           <div>
             <h4 className={styles.title}>Управление:</h4>
+
             <ul className={styles.list}>
               {/* Переключатель загруженности */}
               <ToggleItem

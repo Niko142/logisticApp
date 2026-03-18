@@ -3,8 +3,8 @@ import { GeoJSON } from "react-leaflet";
 import { RouteQueries } from "@/hooks/useRouteQuery";
 import { useShowTraffic } from "@/store/route-store";
 
-import { initTrafficStyle } from "../../utils/geo";
 import { GraphOverlay } from "../overlays/GraphOverlay";
+import { initTrafficStyle } from "../utils/geo";
 
 export const TrafficLayer = () => {
   const showTraffic = useShowTraffic();
