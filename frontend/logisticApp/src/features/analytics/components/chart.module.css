@@ -29,6 +29,7 @@
   font-weight: var(--text-regular);
 }
 
+/* === Toggle menu === */
 .toggleMenu {
   display: flex;
   background-color: var(--color-gray-700);
@@ -74,6 +75,37 @@
   }
 }
 
+/* === Tooltip ===  */
+.tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: var(--color-gray-900);
+  border: 1px solid var(--color-gray-500);
+  border-radius: var(--radius-3);
+  padding: 16px;
+  box-shadow: var(--shadow-lg);
+}
+
+.tooltipLabel {
+  font-size: 1.05rem;
+  font-weight: var(--text-semibold);
+  color: var(--color-gray-200);
+}
+
+.tooltipValue {
+  font-size: 1rem;
+  color: var(--color-gray-250);
+  font-weight: var(--text-medium);
+
+  & span {
+    font-weight: var(--text-bold);
+    color: var(--color-blue-500);
+    font-size: 1.05rem;
+  }
+}
+
+/* === Legend === */
 .legend {
   display: flex;
   align-items: center;

@@ -1,7 +1,7 @@
-import type { ChartProps } from "../types/chart.types";
+import type { ChartData } from "../types/chart.types";
 
 // Пока что тест + убрал слишком большую избыточность
-export const dailyData: ChartProps[] = [
+export const dailyData: ChartData[] = [
   { label: "00:00-03:00", score: 2.0 },
   { label: "04:00-07:00", score: 4.0 },
   { label: "08:00-11:00", score: 4.5 },
@@ -10,7 +10,7 @@ export const dailyData: ChartProps[] = [
   { label: "20:00-23:00", score: 3.3 },
 ];
 
-export const weeklyData: ChartProps[] = [
+export const weeklyData: ChartData[] = [
   { label: "Пн", score: 5.2 },
   { label: "Вт", score: 6.8 },
   { label: "Ср", score: 7.4 },

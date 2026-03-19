@@ -10,6 +10,7 @@ import {
 } from "recharts";
 
 import styles from "./chart.module.css";
+import { ChartTooltip } from "./ChartTooltip";
 import { dailyData, weeklyData } from "../constants/chart.data";
 import type { FilterMode } from "../types/chart.types";
 
@@ -93,7 +94,8 @@ export const Chart = () => {
             tickLine={false}
             dx={-4}
           />
-          <Tooltip />
+
+          <Tooltip content={<ChartTooltip />} cursor={{ strokeWidth: 1 }} />
 
           <Area
             type="monotone"
