@@ -23,6 +23,7 @@
 
   --color-gray-100: #ececec;
   --color-gray-200: #bbc7ce;
+  --color-gray-250: #64748b;
   --color-gray-300: #707070;
   --color-gray-400: #555;
   --color-gray-500: #535353;
@@ -37,6 +38,7 @@
   --color-blue-900: #1e2a38;
 
   --color-green-400: #44944a;
+  --color-green-500: #327c37;
   --color-green-600: #2f694f;
   --color-green-700: #285943;
   --color-emerald: #3c896d;
@@ -51,7 +53,7 @@
   /* Тени */
   --shadow-base: 0 2px 6px rgba(0, 0, 0, 0.3);
   --shadow-glow: 0px 0px 20px 2px rgba(24, 144, 255, 0.4);
-
+  --shadow-lg: 0 4px 24px rgba(0, 0, 0, 0.3);
   /* Градиенты */
   --gradient-dark: linear-gradient(
     134deg,

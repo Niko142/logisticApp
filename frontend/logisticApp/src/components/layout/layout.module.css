@@ -29,9 +29,22 @@
   animation: global(fade-up) 0.5s ease-out 0.4s both;
 }
 
+.analyticsContainer {
+  display: grid;
+  /* grid-template-columns: auto; */
+  /* grid-template-rows: 3fr 1fr; */
+  /* row-gap: 40px; */
+  min-height: 70vh;
+  padding-inline: 45px;
+}
+
 @media screen and (max-width: 768px) {
   .form {
     width: 100%;
+  }
+
+  .analyticsContainer {
+    padding-inline: 20px;
   }
 
   .title {

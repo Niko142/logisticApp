@@ -31,9 +31,9 @@ header {
 /* Блок аналитики */
 .analytics {
   display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: 3fr 1fr;
-  row-gap: 40px;
+  /* grid-template-columns: auto; */
+  /* grid-template-rows: 3fr 1fr; */
+  /* row-gap: 40px; */
   min-height: 70vh;
   padding-inline: 45px;
 }

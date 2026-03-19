@@ -1,4 +1,6 @@
+export type FilterMode = "day" | "week";
+
 export interface ChartProps {
-  name: string;
-  mark: number;
+  label: string;
+  score: number;
 }

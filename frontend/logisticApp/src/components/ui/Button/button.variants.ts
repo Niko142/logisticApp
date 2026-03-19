@@ -7,4 +7,6 @@ export const btnVariants: Record<ButtonVariant, string> = {
   authorization: "btn--auth",
   back: "btn--back",
   home: "btn--home",
+  exportPdf: "btn--export-pdf",
+  exportCsv: "btn--export-csv",
 } as const;

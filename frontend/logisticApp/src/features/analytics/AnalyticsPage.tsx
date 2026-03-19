@@ -1,16 +1,32 @@
+import { FileText, Grid2X2Plus } from "lucide-react";
+
 import { Header } from "@/components/header";
+import { AnalyticsLayout } from "@/components/layout";
+import { Button } from "@/components/ui/Button";
+import { PageHeader } from "@/components/ui/PageHeader";
 
 import { Chart } from "./components/Chart";
-import { FiltersBar } from "./components/FiltersBar";
 
 export const AnalyticsPage = () => {
   return (
     <>
       <Header />
-      <section className="analytics">
+      <AnalyticsLayout>
+        <PageHeader
+          title="Аналитика и отчетность"
+          description="Статистика загруженности и эффективности маршрутов"
+        >
+          <Button variant="exportPdf">
+            <FileText />
+            Экспорт PDF
+          </Button>
+          <Button variant="exportCsv">
+            <Grid2X2Plus />
+            Экспорт CSV
+          </Button>
+        </PageHeader>
         <Chart />
-        <FiltersBar />
-      </section>
+      </AnalyticsLayout>
     </>
   );
 };
