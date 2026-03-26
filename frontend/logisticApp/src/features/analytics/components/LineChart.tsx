@@ -16,7 +16,7 @@ import type { FilterMode } from "../types/chart.types";
 
 const FilterOptions: FilterMode[] = ["day", "week"];
 
-export const Chart = () => {
+export const LineChart = () => {
   const [currentMode, setCurrentMode] = useState<"day" | "week">("day");
   const data = currentMode === "day" ? dailyData : weeklyData;
 

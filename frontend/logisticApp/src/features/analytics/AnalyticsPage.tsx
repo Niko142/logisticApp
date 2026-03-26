@@ -5,7 +5,8 @@ import { AnalyticsLayout } from "@/components/layout";
 import { Button } from "@/components/ui/Button";
 import { PageHeader } from "@/components/ui/PageHeader";
 
-import { Chart } from "./components/Chart";
+import { LineChart } from "./components/LineChart";
+import { PieChart } from "./components/PieChart";
 
 export const AnalyticsPage = () => {
   return (
@@ -25,7 +26,9 @@ export const AnalyticsPage = () => {
             Экспорт CSV
           </Button>
         </PageHeader>
-        <Chart />
+
+        <LineChart />
+        <PieChart />
       </AnalyticsLayout>
     </>
   );
