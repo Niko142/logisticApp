@@ -2,6 +2,7 @@ from .common import Coords, HighWayType, PredictTime, RoadCategory, Speed, Traff
 from .geo import FeatureProperties, RouteSummary, SegmentType
 from .graph import EdgeData
 from .route import RouteContext, RouteRequest
+from .traffic import DayInterval, WeekDay
 
 __all__ = [
     "Coords",
@@ -16,4 +17,6 @@ __all__ = [
     "SegmentType",
     "Speed",
     "TrafficLevel",
+    "DayInterval",
+    "WeekDay",
 ]
