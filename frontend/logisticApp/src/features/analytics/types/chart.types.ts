@@ -1,12 +1,11 @@
+import type { TimeseriesPoint } from "@/types/models/analytics.types";
+
 export type FilterMode = "day" | "week";
 
-export interface ChartData {
-  label: string;
-  score: number;
-}
+export type ChartData = TimeseriesPoint[];
 
 export interface ChartTooltipProps {
   active?: boolean;
   payload?: Array<{ value: number }>;
-  label?: ChartData["label"];
+  label?: TimeseriesPoint["label"];
 }

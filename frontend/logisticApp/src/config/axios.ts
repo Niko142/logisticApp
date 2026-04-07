@@ -21,3 +21,9 @@ export const ROUTE_CONFIG = {
   timeout: ROUTE_INSTANCE_TIMEOUT,
   ...BASE_CONFIG,
 };
+
+export const ANALYTICS_CONFIG = {
+  baseURL: import.meta.env.VITE_API_ANALYTICS_URL,
+  timeout: ROUTE_INSTANCE_TIMEOUT,
+  ...BASE_CONFIG,
+};

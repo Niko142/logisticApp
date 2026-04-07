@@ -1,4 +1,5 @@
 import { FileText, Grid2X2Plus } from "lucide-react";
+import { SkeletonTheme } from "react-loading-skeleton";
 
 import { Header } from "@/components/header";
 import { AnalyticsLayout } from "@/components/layout";
@@ -10,7 +11,10 @@ import { PieChart } from "./components/PieChart";
 
 export const AnalyticsPage = () => {
   return (
-    <>
+    <SkeletonTheme
+      baseColor="var(--color-gray-600)"
+      highlightColor="var(--color-gray-500)"
+    >
       <Header />
       <AnalyticsLayout>
         <PageHeader
@@ -30,6 +34,6 @@ export const AnalyticsPage = () => {
         <LineChart />
         <PieChart />
       </AnalyticsLayout>
-    </>
+    </SkeletonTheme>
   );
 };

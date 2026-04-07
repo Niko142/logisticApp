@@ -4,3 +4,8 @@ export {
   buildRoute,
   buildAlternativeRoute,
 } from "./route/route.api";
+
+export {
+  getTrafficDistribution,
+  getTrafficTimeseries,
+} from "./analytics/analytics.api";

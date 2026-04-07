@@ -10,15 +10,22 @@ import {
 } from "recharts";
 
 import styles from "./chart.module.css";
+import { LineChartSkeleton } from "./ChartSkeleton";
 import { ChartTooltip } from "./ChartTooltip";
-import { dailyData, weeklyData } from "../constants/chart.data";
+import { useTrafficTimeseries } from "../hooks/useAnalyticsQuery";
 import type { FilterMode } from "../types/chart.types";
 
 const FilterOptions: FilterMode[] = ["day", "week"];
 
 export const LineChart = () => {
-  const [currentMode, setCurrentMode] = useState<"day" | "week">("day");
-  const data = currentMode === "day" ? dailyData : weeklyData;
+  const { data, isLoading } = useTrafficTimeseries();
+
+  const [currentMode, setCurrentMode] = useState<FilterMode>("day");
+
+  if (isLoading) return <LineChartSkeleton />;
+
+  const chartData =
+    currentMode === "day" ? (data?.daily ?? []) : (data?.weekly ?? []);
 
   return (
     <div className={styles.chartContainer}>
@@ -55,7 +62,7 @@ export const LineChart = () => {
       {/* График */}
       <ResponsiveContainer width="99%" height={260}>
         <AreaChart
-          data={data}
+          data={chartData}
           margin={{ top: 8, right: 4, left: -16, bottom: 0 }}
         >
           <defs>

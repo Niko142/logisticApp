@@ -1,14 +1,22 @@
 import { Cell, Pie, PieChart as Chart, ResponsiveContainer } from "recharts";
 
 import styles from "./chart.module.css";
-
-const trafficData = [
-  { name: "Свободно", value: 14.5, color: "var(--color-green-400)" },
-  { name: "Средне", value: 69.0, color: "var(--color-orange)" },
-  { name: "Пробка", value: 24.5, color: "var(--color-red-400)" },
-];
+import { PieChartSkeleton } from "./ChartSkeleton";
+import { TRAFFIC_COLORS } from "../constants/chart.data";
+import { useTrafficDistribution } from "../hooks/useAnalyticsQuery";
 
 export const PieChart = () => {
+  const { data, isLoading } = useTrafficDistribution();
+
+  if (isLoading) return <PieChartSkeleton />;
+
+  // Преобразуем данные, добавляя цвет для каждой категории
+  const trafficData =
+    data?.map((item) => ({
+      ...item,
+      color: TRAFFIC_COLORS[item.level],
+    })) ?? [];
+
   return (
     <div className={styles.chartPieContainer}>
       <header className={styles.header}>
@@ -18,13 +26,13 @@ export const PieChart = () => {
         </div>
       </header>
 
-      <ResponsiveContainer width="100%" height={260}>
+      <ResponsiveContainer width="99%" height={260}>
         <Chart>
           <Pie
             data={trafficData}
             cx="50%"
             cy="50%"
-            outerRadius={120}
+            outerRadius={110}
             dataKey="value"
             label={({ value }) => `${value}%`}
             strokeWidth={1}
