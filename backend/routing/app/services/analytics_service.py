@@ -49,24 +49,31 @@ class AnalyticsService:
         counts = self._count_traffic_levels(current_hour)
         return self._counts_to_percentages(counts)
 
-    def get_traffic_timeseries(self) -> dict:
-        """Статистика/динамика по интервалам дня и дням недели"""
+    def get_traffic_timeseries(self) -> list[dict]:
+        """Статистика/динамика по интервалам дня и дням недели с нормализацией 0–10"""
+
+        def get_score(hour: int) -> float:
+            counts = self._count_traffic_levels(current_hour=hour)
+            total_edges = sum(counts.values())
+            if total_edges == 0:
+                return 0.0
+
+            # Взвешенная сумма для получения среднего уровня загруженности
+            weighted_sum = 0 * counts[0] + 1 * counts[1] + 2 * counts[2]
+            score = (weighted_sum / (2 * total_edges)) * 10
+            return round(score, 2)
 
         daily = []
         for interval in DAILY_INTERVALS:
             representative_hour = (interval.hours.start + interval.hours.stop) // 2
-            counts = self._count_traffic_levels(current_hour=representative_hour)
-            percentages = self._counts_to_percentages(counts)
-            score_percent = next((p["value"] for p in percentages if p["level"] == 2), 0)
-            score = round(score_percent / 10, 2)
-            daily.append({"label": interval.label, "score": score})
+            daily.append(
+                {"label": interval.label, "score": get_score(representative_hour)}
+            )
 
         weekly = []
         for day in WEEKLY_DAYS:
-            counts = self._count_traffic_levels(current_hour=day.representative_hour)
-            percentages = self._counts_to_percentages(counts)
-            score_percent = next((p["value"] for p in percentages if p["level"] == 2), 0)
-            score = round(score_percent / 10, 2)
-            weekly.append({"label": day.label, "score": score})
+            weekly.append(
+                {"label": day.label, "score": get_score(day.representative_hour)}
+            )
 
         return {"daily": daily, "weekly": weekly}

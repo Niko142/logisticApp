@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 
 import osmnx as ox
+
 from app.config import GEOJSON_PATH, GRAPHML_PATH
 
 

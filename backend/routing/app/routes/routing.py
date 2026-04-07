@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 
+from app.core.graph import load_graph
 from app.middlewares.auth import verify_token
 from app.routing.main import build_routes
-from app.services import RoutingService, build_response
 from app.schemas import RouteRequest
-from app.core.graph import load_graph
+from app.services import RoutingService, build_response
 
 router = APIRouter(prefix="/route", tags=["routing"])
 G = load_graph()
