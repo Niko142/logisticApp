@@ -1,11 +1,14 @@
 import type {
+  AnalyticsSummary,
   TimeseriesPoint,
   TrafficCategory,
 } from "@/types/models/analytics.types";
 
-export type TrafficDistributionResponse = TrafficCategory[];
+export type DistributionResponse = TrafficCategory[];
 
-export interface TrafficTimeseriesResponse {
+export interface TimeseriesResponse {
   daily: Array<TimeseriesPoint>;
   weekly: Array<TimeseriesPoint>;
 }
+
+export type AnalyticsSummaryResponse = AnalyticsSummary;

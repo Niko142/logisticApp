@@ -8,6 +8,7 @@ import { PageHeader } from "@/components/ui/PageHeader";
 
 import { LineChart } from "./components/LineChart";
 import { PieChart } from "./components/PieChart";
+import { AnalyticsMetrics } from "./components/summary";
 
 export const AnalyticsPage = () => {
   return (
@@ -33,6 +34,8 @@ export const AnalyticsPage = () => {
 
         <LineChart />
         <PieChart />
+
+        <AnalyticsMetrics />
       </AnalyticsLayout>
     </SkeletonTheme>
   );

@@ -31,9 +31,9 @@
 
 .analyticsContainer {
   display: grid;
-  /* grid-template-columns: auto; */
-  /* grid-template-rows: 3fr 1fr; */
-  row-gap: 40px;
+  grid-template-rows: auto 2fr 1fr 1fr;
+  grid-template-columns: 7fr 3fr;
+  gap: 40px 30px;
   padding-inline: 45px;
 }
 

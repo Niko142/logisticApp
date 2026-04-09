@@ -21,4 +21,6 @@ export const themeVariants: Record<IconVariant, string> = {
   error: "icon--error", // в процессе ...
   open: "icon--open",
   close: "icon--close",
+  card_1: "icon--card-1",
+  card_2: "icon--card-2",
 };

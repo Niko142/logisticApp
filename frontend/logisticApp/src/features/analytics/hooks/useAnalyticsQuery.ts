@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { getTrafficDistribution, getTrafficTimeseries } from "@/services/api";
+import { analyticsService } from "@/services/api";
 
 /**
  * Хук для получения данных о распределении загруженности дорог в текущий момент
@@ -9,8 +9,9 @@ import { getTrafficDistribution, getTrafficTimeseries } from "@/services/api";
 export const useTrafficDistribution = () => {
   return useQuery({
     queryKey: ["traffic", "distribution"],
-    queryFn: getTrafficDistribution,
+    queryFn: () => analyticsService.getTrafficDistribution(),
     staleTime: 1000 * 60 * 30,
+    gcTime: 1000 * 60 * 40,
   });
 };
 
@@ -21,7 +22,21 @@ export const useTrafficDistribution = () => {
 export const useTrafficTimeseries = () => {
   return useQuery({
     queryKey: ["traffic", "timeseries"],
-    queryFn: getTrafficTimeseries,
+    queryFn: () => analyticsService.getTrafficTimeseries(),
     staleTime: 1000 * 60 * 60,
+    gcTime: 1000 * 60 * 70,
+  });
+};
+
+/**
+ * Хук для получения сводной информации о анализируемых метриках и их изменениях
+ * @returns Результат запроса, содержащий сводную информацию о метриках загруженности
+ */
+export const useAnalyticsSummary = () => {
+  return useQuery({
+    queryKey: ["traffic", "summary"],
+    queryFn: () => analyticsService.getAnalyticsSummary(),
+    staleTime: 1000 * 60 * 60,
+    gcTime: 1000 * 60 * 70,
   });
 };

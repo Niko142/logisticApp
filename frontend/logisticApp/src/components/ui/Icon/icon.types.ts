@@ -9,7 +9,9 @@ export type IconVariant =
   | "info"
   | "error"
   | "open"
-  | "close";
+  | "close"
+  | "card_1"
+  | "card_2";
 
 export interface IconProps {
   size?: IconSize | number;
