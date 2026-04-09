@@ -18,3 +18,8 @@ def traffic_distribution():
 @router.get("/traffic-timeseries")
 def traffic_timeseries():
     return analytics_service.get_traffic_timeseries()
+
+
+@router.get("/traffic-summary")
+def traffic_heatmap():
+    return analytics_service.get_summary()
