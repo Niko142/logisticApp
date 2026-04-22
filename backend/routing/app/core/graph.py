@@ -1,11 +1,11 @@
 import osmnx as ox
 
-from app.config import GRAPHML_PATH
+from app.core.config import settings
 from app.utils.graph_utils import prepare_graph
 
 
 def load_graph():
     """Инициализация и загрузка экземпляра графа"""
-    G = ox.load_graphml(GRAPHML_PATH)
+    G = ox.load_graphml(settings.graphml_path)
     prepare_graph(G)
     return G

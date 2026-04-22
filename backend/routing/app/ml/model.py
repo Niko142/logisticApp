@@ -5,9 +5,11 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from sklearn.model_selection import train_test_split
 
-from app.ml.config import MODEL_PATH
+from app.core.config import settings
 from app.schemas import RoadCategory, Speed, TrafficLevel
 from app.utils.time_utils import is_peak_hour
+
+MODEL_PATH = settings.ml_path
 
 
 class TrafficModel:

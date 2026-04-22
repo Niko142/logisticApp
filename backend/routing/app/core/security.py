@@ -1,25 +1,16 @@
-import os
 from typing import Optional
 
 import jwt
-from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-load_dotenv()
-
-# Загружаем переменные окружения
-JWT_SECRET = os.getenv("JWT_SECRET")
-JWT_ALGORITHM = os.getenv("JWT_ALGORITHM", "HS256")
-
-# Проверяем что секрет установлен
-if not JWT_SECRET:
-    raise ValueError("Отсутствует переменная окружения JWT_SECRET")
+from app.core.config import settings
 
 security = HTTPBearer(auto_error=False)
 
 
 async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    """Основная проверка наличия токена у пользователя"""
     if not credentials:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -28,7 +19,9 @@ async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(secur
 
     try:
         payload = jwt.decode(
-            credentials.credentials, JWT_SECRET, algorithms=[JWT_ALGORITHM]
+            credentials.credentials,
+            settings.jwt_secret,
+            algorithms=[settings.jwt_algorithm],
         )
 
         user_id = payload.get("userId")
@@ -55,9 +48,7 @@ async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(secur
 
 
 async def optional_verify_token(
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(
-        HTTPBearer(auto_error=False)
-    ),
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
 ):
     """
     Опциональная проверка токена (для публичных route)

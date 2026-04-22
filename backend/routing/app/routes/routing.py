@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
 
 from app.core.graph import load_graph
-from app.middlewares.auth import verify_token
+from app.core.security import verify_token
 from app.routing.main import build_routes
 from app.schemas import RouteRequest
 from app.services import RoutingService, build_response
