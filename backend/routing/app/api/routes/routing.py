@@ -1,23 +1,23 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request, status
 from fastapi.responses import JSONResponse
 
-from app.core.graph import load_graph
 from app.core.security import verify_token
 from app.routing.main import build_routes
 from app.schemas import RouteRequest
-from app.services import RoutingService, build_response
+from app.services import build_response
 
-router = APIRouter(prefix="/route", tags=["routing"])
-G = load_graph()
-routing_service = RoutingService(G)
+router = APIRouter(prefix="/routes", tags=["routing"])
 
 
 @router.post("")
-def get_route(data: RouteRequest, current_user=Depends(verify_token)):
+def create_route(req: Request, data: RouteRequest, current_user=Depends(verify_token)):
     """
     Построение маршрута (только для авторизованных пользователей)
     """
     try:
+        routing_service = req.app.state.routing_service
+        G = req.app.state.graph
+
         route_context = routing_service.resolve_route_context(data)
 
         routes_data = build_routes(
@@ -29,10 +29,8 @@ def get_route(data: RouteRequest, current_user=Depends(verify_token)):
         )
 
         # Формируем ответ
-        main_route = routes_data["main"]
-
         return build_response(
-            route=main_route,
+            route=routes_data["main"],
             route_context=route_context,
             user=current_user,
             include_alternatives=False,
@@ -42,15 +40,22 @@ def get_route(data: RouteRequest, current_user=Depends(verify_token)):
         import traceback
 
         traceback.print_exc()
-        return JSONResponse(content={"error": str(e)}, status_code=500)
+        return JSONResponse(
+            content={"error": str(e)}, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
 
 
 @router.post("/alternatives")
-def get_alternatives(data: RouteRequest, current_user=Depends(verify_token)):
+def get_alternatives(
+    req: Request, data: RouteRequest, current_user=Depends(verify_token)
+):
     """
     Формирование альтернативного маршрута (только для авторизированных пользователей)
     """
     try:
+        routing_service = req.app.state.routing_service
+        G = req.app.state.graph
+
         route_context = routing_service.resolve_route_context(data)
 
         routes_data = build_routes(
@@ -61,6 +66,7 @@ def get_alternatives(data: RouteRequest, current_user=Depends(verify_token)):
             include_alternatives=True,
         )
 
+        # Формируем ответ
         return build_response(
             route=routes_data["main"],
             route_context=route_context,
@@ -70,4 +76,6 @@ def get_alternatives(data: RouteRequest, current_user=Depends(verify_token)):
         )
 
     except Exception as e:
-        return JSONResponse(content={"error": str(e)}, status_code=500)
+        return JSONResponse(
+            content={"error": str(e)}, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )

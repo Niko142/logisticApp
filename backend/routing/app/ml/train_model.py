@@ -1,5 +1,6 @@
 import sys
 
+from app.core.graph import load_graph
 from app.ml.dataset import DatasetGenerator
 from app.ml.model import TrafficModel
 
@@ -10,18 +11,22 @@ def train(num_samples: int = 10000):
     print("ОБУЧЕНИЕ МОДЕЛИ")
     print("-" * 60)
 
-    # 1. Генерация
-    print(f"\n[1/3] Генерация датасета ({num_samples} образцов)...")
-    generator = DatasetGenerator()
+    # 1. Загрузка графа
+    print("\n[1/4] Загрузка графа...")
+    G = load_graph()
+
+    # 2. Генерация
+    print(f"\n[2/4] Генерация датасета ({num_samples} образцов)...")
+    generator = DatasetGenerator(G)
     df = generator.generate_dataset(num_samples)
 
-    # 2. Обучение
-    print("\n[2/3] Обучение модели...")
+    # 3. Обучение
+    print("\n[3/4] Обучение модели...")
     model = TrafficModel()
     model.train(df, quick=True)
 
-    # 3. Сохранение
-    print("\n[3/3] Сохранение...")
+    # 4. Сохранение
+    print("\n[4/4] Сохранение...")
     model.save()
 
     print("\nМодель обучена и сохранена, файл: traffic_model.pkl")

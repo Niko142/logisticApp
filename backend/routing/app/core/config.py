@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     environment: str = "development"
     jwt_secret: str
     jwt_algorithm: str = "HS256"
-    
+
     dev_origins: Optional[str] = None
     prod_origins: Optional[str] = None
     additional_origins: Optional[str] = None
@@ -24,6 +24,12 @@ class Settings(BaseSettings):
         env_file=".env",
         env_file_encoding="utf-8",
     )
+
+    def _parse_origins(self, value: Optional[str]) -> list[str]:
+        """Хелпер для парсинга origins для CORS"""
+        if not value:
+            return []
+        return [o.strip() for o in value.split(",") if o.strip()]
 
     @property
     def graphml_path(self) -> Path:
@@ -40,6 +46,28 @@ class Settings(BaseSettings):
     @property
     def ml_path(self) -> Path:
         return BASE_DIR / "ml" / "traffic_model.pkl"
+
+    @property
+    def is_production(self) -> bool:
+        return self.environment == "production"
+
+    @property
+    def allowed_origins(self) -> list[str]:
+        paths = [
+            "http://localhost:5173",
+            "http://localhost:4173",
+            "http://localhost:80",
+            "http://127.0.0.1:5173",
+        ]
+
+        env_origins = self.prod_origins if self.is_production else self.dev_origins
+        base = self._parse_origins(env_origins) or ([] if self.is_production else paths)
+
+        return base + self._parse_origins(self.additional_origins)
+
+    @property
+    def allowed_methods(self) -> list[str]:
+        return ["GET", "POST", "PUT", "DELETE"] if self.is_production else ["*"]
 
 
 settings = Settings()

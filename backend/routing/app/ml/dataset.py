@@ -2,10 +2,8 @@ import random
 from typing import Union
 
 import numpy as np
-import osmnx as ox
 import pandas as pd
 
-from app.core.config import settings
 from app.schemas import Speed, TrafficLevel
 from app.utils.graph_utils import categorize_road, get_default_lanes, get_default_speed
 from app.utils.time_utils import is_peak_hour
@@ -15,9 +13,9 @@ from app.utils.traffic_utils import generate_traffic_level
 class DatasetGenerator:
     """Генератор датасета"""
 
-    def __init__(self, graphml_path=settings.graphml_path):
+    def __init__(self, graph):
         """Инициализация: осуществление загрузки и подготовки графа"""
-        self.G = ox.load_graphml(graphml_path)
+        self.G = graph
         self._prepare_graph()
 
     def _prepare_graph(self):

@@ -1,66 +1,47 @@
-import os
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routes import api
-
-app = FastAPI()
-
-# === Конфигурация CORS ===
-ENVIRONMENT = os.getenv("ENVIRONMENT", "development")
-IS_PRODUCTION = ENVIRONMENT == "production"
+from app.api.routes import router
+from app.core.config import settings
+from app.core.graph import load_graph
+from app.services import AnalyticsService, GraphService, RoutingService
 
 
-def get_allowed_origins():
-    """Получить разрешенные origins в зависимости от окружения"""
-    origins = []
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    graph = load_graph()
 
-    if IS_PRODUCTION:
-        prod_origins = os.getenv("PROD_ORIGINS", "")
-        if prod_origins:
-            origins.extend([o.strip() for o in prod_origins.split(",")])
-    else:
-        dev_origins = os.getenv("DEV_ORIGINS", "")
-        if dev_origins:
-            origins.extend([o.strip() for o in dev_origins.split(",")])
-        else:
-            # При условии, если не указано в .env
-            origins = [
-                "http://localhost:5173",
-                "http://localhost:4173",
-                "http://localhost:80",
-                "http://127.0.0.1:5173",
-            ]
+    app.state.graph = graph
+    app.state.analytics_service = AnalyticsService(graph)
+    app.state.graph_service = GraphService(graph)
+    app.state.routing_service = RoutingService(graph)
 
-    # Дополнительные origins (для staging, preview и т.д.)
-    additional = os.getenv("ADDITIONAL_ORIGINS", "")
-    if additional:
-        origins.extend([o.strip() for o in additional.split(",")])
+    yield
 
-    return origins
+    app.state.graph = None
 
 
-allowed_origins = get_allowed_origins()
-allowed_methods = ["GET", "POST", "PUT", "DELETE"] if IS_PRODUCTION else ["*"]
+app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
+    allow_origins=settings.allowed_origins,
     allow_credentials=True,
-    allow_methods=allowed_methods,
+    allow_methods=settings.allowed_methods,
     allow_headers=["*"],
 )
 
-app.include_router(api.router, prefix="/api")
+app.include_router(router.router, prefix="/api")
 
 
 @app.get("/")
 def root():
     return {
-        "message": "Routing Backend-сервер успешно работает!",
-        "environment": ENVIRONMENT,
-        "allowed_origins": allowed_origins,
+        "message": "Routing-микросервис успешно работает!",
+        "environment": settings.environment,
+        "allowed_origins": settings.allowed_origins,
     }
 
 
