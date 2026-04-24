@@ -1,8 +1,9 @@
-import json
-
-from fastapi.responses import JSONResponse
-from shapely.geometry import LineString
-
+from app.schemas.graph import (
+    Geometry,
+    GraphFeature,
+    GraphFeatureProperties,
+    GraphResponse,
+)
 from app.utils.time_utils import get_current_hour
 from app.utils.traffic_utils import generate_traffic_level
 
@@ -11,12 +12,24 @@ class GraphService:
     def __init__(self, graph):
         self.G = graph
 
-    def build_geojson(self, current_user):
+    @staticmethod
+    def _normalize_maxspeed(value) -> float | None:
+        """Нормализация показателя maxspeed к float виду"""
+        if isinstance(value, list):
+            value = value[0]
+
+        try:
+            return float(value)
+        except (TypeError, ValueError):
+            return None
+
+    def build(self, current_user) -> GraphResponse:
         """
         Получение GeoJSON о графа с информацией о загруженности дорог
         """
 
-        features = []
+        features: list[GraphFeature] = []
+
         show_detailed_info = current_user is not None
         current_hour = get_current_hour()
 
@@ -40,35 +53,31 @@ class GraphService:
                 road_category=edge_data.get("road_category", 1), hour=current_hour
             )
 
-            line = LineString(coords)
             properties = {"traffic_level": traffic_level}
 
             if show_detailed_info:
                 maxspeed = edge_data.get("maxspeed", 40)
                 if isinstance(maxspeed, list):
                     maxspeed = maxspeed[0]
+
                 properties.update(
                     {
                         "length": edge_data.get("length", 100),
                         "highway": edge_data.get("highway", "unknown"),
-                        "maxspeed": maxspeed,
+                        "maxspeed": self._normalize_maxspeed(maxspeed),
                         "road_category": edge_data.get("road_category", 1),
                     }
                 )
 
             features.append(
-                {
-                    "type": "Feature",
-                    "geometry": json.loads(json.dumps(line.__geo_interface__)),
-                    "properties": properties,
-                }
+                GraphFeature(
+                    geometry=Geometry(coordinates=coords),
+                    properties=GraphFeatureProperties(**properties),
+                )
             )
 
-        geojson = {
-            "type": "FeatureCollection",
-            "features": features,
-            "user_authenticated": current_user is not None,
-            "current_hour": current_hour,
-        }
-
-        return JSONResponse(content=geojson)
+        return GraphResponse(
+            features=features,
+            user_authenticated=current_user is not None,
+            current_hour=current_hour,
+        )

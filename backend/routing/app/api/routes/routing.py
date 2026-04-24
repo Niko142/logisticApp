@@ -2,9 +2,7 @@ from fastapi import APIRouter, Depends, Request, status
 from fastapi.responses import JSONResponse
 
 from app.core.security import verify_token
-from app.routing.main import build_routes
-from app.schemas import RouteRequest
-from app.services import build_response
+from app.schemas.route import RouteRequest
 
 router = APIRouter(prefix="/routes", tags=["routing"])
 
@@ -16,24 +14,12 @@ def create_route(req: Request, data: RouteRequest, current_user=Depends(verify_t
     """
     try:
         routing_service = req.app.state.routing_service
-        G = req.app.state.graph
 
-        route_context = routing_service.resolve_route_context(data)
+        data.include_alternatives = False
 
-        routes_data = build_routes(
-            G=G,
-            start_node=route_context["start_node"],
-            end_node=route_context["end_node"],
-            hour=route_context["current_hour"],
-            include_alternatives=False,
-        )
-
-        # Формируем ответ
-        return build_response(
-            route=routes_data["main"],
-            route_context=route_context,
+        return routing_service.calculate_route(
+            data=data,
             user=current_user,
-            include_alternatives=False,
         )
 
     except Exception as e:
@@ -54,25 +40,12 @@ def get_alternatives(
     """
     try:
         routing_service = req.app.state.routing_service
-        G = req.app.state.graph
 
-        route_context = routing_service.resolve_route_context(data)
+        data.include_alternatives = True
 
-        routes_data = build_routes(
-            G=G,
-            start_node=route_context["start_node"],
-            end_node=route_context["end_node"],
-            hour=route_context["current_hour"],
-            include_alternatives=True,
-        )
-
-        # Формируем ответ
-        return build_response(
-            route=routes_data["main"],
-            route_context=route_context,
+        return routing_service.calculate_route(
+            data=data,
             user=current_user,
-            include_alternatives=True,
-            alternatives=routes_data.get("alternatives", []),
         )
 
     except Exception as e:

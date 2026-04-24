@@ -6,14 +6,11 @@
 2. DIFFERENT_CRITERIA - оптимизирует по другим критериям (минимизация расстояния вместо времени)
 """
 
-from typing import Literal
-
 import networkx as nx
 
-from app.schemas import EdgeData
+from app.schemas.graph import EdgeData
+from app.schemas.route import AlternativeStrategy, DifferentStrategy
 from app.utils.traffic_utils import generate_traffic_level
-
-AlternativeStrategy = Literal["penalty", "different_criteria"]
 
 
 class PenaltyStrategy:
@@ -32,7 +29,7 @@ class PenaltyStrategy:
             base_weight_func: базовая функция расчета весов
         """
 
-        def penalized_weight(u, v, edge_data):
+        def penalized_weight(u: int, v: int, edge_data: EdgeData):
             weight = base_weight_func(u, v, edge_data)
             if (u, v) in main_route_edges:
                 weight *= self.penalty_factor
@@ -44,7 +41,7 @@ class PenaltyStrategy:
 class DifferentCriteriaStrategy:
     """Стратегия оптимизации по другому критерию"""
 
-    def __init__(self, criteria: Literal["distance", "simple_traffic"] = "distance"):
+    def __init__(self, criteria: DifferentStrategy):
         """
         Args:
             criteria: критерий оптимизации
@@ -53,7 +50,7 @@ class DifferentCriteriaStrategy:
         """
         self.criteria = criteria
 
-    def get_weight_function(self, hour: int = None):
+    def get_weight_function(self, hour: int | None = None):
         """
         Возвращает функцию весов на основе выбранного критерия.
 
@@ -68,7 +65,7 @@ class DifferentCriteriaStrategy:
             raise ValueError(f"Неизвестный критерий: {self.criteria}")
 
     @staticmethod
-    def _distance_weight(u, v, edge_data: EdgeData) -> float:
+    def _distance_weight(u: int, v: int, edge_data: EdgeData) -> float:
         """Вес = длина ребра (игнорирует трафик)"""
         return edge_data.get("length", 100)
 
@@ -87,7 +84,7 @@ class DifferentCriteriaStrategy:
         return length * traffic_factors[traffic_level]
 
 
-def base_length_weight(u, v, d):
+def base_length_weight(u: int, v: int, d: EdgeData) -> float:
     """Базовая функция веса, использующая только длину ребра"""
     return d.get("length", 100)
 
@@ -97,10 +94,10 @@ def build_alternative_with_strategy(
     start_node: int,
     end_node: int,
     strategy: AlternativeStrategy,
-    main_route_nodes: list = None,
+    main_route_nodes: list[int] | None = None,
     hour: int = None,
     **strategy_params,
-) -> list:
+) -> list[int]:
     """
     Построение альтернативного маршрута с использованием выбранной стратегии.
 

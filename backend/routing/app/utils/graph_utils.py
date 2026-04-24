@@ -1,7 +1,8 @@
 import osmnx as ox
 from shapely.geometry import LineString, Point
 
-from app.schemas import EdgeData, HighWayType, RoadCategory, Speed
+from app.schemas import HighWayType, RoadCategory, Speed
+from app.schemas.graph import EdgeData
 
 
 def categorize_road(highway: HighWayType) -> RoadCategory:

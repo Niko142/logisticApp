@@ -1,4 +1,4 @@
-from app.schemas import EdgeData
+from app.schemas.graph import EdgeData
 from app.utils.traffic_utils import generate_traffic_level
 
 

@@ -1,12 +1,11 @@
-from typing import Literal, Sequence, Union
+from typing import Literal, Union
 
-# Общие типы данных
+# === Общие типы ===
 RoadCategory = Literal[0, 1, 2, 3]  # 0 - прочее, 1 - мелкие, 2 - средние, 3 - крупные
+
 TrafficLevel = Literal[
     0, 1, 2
 ]  # 0 - свободно, 1 - средняя загруженность, 2 - высокая (пробки)
-
-Coords = Sequence[tuple[float, float]]  # координаты (lat, lon)
 
 PredictTime = float  # Прогнозируемое время
 Speed = Union[int, float]  # Максимально допустимая скорость передвижения

@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 PEAK_HOURS: set[int] = {7, 8, 9, 17, 18, 19}
 
@@ -12,7 +11,7 @@ def is_peak_hour(hour: int) -> int:
 
 
 def parse_datetime(
-    datetime_str: Optional[str], format: str = "%Y-%m-%d %H:%M"
+    datetime_str: str | None, format: str = "%Y-%m-%d %H:%M"
 ) -> datetime:
     """Парсит строку с датой или возвращает текущее время"""
     if not datetime_str:

@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import Optional
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -16,16 +15,16 @@ class Settings(BaseSettings):
     jwt_secret: str
     jwt_algorithm: str = "HS256"
 
-    dev_origins: Optional[str] = None
-    prod_origins: Optional[str] = None
-    additional_origins: Optional[str] = None
+    dev_origins: str | None = None
+    prod_origins: str | None = None
+    additional_origins: str | None = None
 
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
     )
 
-    def _parse_origins(self, value: Optional[str]) -> list[str]:
+    def _parse_origins(self, value: str | None) -> list[str]:
         """Хелпер для парсинга origins для CORS"""
         if not value:
             return []

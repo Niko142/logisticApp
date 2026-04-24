@@ -1,24 +1,33 @@
-import json
-
 from shapely.geometry import LineString
 
-from app.schemas import (
+from app.schemas.route import (
     Coords,
+    FeatureCollection,
     FeatureProperties,
+    GeometryLine,
+    RouteFeature,
     RouteSummary,
 )
 
 
-def build_feature_line(*, coords: Coords, properties: FeatureProperties) -> dict:
+def build_feature_line(
+    *, coords: Coords, properties: FeatureProperties
+) -> RouteFeature:
     """Формируем GeoJSON Feature для линии маршрута"""
 
-    return {
-        "type": "Feature",
-        "geometry": json.loads(json.dumps(LineString(coords).__geo_interface__)),
-        "properties": properties,
-    }
+    return RouteFeature(
+        geometry=GeometryLine(
+            coordinates=[tuple(c) for c in LineString(coords).coords],
+        ),
+        properties=properties,
+    )
 
 
-def build_feature_collection(features: list[dict], summary: RouteSummary) -> dict:
+def build_feature_collection(
+    features: list[RouteFeature], summary: RouteSummary
+) -> FeatureCollection:
     """Формируем GeoJSON FeatureCollection для ответа API"""
-    return {"type": "FeatureCollection", "features": features, "summary": summary}
+
+    return FeatureCollection(
+        type="FeatureCollection", features=features, summary=summary
+    )

@@ -1,5 +1,3 @@
-from typing import Optional
-
 import jwt
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
@@ -48,7 +46,7 @@ async def verify_token(credentials: HTTPAuthorizationCredentials = Depends(secur
 
 
 async def optional_verify_token(
-    credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
+    credentials: HTTPAuthorizationCredentials | None = Depends(security),
 ):
     """
     Опциональная проверка токена (для публичных route)

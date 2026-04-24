@@ -1,14 +1,15 @@
-from app.routing.strategies import AlternativeStrategy, build_alternative_with_strategy
+from app.routing.strategies import build_alternative_with_strategy
+from app.schemas.route import AlternativeData, AlternativeStrategy
 
 
 def build_alternative_routes(
     G,
     start_node: int,
     end_node: int,
-    main_route_nodes: list,
+    main_route_nodes: list[int],
     strategies: list[AlternativeStrategy] = None,
-    hour: int = None,
-) -> list[dict]:
+    hour: int | None = None,
+) -> list[AlternativeData]:
     """
     Построение альтернативных маршрутов с использованием различных стратегий.
 
@@ -21,7 +22,7 @@ def build_alternative_routes(
         hour: текущий час (для стратегий, зависящих от времени)
 
     Returns:
-        List[dict]: список альтернативных маршрутов с метаданными
+        list[dict]: список альтернативных маршрутов с метаданными
             [
                 {
                     "route_nodes": [...],
@@ -52,11 +53,11 @@ def build_alternative_routes(
 
             if route_nodes and route_nodes != main_route_nodes:
                 alternatives.append(
-                    {
-                        "route_nodes": route_nodes,
-                        "strategy": "penalty",
-                        "description": "Альтернативный путь через другие дороги",
-                    }
+                    AlternativeData(
+                        route_nodes=route_nodes,
+                        strategy="penalty",
+                        description="Альтернативный путь через другие дороги",
+                    )
                 )
 
         elif strategy == "different_criteria":
@@ -72,11 +73,11 @@ def build_alternative_routes(
 
             if route_nodes and route_nodes != main_route_nodes:
                 alternatives.append(
-                    {
-                        "route_nodes": route_nodes,
-                        "strategy": "different_criteria",
-                        "description": "Кратчайший путь по расстоянию",
-                    }
+                    AlternativeData(
+                        route_nodes=route_nodes,
+                        strategy="different_criteria",
+                        description="Кратчайший путь по расстоянию",
+                    )
                 )
 
     # Убираем дубликаты маршрутов

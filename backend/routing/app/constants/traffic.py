@@ -1,4 +1,4 @@
-from app.schemas import DayInterval, WeekDay
+from app.schemas.analytics import DayInterval, WeekDay
 
 TRAFFIC_LABELS = {
     0: "Свободно",

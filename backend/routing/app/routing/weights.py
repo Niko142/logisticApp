@@ -1,4 +1,7 @@
-def main_route_weight(u, v, d, hour: int):
+from app.schemas.graph import EdgeData
+
+
+def main_route_weight(u: int, v: int, d: EdgeData, hour: int) -> float:
     length = d.get("length", 100)
     maxspeed = d.get("maxspeed", 50)
 
