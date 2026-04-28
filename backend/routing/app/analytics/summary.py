@@ -15,7 +15,9 @@ def _calculate_metrics(G, hour: int) -> dict[str, float]:
     travel_times = []
     load_scores = []
 
+    # Соответствие уровня загруженности
     load_map = {0: 0.0, 1: 0.5, 2: 1.0}
+    # Коэффициент снижения скорости в зависимости от загруженности
     speed_factors = {0: 1.0, 1: 0.6, 2: 0.3}
 
     for u, v, k in G.edges(keys=True):
@@ -39,17 +41,36 @@ def _calculate_metrics(G, hour: int) -> dict[str, float]:
         except (TypeError, ValueError):
             maxspeed = 40.0
 
+        # Актуальная скорость с учетом загруженности
         actual_speed = maxspeed * speed_factors[level]
+
+        # Время прохождения одного сегмента в минутах
         travel_time = (length / 1000) / actual_speed * 60
 
         travel_times.append(travel_time)
         load_scores.append(load_map[level])
 
-    total = len(travel_times)
+    total_edges = len(travel_times)
+
+    if total_edges == 0:
+        return {
+            "avg_travel_time": 0,
+            "avg_load_percent": 0,
+        }
+
+    # Среднее время прохождения одного сегмента
+    avg_edge_time = sum(travel_times) / total_edges
+    # Среднее количество сегментов в одном маршруте
+    average_route_edges = 30
+
+    # Среднее время условного маршрута
+    avg_travel_time = avg_edge_time * average_route_edges
+    # Средний уровень загруженности сети в процентах
+    avg_load_percent = (sum(load_scores) / total_edges) * 100
 
     return {
-        "avg_travel_time": round(sum(travel_times) / total, 2) if total else 0,
-        "avg_load_percent": round(sum(load_scores) / total * 100, 1) if total else 0,
+        "avg_travel_time": round(avg_travel_time, 1),
+        "avg_load_percent": round(avg_load_percent, 1),
     }
 
 
